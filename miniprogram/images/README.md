@@ -8,17 +8,13 @@ Per Constitution Principle V (Static Asset Management), all UI icons must be man
 
 | Icon | Type | Directory | File Name | Status |
 |------|------|-----------|-----------|--------|
-| App Logo | PNG | `miniprogram/images/` | `logo.png` | ⚠️ NEEDED |
-| Boxer Avatar Placeholder | PNG | `miniprogram/images/` | `boxer-placeholder.png` | ⚠️ NEEDED |
-| Gym Icon Placeholder | PNG | `miniprogram/images/` | `gym-placeholder.png` | ⚠️ NEEDED |
+| App Logo | PNG | `miniprogram/images/` | `logo.png` | ✅ Added |
+| Boxer Avatar Placeholder | PNG | `miniprogram/images/` | `boxer-placeholder.png` | ✅ Added |
+| Gym Icon Placeholder | PNG | `miniprogram/images/` | `gym-placeholder.png` | ✅ Added |
 
-## Action Required
+## Assets
 
-Please download or create the above images and place them in `miniprogram/images/` directory.
-
-## Temporary Placeholders
-
-For now, the app references these images but they will show broken until added:
+All required static assets have been added:
 - `/images/logo.png` - Used in login page
 - `/images/boxer-placeholder.png` - Used for boxer profiles
 - `/images/gym-placeholder.png` - Used for gym profiles
