@@ -21,7 +21,7 @@
     "ignore": [],
     "include": []
   },
-  "appid": "you-app-id",
+  "appid": "your-app-id",
   "editorSetting": {},
   "cloudfunctionRoot": "cloudfunctions/",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"

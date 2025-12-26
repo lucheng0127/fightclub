@@ -82,7 +82,11 @@ Page({
   async callLogin() {
     try {
       console.log('=== 开始调用登录云函数 ===');
-      console.log('云环境:', wx.cloud.CloudID ? wx.cloud.CloudID : '未初始化');
+
+      // 确保云环境已初始化
+      if (!wx.cloud) {
+        throw new Error('云环境未初始化');
+      }
 
       const result = await callFunction('auth/login', {}, { showLoading: true });
       console.log('登录结果:', result);
