@@ -31,17 +31,19 @@
 
 ## 项目设置
 
-### 1. 创建新的小程序
+### 1. 导入项目
 
 ```bash
 # 使用微信开发者工具：
-# 1. 点击 "+"（新建项目）
-# 2. 选择"小程序"
-# 3. 选择"JavaScript"作为开发语言
-# 4. 勾选"使用云开发"
-# 5. 输入项目名称："fightclub"
-# 6. 选择您的云开发环境
+# 1. 点击 "+"（导入项目）
+# 2. 选择项目目录：miniprogram/
+# 3. 填写项目名称："fightclub"
+# 4. 选择 AppID（使用测试号或自己的 AppID）
+# 5. 勾选"不使用云服务"（云开发已在项目内配置）
+# 6. 点击"导入"
 ```
+
+**注意**: 直接导入 `miniprogram/` 目录，该目录包含完整的小程序代码和云函数。
 
 ### 2. 配置项目
 
@@ -105,31 +107,36 @@ App({
 # 2. 创建 Node.js 云函数
 # 3. 输入函数名称：例如 "auth/login"
 
-# 目录结构：
-cloudfunctions/
-├── auth/
-│   └── login/
-│       ├── index.js
-│       └── package.json
-├── boxer/
-│   ├── create/
-│   ├── update/
-│   ├── get/
-│   └── list/
-├── gym/
-│   ├── create/
-│   ├── update/
-│   ├── get/
-│   └── list/
-└── common/
-    ├── upload/
-    ├── stats/
-    └── counters/
+# 目录结构（已在项目中）：
+miniprogram/
+├── cloudfunctions/
+│   ├── auth/
+│   │   └── login/
+│   │       ├── index.js
+│   │       └── package.json
+│   ├── boxer/
+│   │   ├── create/
+│   │   ├── update/
+│   │   ├── get/
+│   │   └── list/
+│   ├── gym/
+│   │   ├── create/
+│   │   ├── update/
+│   │   ├── get/
+│   │   └── list/
+│   └── common/
+│       ├── upload/
+│       ├── stats/
+│       └── counters/
+├── pages/
+├── utils/
+├── components/
+└── images/
 ```
 
 ### 2. 云函数实现示例
 
-**cloudfunctions/auth/login/index.js**:
+**miniprogram/cloudfunctions/auth/login/index.js**:
 ```javascript
 const cloud = require('wx-server-sdk');
 const crypto = require('crypto');
@@ -559,16 +566,14 @@ Page({
 
 ### 所需图标
 
-| 图标 | 类型 | 目录 | 名称 |
-|------|------|-----------|------|
-| Logo | PNG | `miniprogram/images/` | `logo.png` |
-| 拳手头像占位图 | PNG | `miniprogram/images/` | `boxer-placeholder.png` |
-| 拳馆图标占位图 | PNG | `miniprogram/images/` | `gym-placeholder.png` |
-| 筛选图标 | PNG | `miniprogram/images/` | `icon-filter.png` |
-| 位置图标 | PNG | `miniprogram/images/` | `icon-location.png` |
-| 编辑图标 | PNG | `miniprogram/images/` | `icon-edit.png` |
-
-**注意**: 需要手动下载或创建这些图标并放置在 `miniprogram/images/` 目录中。
+| 图标 | 类型 | 目录 | 名称 | 状态 |
+|------|------|-----------|------|------|
+| Logo | PNG | `miniprogram/images/` | `logo.png` | ✅ 已添加 |
+| 拳手头像占位图 | PNG | `miniprogram/images/` | `boxer-placeholder.png` | ✅ 已添加 |
+| 拳馆图标占位图 | PNG | `miniprogram/images/` | `gym-placeholder.png` | ✅ 已添加 |
+| 筛选图标 | PNG | `miniprogram/images/` | `icon-filter.png` | 可选 |
+| 位置图标 | PNG | `miniprogram/images/` | `icon-location.png` | 可选 |
+| 编辑图标 | PNG | `miniprogram/images/` | `icon-edit.png` | 可选 |
 
 ---
 
@@ -594,10 +599,10 @@ Page({
 
 ## 后续步骤
 
-1. 在微信开发者工具中设置项目
-2. 根据 API 契约创建和部署云函数
-3. 设置数据库集合和索引
-4. 根据用户故事实现前端页面
+1. 在微信开发者工具中导入 `miniprogram/` 目录
+2. 配置云开发环境 ID（在 `app.js` 中）
+3. 根据 API 契约创建和部署云函数
+4. 设置数据库集合和索引
 5. 在真机上测试
 6. 提交审核并发布
 
