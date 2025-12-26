@@ -5,7 +5,7 @@
  */
 
 const cloud = require('wx-server-sdk');
-const { hashOpenID, successResponse, errorResponse } = require('../common/config');
+const { hashOpenID, successResponse, errorResponse } = require('../../common/config');
 
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
