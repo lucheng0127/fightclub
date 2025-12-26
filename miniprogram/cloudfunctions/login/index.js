@@ -55,16 +55,17 @@ function errorResponse(errcode, errmsg) {
 
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
-  const { openid } = wxContext;
+  const { openid, appid } = wxContext;
 
   // 调试日志
   console.log('=== Login Cloud Function ===');
   console.log('WXContext:', JSON.stringify(wxContext));
   console.log('OpenID:', openid);
+  console.log('AppID:', appid);
 
   if (!openid) {
-    console.error('OpenID is empty!');
-    return errorResponse(1001, '无法获取用户信息');
+    console.error('OpenID is empty! WXContext:', wxContext);
+    return errorResponse(1001, '无法获取用户信息: OpenID为空，请检查云函数是否部署到云端且环境配置正确');
   }
 
   try {
