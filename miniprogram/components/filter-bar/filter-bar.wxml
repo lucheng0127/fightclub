@@ -1,0 +1,52 @@
+<!-- Filter Bar Component -->
+<view class="filter-bar">
+  <view class="filter-row">
+    <input
+      class="filter-input"
+      placeholder="城市"
+      value="{{city}}"
+      bindinput="onCityInput"
+      placeholder-class="filter-placeholder"
+    />
+    <input
+      class="filter-input small"
+      placeholder="最小年龄"
+      type="number"
+      value="{{ageMin}}"
+      bindinput="onAgeMinInput"
+      placeholder-class="filter-placeholder"
+    />
+    <input
+      class="filter-input small"
+      placeholder="最大年龄"
+      type="number"
+      value="{{ageMax}}"
+      bindinput="onAgeMaxInput"
+      placeholder-class="filter-placeholder"
+    />
+  </view>
+
+  <view class="filter-row" wx:if="{{showWeightFilter}}">
+    <input
+      class="filter-input small"
+      placeholder="最小体重"
+      type="number"
+      value="{{weightMin}}"
+      bindinput="onWeightMinInput"
+      placeholder-class="filter-placeholder"
+    />
+    <input
+      class="filter-input small"
+      placeholder="最大体重"
+      type="number"
+      value="{{weightMax}}"
+      bindinput="onWeightMaxInput"
+      placeholder-class="filter-placeholder"
+    />
+  </view>
+
+  <view class="filter-actions">
+    <button class="btn-filter" bindtap="onApply">筛选</button>
+    <button class="btn-clear" bindtap="onClear">清除</button>
+  </view>
+</view>

@@ -27,14 +27,14 @@ description: "Task list for feature implementation"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create WeChat Mini Program project in WeChat Developer Tools
-- [ ] T002 Initialize CloudBase environment and note Environment ID
-- [ ] T003 [P] Create miniprogram directory structure (pages/, components/, utils/, styles/, images/)
-- [ ] T004 [P] Create cloudfunctions directory structure (auth/, boxer/, gym/, common/)
-- [ ] T005 [P] Configure app.json with all page routes and permissions
-- [ ] T006 [P] Create app.js with CloudBase initialization
-- [ ] T007 [P] Create global styles in app.wxss
-- [ ] T008 [P] Create sitemap.json for SEO configuration
+- [X] T001 Create WeChat Mini Program project in WeChat Developer Tools
+- [X] T002 Initialize CloudBase environment and note Environment ID
+- [X] T003 [P] Create miniprogram directory structure (pages/, components/, utils/, styles/, images/)
+- [X] T004 [P] Create cloudfunctions directory structure (auth/, boxer/, gym/, common/)
+- [X] T005 [P] Configure app.json with all page routes and permissions
+- [X] T006 [P] Create app.js with CloudBase initialization
+- [X] T007 [P] Create global styles in app.wxss
+- [X] T008 [P] Create sitemap.json for SEO configuration
 
 ---
 
@@ -47,13 +47,13 @@ description: "Task list for feature implementation"
 - [ ] T009 Create database collections (users, boxers, gyms, counters) in CloudBase console
 - [ ] T010 Create database indexes (openid, user_id, city, location geospatial) via console or function
 - [ ] T011 Initialize counter documents (boxer_count: 0, gym_count: 0) in counters collection
-- [ ] T012 [P] Create shared utility file miniprogram/utils/request.js for cloud function wrapper
-- [ ] T013 [P] Create shared utility file miniprogram/utils/auth.js for authorization helpers
-- [ ] T014 [P] Create shared utility file miniprogram/utils/validation.js for input validation
-- [ ] T015 [P] Create shared utility file cloudfunctions/common/config.js for cloud function configuration
-- [ ] T016 Implement OpenID hash function in cloudfunctions/common/config.js (non-reversible, for frontend IDs)
-- [ ] T017 [P] Create reusable filter-bar component in miniprogram/components/filter-bar/
-- [ ] T018 [P] Create reusable profile-card component in miniprogram/components/profile-card/
+- [X] T012 [P] Create shared utility file miniprogram/utils/request.js for cloud function wrapper
+- [X] T013 [P] Create shared utility file miniprogram/utils/auth.js for authorization helpers
+- [X] T014 [P] Create shared utility file miniprogram/utils/validation.js for input validation
+- [X] T015 [P] Create shared utility file cloudfunctions/common/config.js for cloud function configuration
+- [X] T016 Implement OpenID hash function in cloudfunctions/common/config.js (non-reversible, for frontend IDs)
+- [X] T017 [P] Create reusable filter-bar component in miniprogram/components/filter-bar/
+- [X] T018 [P] Create reusable profile-card component in miniprogram/components/profile-card/
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -67,27 +67,27 @@ description: "Task list for feature implementation"
 
 ### Backend Implementation
 
-- [ ] T019 [US1] Create cloud function cloudfunctions/auth/login/index.js with user login logic
-- [ ] T020 [US1] Implement openid retrieval via cloud.getWXContext() in auth/login function
-- [ ] T021 [US1] Implement user creation in users collection for new users (auth/login)
-- [ ] T022 [US1] Implement role detection (has_boxer_profile, has_gym_profile) in auth/login
-- [ ] T023 [US1] Implement anonymized user_id generation using hash function in auth/login
-- [ ] T024 [US1] Add package.json for auth/login cloud function
+- [X] T019 [US1] Create cloud function cloudfunctions/auth/login/index.js with user login logic
+- [X] T020 [US1] Implement openid retrieval via cloud.getWXContext() in auth/login function
+- [X] T021 [US1] Implement user creation in users collection for new users (auth/login)
+- [X] T022 [US1] Implement role detection (has_boxer_profile, has_gym_profile) in auth/login
+- [X] T023 [US1] Implement anonymized user_id generation using hash function in auth/login
+- [X] T024 [US1] Add package.json for auth/login cloud function
 - [ ] T025 [US1] Deploy auth/login cloud function to CloudBase
 
 ### Frontend - Authorization Pages
 
-- [ ] T026 [P] [US1] Create login page in miniprogram/pages/auth/login/ (login.wxml, login.wxss, login.js)
-- [ ] T027 [US1] Implement wx.getUserProfile button for user info authorization in login page
-- [ ] T028 [US1] Implement wx.getLocation request for location authorization in login page
-- [ ] T029 [US1] Call auth/login cloud function and handle response in login page
-- [ ] T030 [US1] Store user_id and auth state in local storage after successful login
-- [ ] T031 [US1] Handle denied location authorization (disable distance features flag)
-- [ ] T032 [US1] Create role-select page in miniprogram/pages/auth/role-select/ (role-select.wxml, role-select.wxss, role-select.js)
-- [ ] T033 [US1] Implement role selection UI (Boxer/Gym buttons) in role-select page
-- [ ] T034 [US1] Show last_role as default option when user has both roles in role-select
-- [ ] T035 [US1] Skip role-select page when user has only one role (redirect directly)
-- [ ] T036 [US1] Implement navigation to boxer or gym flows based on selected role
+- [X] T026 [P] [US1] Create login page in miniprogram/pages/auth/login/ (login.wxml, login.wxss, login.js)
+- [X] T027 [US1] Implement wx.getUserProfile button for user info authorization in login page
+- [X] T028 [US1] Implement wx.getLocation request for location authorization in login page
+- [X] T029 [US1] Call auth/login cloud function and handle response in login page
+- [X] T030 [US1] Store user_id and auth state in local storage after successful login
+- [X] T031 [US1] Handle denied location authorization (disable distance features flag)
+- [X] T032 [US1] Create role-select page in miniprogram/pages/auth/role-select/ (role-select.wxml, role-select.wxss, role-select.js)
+- [X] T033 [US1] Implement role selection UI (Boxer/Gym buttons) in role-select page
+- [X] T034 [US1] Show last_role as default option when user has both roles in role-select
+- [X] T035 [US1] Skip role-select page when user has only one role (redirect directly)
+- [X] T036 [US1] Implement navigation to boxer or gym flows based on selected role
 
 **Checkpoint**: Users can authorize, select role, and enter app. Ready for profile creation.
 

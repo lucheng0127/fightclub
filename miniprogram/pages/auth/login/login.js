@@ -1,0 +1,167 @@
+// Login Page
+const { callFunction } = require('../../../utils/request');
+const { saveAuthData, saveLocationAuth, getLocationAuth } = require('../../../utils/auth');
+
+Page({
+  data: {
+    loading: false,
+    locationAuthorized: false,
+    locationDenied: false
+  },
+
+  onLoad() {
+    // 检查位置授权状态
+    this.checkLocationAuth();
+  },
+
+  /**
+   * 检查位置授权状态
+   */
+  async checkLocationAuth() {
+    const authorized = await getLocationAuth();
+    this.setData({ locationAuthorized: authorized });
+  },
+
+  /**
+   * 获取用户信息授权
+   */
+  onGetUserInfo() {
+    this.setData({ loading: true });
+
+    // 首先请求位置授权
+    this.requestLocationAuth().then(() => {
+      // 位置授权成功后，请求用户信息
+      this.getUserProfile();
+    }).catch(() => {
+      // 位置授权被拒绝，仍然可以继续获取用户信息
+      this.getUserProfile();
+    });
+  },
+
+  /**
+   * 请求位置授权
+   */
+  requestLocationAuth() {
+    return new Promise((resolve, reject) => {
+      wx.getLocation({
+        type: 'gcj02',
+        success: (res) => {
+          const { latitude, longitude } = res;
+          // 保存位置信息
+          wx.setStorageSync('user_location', { latitude, longitude });
+          saveLocationAuth(true);
+          this.setData({ locationAuthorized: true, locationDenied: false });
+          resolve();
+        },
+        fail: (err) => {
+          console.error('位置授权失败:', err);
+          saveLocationAuth(false);
+          this.setData({ locationAuthorized: false, locationDenied: true });
+          reject(err);
+        }
+      });
+    });
+  },
+
+  /**
+   * 获取用户信息（getUserProfile）
+   */
+  getUserProfile() {
+    wx.getUserProfile({
+      desc: '用于完善用户资料',
+      success: (res) => {
+        const { userInfo } = res;
+        // 保存用户昵称和头像
+        wx.setStorageSync('user_nickname', userInfo.nickName);
+        wx.setStorageSync('user_avatar', userInfo.avatarUrl);
+
+        // 调用登录云函数
+        this.callLogin();
+      },
+      fail: (err) => {
+        console.error('获取用户信息失败:', err);
+        this.setData({ loading: false });
+        wx.showToast({
+          title: '需要授权才能继续',
+          icon: 'none'
+        });
+      }
+    });
+  },
+
+  /**
+   * 调用登录云函数
+   */
+  async callLogin() {
+    try {
+      const result = await callFunction('auth/login', {}, { showLoading: true });
+
+      // 保存授权数据
+      saveAuthData({
+        user_id: result.user_id,
+        roles: result.roles,
+        last_role: result.last_role
+      });
+
+      // 导航到角色选择页面或主页
+      this.navigateToNext(result);
+    } catch (err) {
+      console.error('登录失败:', err);
+      this.setData({ loading: false });
+    }
+  },
+
+  /**
+   * 根据用户状态导航到下一页
+   */
+  navigateToNext(loginResult) {
+    const { roles, last_role } = loginResult;
+    const { has_boxer_profile, has_gym_profile } = roles;
+
+    // 新用户：进入角色选择页面
+    if (loginResult.is_new_user) {
+      wx.redirectTo({
+        url: '/pages/auth/role-select/role-select'
+      });
+      return;
+    }
+
+    // 已有角色的老用户
+    if (has_boxer_profile && !has_gym_profile) {
+      // 只有拳手角色，直接进入
+      wx.switchTab({
+        url: '/pages/common/dashboard/dashboard'
+      });
+    } else if (!has_boxer_profile && has_gym_profile) {
+      // 只有拳馆角色，直接进入
+      wx.switchTab({
+        url: '/pages/common/dashboard/dashboard'
+      });
+    } else if (has_boxer_profile && has_gym_profile) {
+      // 两个角色都有，进入角色选择页面
+      wx.redirectTo({
+        url: '/pages/auth/role-select/role-select'
+      });
+    } else {
+      // 没有任何角色（理论上不应该出现），进入角色选择
+      wx.redirectTo({
+        url: '/pages/auth/role-select/role-select'
+      });
+    }
+  },
+
+  /**
+   * 获取位置权限按钮点击
+   */
+  onGetLocation() {
+    // 打开设置页面
+    wx.openSetting({
+      success: (res) => {
+        if (res.authSetting['scope.userLocation']) {
+          this.setData({ locationDenied: false });
+          this.checkLocationAuth();
+        }
+      }
+    });
+  }
+});

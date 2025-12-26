@@ -1,0 +1,33 @@
+<!-- Profile Card Component -->
+<view class="profile-card" bindtap="onTap">
+  <view class="card-header">
+    <image
+      class="avatar"
+      src="{{avatar}}"
+      mode="aspectFill"
+    />
+    <view class="header-info">
+      <text class="nickname">{{nickname}}</text>
+      <text class="subtitle" wx:if="{{subtitle}}">{{subtitle}}</text>
+    </view>
+  </view>
+
+  <view class="card-body">
+    <view class="info-row" wx:if="{{info1}}">
+      <text class="info-label">{{info1Label}}</text>
+      <text class="info-value">{{info1}}</text>
+    </view>
+    <view class="info-row" wx:if="{{info2}}">
+      <text class="info-label">{{info2Label}}</text>
+      <text class="info-value">{{info2}}</text>
+    </view>
+    <view class="info-row" wx:if="{{info3}}">
+      <text class="info-label">{{info3Label}}</text>
+      <text class="info-value">{{info3}}</text>
+    </view>
+  </view>
+
+  <view class="card-footer" wx:if="{{footer}}">
+    <text class="footer-text">{{footer}}</text>
+  </view>
+</view>

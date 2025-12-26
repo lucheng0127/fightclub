@@ -1,0 +1,141 @@
+/* Role Select Page Styles */
+.role-select-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+}
+
+.role-container {
+  width: 100%;
+  max-width: 600rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 16rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-bottom: 64rpx;
+}
+
+.role-options {
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+  margin-bottom: 48rpx;
+}
+
+.role-card {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 24rpx;
+  padding: 32rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.3s;
+}
+
+.role-card.selected {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: #fff;
+}
+
+.role-icon {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 48rpx;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin-right: 24rpx;
+}
+
+.role-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.role-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.role-desc {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.role-check {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 24rpx;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.check-icon {
+  font-size: 32rpx;
+  color: #1a1a1a;
+  font-weight: bold;
+}
+
+.existing-roles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  margin-bottom: 48rpx;
+  padding: 24rpx;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 16rpx;
+}
+
+.existing-text {
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.existing-badge {
+  padding: 8rpx 24rpx;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #fff;
+}
+
+.btn-confirm {
+  width: 100%;
+  height: 96rpx;
+  background-color: #fff;
+  color: #1a1a1a;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.btn-confirm::after {
+  border: none;
+}
+
+.btn-confirm[disabled] {
+  background-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.5);
+}

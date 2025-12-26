@@ -1,0 +1,56 @@
+<!-- Role Select Page -->
+<view class="role-select-page">
+  <view class="role-container">
+    <view class="title">选择您的角色</view>
+    <view class="subtitle">您可以同时拥有拳手和拳馆两种身份</view>
+
+    <!-- 角色选项 -->
+    <view class="role-options">
+      <view
+        class="role-card {{selectedRole === 'boxer' ? 'selected' : ''}}"
+        bindtap="onSelectRole"
+        data-role="boxer"
+      >
+        <image class="role-icon" src="/images/boxer-placeholder.png" mode="aspectFit" />
+        <view class="role-info">
+          <text class="role-name">我是拳手</text>
+          <text class="role-desc">创建个人档案，展示拳击信息</text>
+        </view>
+        <view class="role-check" wx:if="{{selectedRole === 'boxer'}}">
+          <text class="check-icon">✓</text>
+        </view>
+      </view>
+
+      <view
+        class="role-card {{selectedRole === 'gym' ? 'selected' : ''}}"
+        bindtap="onSelectRole"
+        data-role="gym"
+      >
+        <image class="role-icon" src="/images/gym-placeholder.png" mode="aspectFit" />
+        <view class="role-info">
+          <text class="role-name">我是拳馆</text>
+          <text class="role-desc">创建拳馆档案，展示场馆信息</text>
+        </view>
+        <view class="role-check" wx:if="{{selectedRole === 'gym'}}">
+          <text class="check-icon">✓</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 已有角色提示 -->
+    <view class="existing-roles" wx:if="{{hasBoxerProfile || hasGymProfile}}">
+      <text class="existing-text">当前已有角色：</text>
+      <text class="existing-badge" wx:if="{{hasBoxerProfile}}">拳手</text>
+      <text class="existing-badge" wx:if="{{hasGymProfile}}">拳馆</text>
+    </view>
+
+    <!-- 确认按钮 -->
+    <button
+      class="btn-confirm"
+      bindtap="onConfirm"
+      disabled="{{!selectedRole}}"
+    >
+      以{{selectedRole === 'boxer' ? '拳手' : '拳馆'}}身份进入
+    </button>
+  </view>
+</view>

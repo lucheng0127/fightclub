@@ -1,0 +1,41 @@
+<!-- Dashboard Page -->
+<view class="dashboard-page">
+  <view class="dashboard-container">
+    <!-- 用户信息 -->
+    <view class="user-section">
+      <image class="user-avatar" src="{{userAvatar}}" mode="aspectFill" />
+      <view class="user-info">
+        <text class="user-name">{{userName}}</text>
+        <text class="user-role">{{currentRoleText}}</text>
+      </view>
+    </view>
+
+    <!-- 统计信息 -->
+    <view class="stats-section">
+      <view class="stat-card" bindtap="goToBoxerList">
+        <text class="stat-value">{{boxerCount}}</text>
+        <text class="stat-label">拳手</text>
+      </view>
+      <view class="stat-card" bindtap="goToGymList">
+        <text class="stat-value">{{gymCount}}</text>
+        <text class="stat-label">拳馆</text>
+      </view>
+    </view>
+
+    <!-- 功能入口 -->
+    <view class="actions-section">
+      <view class="action-item" bindtap="goToBoxerList">
+        <view class="action-icon">🥊</view>
+        <text class="action-text">浏览拳手</text>
+      </view>
+      <view class="action-item" bindtap="goToGymList">
+        <view class="action-icon">🏢</view>
+        <text class="action-text">浏览拳馆</text>
+      </view>
+      <view class="action-item" bindtap="goToProfile">
+        <view class="action-icon">👤</view>
+        <text class="action-text">我的档案</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,39 @@
+<!-- Login Page -->
+<view class="login-page">
+  <view class="login-container">
+    <image class="logo" src="/images/logo.png" mode="aspectFit" />
+
+    <view class="title">FightClub</view>
+    <view class="subtitle">拳击手与拳馆信息平台</view>
+
+    <view class="auth-section">
+      <button
+        class="btn-auth"
+        bindtap="onGetUserInfo"
+        loading="{{loading}}"
+      >
+        授权登录
+      </button>
+
+      <view class="tips">
+        <text class="tip-text">• 我们需要获取您的昵称和头像</text>
+        <text class="tip-text">• 位置信息用于筛选附近的拳馆</text>
+        <text class="tip-text">• 您可以随时在设置中管理授权</text>
+      </view>
+    </view>
+
+    <view class="location-section" wx:if="{{!locationAuthorized}}">
+      <button
+        class="btn-location"
+        bindtap="onGetLocation"
+        open-type="openSetting"
+        wx:if="{{locationDenied}}"
+      >
+        开启位置权限
+      </button>
+      <view class="location-tip" wx:else>
+        <text>建议开启位置权限以使用附近拳馆功能</text>
+      </view>
+    </view>
+  </view>
+</view>

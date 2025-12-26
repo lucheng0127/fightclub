@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/auth/login/login",
+    "pages/auth/role-select/role-select",
+    "pages/boxer/profile-create/profile-create",
+    "pages/boxer/profile-edit/profile-edit",
+    "pages/boxer/list/list",
+    "pages/boxer/detail/detail",
+    "pages/gym/profile-create/profile-create",
+    "pages/gym/profile-edit/profile-edit",
+    "pages/gym/list/list",
+    "pages/gym/detail/detail",
+    "pages/common/dashboard/dashboard"
+  ],
+  "window": {
+    "navigationBarTitleText": "FightClub",
+    "navigationBarBackgroundColor": "#1a1a1a",
+    "navigationBarTextStyle": "white"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于筛选附近的拳馆"
+    }
+  },
+  "cloud": true,
+  "sitemapLocation": "sitemap.json"
+}
