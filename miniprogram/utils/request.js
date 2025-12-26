@@ -42,6 +42,10 @@ function callFunction(name, data = {}, options = {}) {
   const { showLoading = false } = options;
   const actualName = getActualFunctionName(name);
 
+  console.log(`=== 调用云函数 ===`);
+  console.log(`请求名称: ${name}`);
+  console.log(`实际名称: ${actualName}`);
+
   if (showLoading) {
     wx.showLoading({
       title: '加载中...',

@@ -55,16 +55,20 @@ function errorResponse(errcode, errmsg) {
 
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
-  const { openid, appid } = wxContext;
+
+  // 兼容大小写形式（不同微信版本可能返回不同格式）
+  const openid = wxContext.OPENID || wxContext.openid || '';
+  const appid = wxContext.APPID || wxContext.appid || '';
 
   // 调试日志
   console.log('=== Login Cloud Function ===');
+  console.log('WXContext keys:', Object.keys(wxContext));
   console.log('WXContext:', JSON.stringify(wxContext));
   console.log('OpenID:', openid);
   console.log('AppID:', appid);
 
   if (!openid) {
-    console.error('OpenID is empty! WXContext:', wxContext);
+    console.error('OpenID is empty! Full WXContext:', JSON.stringify(wxContext));
     return errorResponse(1001, '无法获取用户信息: OpenID为空，请检查云函数是否部署到云端且环境配置正确');
   }
 
