@@ -7,7 +7,7 @@ App({
       return;
     }
     wx.cloud.init({
-      env: 'your-env-id',  // Replace with your CloudBase environment ID
+      env: 'your-cloud-env-id',  // 替换为你的云开发环境 ID
       traceUser: true
     });
   },
