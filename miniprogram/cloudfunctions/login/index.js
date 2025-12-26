@@ -5,13 +5,53 @@
  */
 
 const cloud = require('wx-server-sdk');
-const { hashOpenID, successResponse, errorResponse } = require('../../common/config');
+const crypto = require('crypto');
 
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
 });
 
 const db = cloud.database();
+
+/**
+ * 生成匿名用户ID（基于OpenID的非可逆哈希）
+ * 用于前端标识用户，不暴露原始OpenID
+ * @param {string} openid - 微信OpenID
+ * @returns {string} 匿名化后的用户ID
+ */
+function hashOpenID(openid) {
+  const salt = 'fightclub-salt-v1';
+  return crypto.createHash('sha256')
+    .update(openid + salt)
+    .digest('hex')
+    .substring(0, 16);
+}
+
+/**
+ * 通用成功响应
+ * @param {*} data - 返回数据
+ * @returns {object} 标准成功响应
+ */
+function successResponse(data) {
+  return {
+    errcode: 0,
+    errmsg: 'success',
+    data
+  };
+}
+
+/**
+ * 通用错误响应
+ * @param {number} errcode - 错误码
+ * @param {string} errmsg - 错误信息
+ * @returns {object} 标准错误响应
+ */
+function errorResponse(errcode, errmsg) {
+  return {
+    errcode,
+    errmsg
+  };
+}
 
 exports.main = async (event, context) => {
   const { openid } = cloud.getWXContext();
