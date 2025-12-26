@@ -24,49 +24,12 @@ Page({
 
   /**
    * 获取用户信息授权
+   * 注意：getUserProfile 必须直接在用户 tap 事件中调用
    */
   onGetUserInfo() {
     this.setData({ loading: true });
 
-    // 首先请求位置授权
-    this.requestLocationAuth().then(() => {
-      // 位置授权成功后，请求用户信息
-      this.getUserProfile();
-    }).catch(() => {
-      // 位置授权被拒绝，仍然可以继续获取用户信息
-      this.getUserProfile();
-    });
-  },
-
-  /**
-   * 请求位置授权
-   */
-  requestLocationAuth() {
-    return new Promise((resolve, reject) => {
-      wx.getLocation({
-        type: 'gcj02',
-        success: (res) => {
-          const { latitude, longitude } = res;
-          // 保存位置信息
-          wx.setStorageSync('user_location', { latitude, longitude });
-          saveLocationAuth(true);
-          this.setData({ locationAuthorized: true, locationDenied: false });
-          resolve();
-        },
-        fail: (err) => {
-          console.error('位置授权失败:', err);
-          saveLocationAuth(false);
-          this.setData({ locationAuthorized: false, locationDenied: true });
-          reject(err);
-        }
-      });
-    });
-  },
-
-  /**
-   * 获取用户信息（getUserProfile）
-   */
-  getUserProfile() {
+    // 直接调用 getUserProfile，不能放在异步回调中
     wx.getUserProfile({
       desc: '用于完善用户资料',
       success: (res) => {
@@ -74,6 +37,9 @@ Page({
         // 保存用户昵称和头像
         wx.setStorageSync('user_nickname', userInfo.nickName);
         wx.setStorageSync('user_avatar', userInfo.avatarUrl);
+
+        // 用户信息获取成功后，再请求位置（可选）
+        this.requestLocationAuth();
 
         // 调用登录云函数
         this.callLogin();
@@ -85,6 +51,27 @@ Page({
           title: '需要授权才能继续',
           icon: 'none'
         });
+      }
+    });
+  },
+
+  /**
+   * 请求位置授权（可选，不阻塞登录流程）
+   */
+  requestLocationAuth() {
+    wx.getLocation({
+      type: 'gcj02',
+      success: (res) => {
+        const { latitude, longitude } = res;
+        // 保存位置信息
+        wx.setStorageSync('user_location', { latitude, longitude });
+        saveLocationAuth(true);
+        this.setData({ locationAuthorized: true, locationDenied: false });
+      },
+      fail: (err) => {
+        console.error('位置授权失败（不影响登录）:', err);
+        saveLocationAuth(false);
+        this.setData({ locationAuthorized: false, locationDenied: true });
       }
     });
   },
