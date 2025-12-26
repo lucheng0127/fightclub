@@ -23,5 +23,6 @@
   },
   "appid": "you-app-id",
   "editorSetting": {},
-  "cloudfunctionRoot": "cloudfunctions/"
+  "cloudfunctionRoot": "cloudfunctions/",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
 }
