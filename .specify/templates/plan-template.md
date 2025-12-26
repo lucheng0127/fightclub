@@ -31,7 +31,12 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **WeChat Stack First**: Is this implementable using WeChat Mini Program + Cloud Development? If external services are proposed, is there a documented evaluation of WeChat native alternatives?
+- [ ] **Business Correctness**: Does the design prioritize business logic correctness over technical elegance?
+- [ ] **OpenID Protection**: Are there any risks of exposing user OpenID in frontend, logs, or error messages? Are user identifiers properly anonymized?
+- [ ] **Transaction Safety**: Do multi-database operations use transactions? Is there a rollback mechanism for partial failures?
+- [ ] **Static Assets**: Are any image/static resource requirements clearly documented with type, directory, and naming convention?
+- [ ] **Constitution Compliance**: Does all generated code conform to the above principles?
 
 ## Project Structure
 
