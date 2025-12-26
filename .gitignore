@@ -1,0 +1,27 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Cloud function node modules
+miniprogram/cloudfunctions/*/node_modules/
+
+# Package lock files
+package-lock.json
+**/package-lock.json
+
+# WeChat Developer Tools
+miniprogram/project.private.config.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
