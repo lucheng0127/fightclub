@@ -12,7 +12,7 @@
       <image class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
       <view class="info">
         <text class="name">{{profile.name}}</text>
-        <text class="city" wx:if="{{profile.city}}">{{profile.city}}</text>
+        <text class="role-badge">拳馆身份</text>
       </view>
     </view>
 
@@ -24,13 +24,13 @@
           <text class="label">地址</text>
           <view class="value-with-action">
             <text class="value address">{{profile.address || '未提供'}}</text>
-            <button
+            <view
               wx:if="{{profile.location && profile.location.latitude}}"
-              class="location-action-btn"
+              class="location-icon-btn"
               bindtap="onViewLocation"
             >
-              定位
-            </button>
+              📍
+            </view>
           </view>
         </view>
         <view class="info-item">

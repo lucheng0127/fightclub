@@ -9,11 +9,7 @@
   <view class="profile" wx:if="{{!loading && profile}}">
     <!-- 头部信息 -->
     <view class="header">
-      <image class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
-      <view class="info">
-        <text class="name">{{profile.nickname}}</text>
-        <text class="gender">{{profile.gender === 'male' ? '男' : '女'}}</text>
-      </view>
+      <text class="boxer-title">拳手：{{profile.nickname}}</text>
     </view>
 
     <!-- 基本信息 -->

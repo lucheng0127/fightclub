@@ -29,6 +29,12 @@
   border-bottom: 1rpx solid #333;
 }
 
+.boxer-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
 .avatar {
   width: 120rpx;
   height: 120rpx;

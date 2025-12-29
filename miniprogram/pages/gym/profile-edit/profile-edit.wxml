@@ -31,7 +31,7 @@
           bindinput="onAddressInput"
         />
         <button class="location-btn" type="default" bindtap="onChooseLocation">
-          定位
+          📍
         </button>
       </view>
     </view>
