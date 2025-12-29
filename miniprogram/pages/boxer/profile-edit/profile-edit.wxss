@@ -25,7 +25,7 @@
 }
 
 .form {
-  padding-bottom: 120rpx;
+  padding-bottom: 280rpx;
 }
 
 .form-item {
