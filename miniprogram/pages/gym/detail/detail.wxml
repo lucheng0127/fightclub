@@ -12,7 +12,6 @@
       <image class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
       <view class="info">
         <text class="name">{{profile.name}}</text>
-        <text class="role-badge">拳馆身份</text>
       </view>
     </view>
 

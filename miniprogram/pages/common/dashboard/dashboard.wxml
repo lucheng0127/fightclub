@@ -1,12 +1,11 @@
 <!-- Dashboard Page -->
 <view class="dashboard-page">
   <view class="dashboard-container">
-    <!-- 用户信息 -->
+    <!-- 档案信息 -->
     <view class="user-section">
-      <image class="user-avatar" src="{{userAvatar}}" mode="aspectFill" />
+      <image class="user-avatar" src="{{profileAvatar}}" mode="aspectFill" />
       <view class="user-info">
-        <text class="user-name">{{userName}}</text>
-        <text class="user-role">{{currentRoleText}}</text>
+        <text class="user-name">{{profileName}}</text>
       </view>
     </view>
 

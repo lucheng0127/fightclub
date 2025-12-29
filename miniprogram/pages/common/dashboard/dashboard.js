@@ -4,11 +4,11 @@ const { getRoles, getUserId, getAuthData } = require('../../../utils/auth');
 
 Page({
   data: {
-    userName: '拳击手',
-    userAvatar: '/images/boxer-placeholder.png',
-    currentRoleText: '拳手身份',
+    profileName: '加载中...',
+    profileAvatar: '/images/boxer-placeholder.png',
     boxerCount: 0,
-    gymCount: 0
+    gymCount: 0,
+    currentRole: 'boxer'
   },
 
   onLoad() {
@@ -40,7 +40,7 @@ Page({
       return;
     }
 
-    this.loadUserInfo();
+    this.loadProfileInfo();
     this.loadStats();
   },
 
@@ -50,28 +50,53 @@ Page({
   },
 
   /**
-   * 加载用户信息
+   * 加载档案信息
    */
-  loadUserInfo() {
-    const nickname = wx.getStorageSync('user_nickname') || '拳击手';
-    const roles = getRoles();
-    const { last_role } = roles;
+  async loadProfileInfo() {
+    try {
+      const roles = getRoles();
+      const { last_role } = roles;
 
-    let roleText = '拳手身份';
-    let placeholderAvatar = '/images/boxer-placeholder.png';
+      if (!last_role) {
+        return;
+      }
 
-    if (last_role === 'gym') {
-      roleText = '拳馆身份';
-      placeholderAvatar = '/images/gym-placeholder.png';
+      let profile;
+      if (last_role === 'gym') {
+        profile = await callFunction('gym/get', {}, { showLoading: true });
+        this.setData({
+          profileName: profile.name,
+          profileAvatar: profile.icon_url || '/images/gym-placeholder.png',
+          currentRole: 'gym'
+        });
+      } else {
+        profile = await callFunction('boxer/get', {}, { showLoading: true });
+        this.setData({
+          profileName: profile.nickname,
+          profileAvatar: '/images/boxer-placeholder.png',
+          currentRole: 'boxer'
+        });
+      }
+    } catch (err) {
+      console.error('加载档案信息失败:', err);
+      // 使用默认值
+      const roles = getRoles();
+      const { last_role } = roles;
+
+      if (last_role === 'gym') {
+        this.setData({
+          profileName: '拳馆',
+          profileAvatar: '/images/gym-placeholder.png',
+          currentRole: 'gym'
+        });
+      } else {
+        this.setData({
+          profileName: '拳手',
+          profileAvatar: '/images/boxer-placeholder.png',
+          currentRole: 'boxer'
+        });
+      }
     }
-
-    const avatar = wx.getStorageSync('user_avatar') || placeholderAvatar;
-
-    this.setData({
-      userName: nickname,
-      userAvatar: avatar,
-      currentRoleText: roleText
-    });
   },
 
   /**
