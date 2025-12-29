@@ -68,6 +68,13 @@
   font-size: 28rpx;
 }
 
+.picker-display {
+  height: 72rpx;
+  line-height: 72rpx;
+  color: #333;
+  font-size: 28rpx;
+}
+
 .filter-actions {
   display: flex;
   gap: 16rpx;

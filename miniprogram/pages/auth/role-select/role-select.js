@@ -6,7 +6,8 @@ Page({
   data: {
     selectedRole: '',
     hasBoxerProfile: false,
-    hasGymProfile: false
+    hasGymProfile: false,
+    loading: true
   },
 
   async onLoad() {
@@ -20,6 +21,9 @@ Page({
       });
       return;
     }
+
+    // 设置加载状态
+    this.setData({ loading: true });
 
     // 检查用户是否已登录（从数据库获取最新状态）
     const authData = getAuthData();
@@ -39,7 +43,8 @@ Page({
         this.setData({
           hasBoxerProfile: has_boxer_profile,
           hasGymProfile: has_gym_profile,
-          selectedRole: last_role || ''
+          selectedRole: last_role || '',
+          loading: false
         });
 
         // 如果只有一个角色，自动选中
@@ -50,6 +55,7 @@ Page({
         }
       } catch (err) {
         // 登录失败（可能是网络问题），跳转到登录页面
+        this.setData({ loading: false });
         wx.redirectTo({
           url: '/pages/auth/login/login'
         });
@@ -70,7 +76,8 @@ Page({
         this.setData({
           hasBoxerProfile: has_boxer_profile,
           hasGymProfile: has_gym_profile,
-          selectedRole: last_role || ''
+          selectedRole: last_role || '',
+          loading: false
         });
 
         // 如果只有一个角色，自动选中
@@ -87,7 +94,8 @@ Page({
         this.setData({
           hasBoxerProfile: has_boxer_profile,
           hasGymProfile: has_gym_profile,
-          selectedRole: last_role || ''
+          selectedRole: last_role || '',
+          loading: false
         });
 
         if (has_boxer_profile && !has_gym_profile) {

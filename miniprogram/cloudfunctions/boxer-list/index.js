@@ -1,7 +1,7 @@
 /**
  * Boxer List Cloud Function
  * 拳手列表云函数
- * 支持按城市、年龄范围、体重范围筛选，支持分页
+ * 支持按城市、性别、年龄范围、体重范围筛选，支持分页
  */
 
 const cloud = require('wx-server-sdk');
@@ -68,6 +68,7 @@ exports.main = async (event, context) => {
   try {
     const {
       city = null,
+      gender = null,
       age_min = null,
       age_max = null,
       weight_min = null,
@@ -82,6 +83,11 @@ exports.main = async (event, context) => {
     // 城市筛选
     if (city) {
       where.city = city;
+    }
+
+    // 性别筛选
+    if (gender && (gender === 'male' || gender === 'female')) {
+      where.gender = gender;
     }
 
     // 年龄筛选（转换为出生日期范围）

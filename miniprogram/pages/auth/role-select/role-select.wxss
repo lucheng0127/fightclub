@@ -13,6 +13,18 @@
   max-width: 600rpx;
 }
 
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 120rpx 0;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .title {
   font-size: 48rpx;
   font-weight: bold;

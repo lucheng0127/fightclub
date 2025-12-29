@@ -1,11 +1,18 @@
 <!-- Role Select Page -->
 <view class="role-select-page">
   <view class="role-container">
-    <view class="title">选择您的角色</view>
-    <view class="subtitle">您可以同时拥有拳手和拳馆两种身份</view>
+    <!-- 加载状态 -->
+    <view class="loading-container" wx:if="{{loading}}">
+      <text class="loading-text">加载中...</text>
+    </view>
 
-    <!-- 角色选项 -->
-    <view class="role-options">
+    <!-- 角色选择内容 -->
+    <view wx:if="{{!loading}}">
+      <view class="title">选择您的角色</view>
+      <view class="subtitle">您可以同时拥有拳手和拳馆两种身份</view>
+
+      <!-- 角色选项 -->
+      <view class="role-options">
       <view
         class="role-card {{selectedRole === 'boxer' ? 'selected' : ''}}"
         bindtap="onSelectRole"
@@ -44,13 +51,14 @@
       <text class="existing-badge" wx:if="{{hasGymProfile}}">拳馆</text>
     </view>
 
-    <!-- 确认按钮 -->
-    <button
-      class="btn-confirm"
-      bindtap="onConfirm"
-      disabled="{{!selectedRole}}"
-    >
-      以{{selectedRole === 'boxer' ? '拳手' : '拳馆'}}身份进入
-    </button>
+      <!-- 确认按钮 -->
+      <button
+        class="btn-confirm"
+        bindtap="onConfirm"
+        disabled="{{!selectedRole}}"
+      >
+        以{{selectedRole === 'boxer' ? '拳手' : '拳馆'}}身份进入
+      </button>
+    </view>
   </view>
 </view>

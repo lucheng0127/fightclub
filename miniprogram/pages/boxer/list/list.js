@@ -11,18 +11,21 @@ Page({
     loading: false,
     filters: {
       city: '',
+      gender: null,
       age_min: null,
       age_max: null,
       weight_min: null,
       weight_max: null
     },
     currentFilters: {},
-    hasFilters: false
-  },
-
-  onLoad() {
-    this.loadStats();
-    this.loadBoxers();
+    hasFilters: false,
+    genderOptions: [
+      { value: null, label: '全部' },
+      { value: 'male', label: '男' },
+      { value: 'female', label: '女' }
+    ],
+    genderIndex: 0,
+    genderDisplay: ''
   },
 
   /**
@@ -80,6 +83,16 @@ Page({
     });
   },
 
+  onGenderChange(e) {
+    const index = e.detail.value;
+    const option = this.data.genderOptions[index];
+    this.setData({
+      genderIndex: index,
+      'filters.gender': option.value,
+      genderDisplay: option.value ? option.label : ''
+    });
+  },
+
   onAgeMinInput(e) {
     const value = e.detail.value ? parseInt(e.detail.value) : null;
     this.setData({
@@ -112,10 +125,11 @@ Page({
    * 应用筛选
    */
   onApplyFilters() {
-    const { city, age_min, age_max, weight_min, weight_max } = this.data.filters;
+    const { city, gender, age_min, age_max, weight_min, weight_max } = this.data.filters;
 
     const currentFilters = {};
     if (city) currentFilters.city = city;
+    if (gender) currentFilters.gender = gender;
     if (age_min !== null && age_min !== undefined) currentFilters.age_min = age_min;
     if (age_max !== null && age_max !== undefined) currentFilters.age_max = age_max;
     if (weight_min !== null && weight_min !== undefined) currentFilters.weight_min = weight_min;
@@ -137,6 +151,7 @@ Page({
     this.setData({
       filters: {
         city: '',
+        gender: null,
         age_min: null,
         age_max: null,
         weight_min: null,
@@ -144,7 +159,9 @@ Page({
       },
       currentFilters: {},
       page: 1,
-      list: []
+      list: [],
+      genderIndex: 0,
+      genderDisplay: ''
     });
 
     this.loadBoxers();

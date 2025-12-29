@@ -22,6 +22,20 @@
       />
     </view>
     <view class="filter-row">
+      <picker
+        class="filter-input"
+        mode="selector"
+        range="{{genderOptions}}"
+        range-key="label"
+        value="{{genderIndex}}"
+        bindchange="onGenderChange"
+      >
+        <view class="picker-display">
+          {{genderDisplay || '性别（选填）'}}
+        </view>
+      </picker>
+    </view>
+    <view class="filter-row">
       <input
         class="filter-input"
         type="number"
