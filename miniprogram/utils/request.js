@@ -19,7 +19,7 @@ const FUNCTION_NAME_MAP = {
   'gym/get': 'gym-get',
   'gym/list': 'gym-list',
   'common/stats': 'stats',
-  'common/upload': 'upload'
+  'common/upload': 'common-upload'
 };
 
 /**
