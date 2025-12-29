@@ -134,15 +134,11 @@ Page({
       const random = Math.random().toString(36).substring(2, 8);
       const cloudPath = `gym-icons/${timestamp}_${random}.jpg`;
 
-      console.log('开始上传图片:', { cloudPath, filePath });
-
       // 上传到云存储
       const uploadRes = await wx.cloud.uploadFile({
         cloudPath,
         filePath
       });
-
-      console.log('上传结果:', uploadRes);
 
       // 检查上传是否成功：errMsg 为 'ok' 且 statusCode 为 2xx
       if (uploadRes.errMsg === 'cloud.uploadFile:ok' && uploadRes.statusCode >= 200 && uploadRes.statusCode < 300) {
@@ -155,16 +151,9 @@ Page({
           icon: 'success'
         });
       } else {
-        console.error('上传失败，statusCode:', uploadRes.statusCode);
-        console.error('上传失败，完整响应:', uploadRes);
         throw new Error(`上传失败: ${uploadRes.statusCode} - ${uploadRes.errMsg}`);
       }
     } catch (err) {
-      console.error('上传图片异常:', err);
-      console.error('错误详情:', {
-        errMsg: err.errMsg,
-        errCode: err.errCode
-      });
       wx.showToast({
         title: err.errMsg || '上传失败',
         icon: 'none',
