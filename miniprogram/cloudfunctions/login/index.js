@@ -60,16 +60,9 @@ exports.main = async (event, context) => {
   const openid = wxContext.OPENID || wxContext.openid || '';
   const appid = wxContext.APPID || wxContext.appid || '';
 
-  // 调试日志
-  console.log('=== Login Cloud Function ===');
-  console.log('WXContext keys:', Object.keys(wxContext));
-  console.log('WXContext:', JSON.stringify(wxContext));
-  console.log('OpenID:', openid);
-  console.log('AppID:', appid);
-
   if (!openid) {
-    console.error('OpenID is empty! Full WXContext:', JSON.stringify(wxContext));
-    return errorResponse(1001, '无法获取用户信息: OpenID为空，请检查云函数是否部署到云端且环境配置正确');
+    console.error('[Login] OpenID为空, WXContext:', JSON.stringify(wxContext));
+    return errorResponse(1001, '无法获取用户信息');
   }
 
   try {
@@ -78,6 +71,7 @@ exports.main = async (event, context) => {
 
     if (userRes.data.length === 0) {
       // 新用户 - 创建用户记录
+      console.log('[Login] 新用户, openid:', openid.substring(0, 8) + '...');
       const now = new Date();
       await db.collection('users').add({
         data: {
@@ -107,6 +101,7 @@ exports.main = async (event, context) => {
     // 老用户 - 返回现有角色信息
     const user = userRes.data[0];
     const user_id = hashOpenID(openid);
+    console.log('[Login] 老用户, openid:', openid.substring(0, 8) + '...', 'roles:', user.last_role);
 
     return successResponse({
       user_id,
@@ -119,7 +114,7 @@ exports.main = async (event, context) => {
     });
 
   } catch (e) {
-    console.error('登录失败:', e);
+    console.error('[Login] 数据库操作失败:', e);
     return errorResponse(1002, '数据库操作失败');
   }
 };

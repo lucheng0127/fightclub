@@ -81,15 +81,12 @@ Page({
    */
   async callLogin() {
     try {
-      console.log('=== 开始调用登录云函数 ===');
-
       // 确保云环境已初始化
       if (!wx.cloud) {
         throw new Error('云环境未初始化');
       }
 
       const result = await callFunction('auth/login', {}, { showLoading: true });
-      console.log('登录结果:', result);
 
       // 保存授权数据
       saveAuthData({
