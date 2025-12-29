@@ -1,6 +1,6 @@
 // Dashboard Page
 const { callFunction } = require('../../../utils/request');
-const { getRoles, getUserId } = require('../../../utils/auth');
+const { getRoles, getUserId, getAuthData } = require('../../../utils/auth');
 
 Page({
   data: {
@@ -12,6 +12,25 @@ Page({
   },
 
   onLoad() {
+    // 检查用户是否已登录
+    const authData = getAuthData();
+    if (!authData || !authData.user_id) {
+      wx.reLaunch({
+        url: '/pages/auth/role-select/role-select'
+      });
+      return;
+    }
+
+    // 检查用户是否有档案
+    const roles = getRoles();
+    if (!roles.has_boxer_profile && !roles.has_gym_profile) {
+      // 没有任何档案，返回角色选择页面
+      wx.reLaunch({
+        url: '/pages/auth/role-select/role-select'
+      });
+      return;
+    }
+
     this.loadUserInfo();
     this.loadStats();
   },
@@ -43,14 +62,18 @@ Page({
   },
 
   /**
-   * 加载统计数据
+   * 加载统计数据 (暂时使用本地存储，后续可改为云函数)
    */
   async loadStats() {
     try {
-      const stats = await callFunction('common/stats', {}, { showLoading: false });
+      // 暂时使用本地存储的计数器数据
+      // TODO: 实现common/stats云函数后切换到云函数调用
+      const boxerCount = wx.getStorageSync('boxer_count') || 0;
+      const gymCount = wx.getStorageSync('gym_count') || 0;
+
       this.setData({
-        boxerCount: stats.boxer_count || 0,
-        gymCount: stats.gym_count || 0
+        boxerCount,
+        gymCount
       });
     } catch (e) {
       console.error('加载统计数据失败:', e);
