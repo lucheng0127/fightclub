@@ -1,0 +1,140 @@
+/* 拳馆档案创建页样式 */
+.container {
+  min-height: 100vh;
+  background-color: #1a1a1a;
+  padding: 40rpx 30rpx;
+}
+
+.header {
+  margin-bottom: 60rpx;
+  text-align: center;
+}
+
+.title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 16rpx;
+}
+
+.subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: #888888;
+}
+
+.form {
+  background-color: #2a2a2a;
+  border-radius: 16rpx;
+  padding: 40rpx 30rpx;
+}
+
+.form-item {
+  margin-bottom: 40rpx;
+}
+
+.label {
+  display: block;
+  font-size: 28rpx;
+  color: #ffffff;
+  margin-bottom: 16rpx;
+}
+
+.input {
+  width: 100%;
+  height: 80rpx;
+  background-color: #1a1a1a;
+  border-radius: 8rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.location-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.location-input {
+  flex: 1;
+}
+
+.location-btn {
+  height: 70rpx;
+  line-height: 70rpx;
+  font-size: 26rpx;
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border: none;
+}
+
+.location-btn::after {
+  border: none;
+}
+
+.location-info {
+  display: block;
+  font-size: 24rpx;
+  color: #888888;
+  line-height: 1.5;
+}
+
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+  background-color: #1a1a1a;
+  border-radius: 8rpx;
+  padding: 30rpx;
+}
+
+.icon-preview {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 8rpx;
+  background-color: #2a2a2a;
+}
+
+.upload-btn {
+  width: 200rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  font-size: 26rpx;
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border: none;
+}
+
+.upload-btn::after {
+  border: none;
+}
+
+.submit-section {
+  margin-top: 60rpx;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 88rpx;
+  background-color: #4CAF50;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-btn.disabled {
+  background-color: #444444;
+  color: #888888;
+}
+
+.submit-btn::after {
+  border: none;
+}
