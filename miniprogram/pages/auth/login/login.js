@@ -1,6 +1,6 @@
 // Login Page
 const { callFunction } = require('../../../utils/request');
-const { saveAuthData, saveLocationAuth, getLocationAuth } = require('../../../utils/auth');
+const { saveAuthData, saveLocationAuth, getLocationAuth, getAuthData } = require('../../../utils/auth');
 
 Page({
   data: {
@@ -10,8 +10,42 @@ Page({
   },
 
   onLoad() {
+    // 检查用户是否已经登录
+    this.checkLoginStatus();
     // 检查位置授权状态
     this.checkLocationAuth();
+  },
+
+  /**
+   * 检查登录状态
+   */
+  async checkLoginStatus() {
+    try {
+      const authData = getAuthData();
+      if (authData && authData.user_id) {
+        // 已登录，直接导航到相应页面
+        this.navigateToNext(authData);
+        return;
+      }
+
+      // 未登录，尝试静默登录（调用云函数）
+      if (wx.cloud) {
+        const result = await callFunction('auth/login', {}, { showLoading: false });
+
+        // 保存登录信息
+        saveAuthData({
+          user_id: result.user_id,
+          roles: result.roles,
+          last_role: result.last_role
+        });
+
+        // 导航到下一页
+        this.navigateToNext(result);
+      }
+    } catch (err) {
+      // 登录失败，显示授权页面
+      console.log('用户未登录，需要授权');
+    }
   },
 
   /**
@@ -118,28 +152,26 @@ Page({
       return;
     }
 
-    // 已有角色的老用户
-    if (has_boxer_profile && !has_gym_profile) {
-      // 只有拳手角色，直接进入
+    // 已有拳手档案
+    if (has_boxer_profile) {
       wx.switchTab({
         url: '/pages/common/dashboard/dashboard'
       });
-    } else if (!has_boxer_profile && has_gym_profile) {
-      // 只有拳馆角色，直接进入
-      wx.switchTab({
-        url: '/pages/common/dashboard/dashboard'
-      });
-    } else if (has_boxer_profile && has_gym_profile) {
-      // 两个角色都有，进入角色选择页面
-      wx.redirectTo({
-        url: '/pages/auth/role-select/role-select'
-      });
-    } else {
-      // 没有任何角色（理论上不应该出现），进入角色选择
-      wx.redirectTo({
-        url: '/pages/auth/role-select/role-select'
-      });
+      return;
     }
+
+    // 已有拳馆档案
+    if (has_gym_profile) {
+      wx.switchTab({
+        url: '/pages/common/dashboard/dashboard'
+      });
+      return;
+    }
+
+    // 没有任何档案，进入角色选择页面
+    wx.redirectTo({
+      url: '/pages/auth/role-select/role-select'
+    });
   },
 
   /**

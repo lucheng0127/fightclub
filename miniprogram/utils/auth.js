@@ -12,6 +12,9 @@ function saveAuthData(userData) {
     wx.setStorageSync('user_id', userData.user_id);
     wx.setStorageSync('roles', userData.roles);
     wx.setStorageSync('last_role', userData.last_role);
+    // 同时保存独立的标志位
+    wx.setStorageSync('has_boxer_profile', userData.roles.has_boxer_profile || false);
+    wx.setStorageSync('has_gym_profile', userData.roles.has_gym_profile || false);
   } catch (e) {
     console.error('保存授权数据失败:', e);
   }
@@ -48,6 +51,27 @@ function getRoles() {
       has_gym_profile: false,
       last_role: null
     };
+  }
+}
+
+/**
+ * 获取完整的授权数据
+ * @returns {object|null} 授权数据 {user_id, roles, last_role}
+ */
+function getAuthData() {
+  try {
+    const user_id = wx.getStorageSync('user_id');
+    if (!user_id) {
+      return null;
+    }
+    return {
+      user_id,
+      roles: getRoles(),
+      last_role: wx.getStorageSync('last_role') || null
+    };
+  } catch (e) {
+    console.error('获取授权数据失败:', e);
+    return null;
   }
 }
 
@@ -117,6 +141,7 @@ module.exports = {
   saveAuthData,
   getUserId,
   getRoles,
+  getAuthData,
   isLoggedIn,
   checkLocationAuth,
   clearAuthData,
