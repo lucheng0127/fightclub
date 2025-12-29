@@ -1,66 +1,190 @@
-// pages/boxer/list/list.js
+// Boxer List Page
+const { callFunction } = require('../../../utils/request');
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
+    list: [],
+    totalCount: 0,
+    page: 1,
+    limit: 20,
+    has_more: false,
+    loading: false,
+    filters: {
+      city: '',
+      age_min: null,
+      age_max: null,
+      weight_min: null,
+      weight_max: null
+    },
+    currentFilters: {},
+    hasFilters: false
+  },
 
+  onLoad() {
+    this.loadStats();
+    this.loadBoxers();
   },
 
   /**
-   * 生命周期函数--监听页面加载
+   * 加载统计数据
    */
-  onLoad(options) {
-
+  async loadStats() {
+    try {
+      const stats = await callFunction('common/stats', {}, { showLoading: false });
+      this.setData({
+        totalCount: stats.boxer_count || 0
+      });
+    } catch (e) {
+      console.error('加载统计数据失败:', e);
+    }
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 加载拳手列表
    */
-  onReady() {
+  async loadBoxers(append = false) {
+    if (this.data.loading) return;
 
+    this.setData({ loading: true });
+
+    try {
+      const { page, limit, currentFilters } = this.data;
+
+      const result = await callFunction('boxer/list', {
+        ...currentFilters,
+        page,
+        limit
+      }, { showLoading: false });
+
+      const list = append ? this.data.list.concat(result.list) : result.list;
+
+      this.setData({
+        list,
+        total: result.total,
+        has_more: result.has_more,
+        loading: false,
+        hasFilters: Object.keys(currentFilters).length > 0
+      });
+    } catch (e) {
+      console.error('加载拳手列表失败:', e);
+      this.setData({ loading: false });
+    }
   },
 
   /**
-   * 生命周期函数--监听页面显示
+   * 筛选输入
    */
-  onShow() {
+  onCityInput(e) {
+    this.setData({
+      'filters.city': e.detail.value
+    });
+  },
 
+  onAgeMinInput(e) {
+    const value = e.detail.value ? parseInt(e.detail.value) : null;
+    this.setData({
+      'filters.age_min': value
+    });
+  },
+
+  onAgeMaxInput(e) {
+    const value = e.detail.value ? parseInt(e.detail.value) : null;
+    this.setData({
+      'filters.age_max': value
+    });
+  },
+
+  onWeightMinInput(e) {
+    const value = e.detail.value ? parseInt(e.detail.value) : null;
+    this.setData({
+      'filters.weight_min': value
+    });
+  },
+
+  onWeightMaxInput(e) {
+    const value = e.detail.value ? parseInt(e.detail.value) : null;
+    this.setData({
+      'filters.weight_max': value
+    });
   },
 
   /**
-   * 生命周期函数--监听页面隐藏
+   * 应用筛选
    */
-  onHide() {
+  onApplyFilters() {
+    const { city, age_min, age_max, weight_min, weight_max } = this.data.filters;
 
+    const currentFilters = {};
+    if (city) currentFilters.city = city;
+    if (age_min !== null && age_min !== undefined) currentFilters.age_min = age_min;
+    if (age_max !== null && age_max !== undefined) currentFilters.age_max = age_max;
+    if (weight_min !== null && weight_min !== undefined) currentFilters.weight_min = weight_min;
+    if (weight_max !== null && weight_max !== undefined) currentFilters.weight_max = weight_max;
+
+    this.setData({
+      currentFilters,
+      page: 1,
+      list: []
+    });
+
+    this.loadBoxers();
   },
 
   /**
-   * 生命周期函数--监听页面卸载
+   * 清空筛选
    */
-  onUnload() {
+  onClearFilters() {
+    this.setData({
+      filters: {
+        city: '',
+        age_min: null,
+        age_max: null,
+        weight_min: null,
+        weight_max: null
+      },
+      currentFilters: {},
+      page: 1,
+      list: []
+    });
 
+    this.loadBoxers();
   },
 
   /**
-   * 页面相关事件处理函数--监听用户下拉动作
+   * 加载更多
+   */
+  onLoadMore() {
+    if (!this.data.has_more || this.data.loading) return;
+
+    this.setData({
+      page: this.data.page + 1
+    });
+
+    this.loadBoxers(true);
+  },
+
+  /**
+   * 点击卡片
+   */
+  onCardTap(e) {
+    const boxerId = e.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: `/pages/boxer/detail/detail?boxer_id=${boxerId}`
+    });
+  },
+
+  /**
+   * 下拉刷新
    */
   onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+    this.setData({
+      page: 1,
+      list: []
+    });
+    this.loadBoxers();
+    this.loadStats();
+    setTimeout(() => {
+      wx.stopPullDownRefresh();
+    }, 1000);
   }
-})
+});

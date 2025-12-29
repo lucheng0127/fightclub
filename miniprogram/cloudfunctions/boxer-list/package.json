@@ -1,0 +1,9 @@
+{
+  "name": "boxer-list",
+  "version": "1.0.0",
+  "description": "List boxers with filters cloud function for FightClub",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

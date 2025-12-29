@@ -100,18 +100,14 @@ Page({
   },
 
   /**
-   * 加载统计数据 (暂时使用本地存储，后续可改为云函数)
+   * 加载统计数据
    */
   async loadStats() {
     try {
-      // 暂时使用本地存储的计数器数据
-      // TODO: 实现common/stats云函数后切换到云函数调用
-      const boxerCount = wx.getStorageSync('boxer_count') || 0;
-      const gymCount = wx.getStorageSync('gym_count') || 0;
-
+      const stats = await callFunction('common/stats', {}, { showLoading: false });
       this.setData({
-        boxerCount,
-        gymCount
+        boxerCount: stats.boxer_count || 0,
+        gymCount: stats.gym_count || 0
       });
     } catch (e) {
       console.error('加载统计数据失败:', e);

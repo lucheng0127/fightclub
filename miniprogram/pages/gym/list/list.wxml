@@ -1,2 +1,69 @@
-<!--pages/gym/list/list.wxml-->
-<text>pages/gym/list/list.wxml</text>
+<!-- 拳馆列表页 -->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="stats">
+      <view class="stat-item">
+        <text class="stat-value">{{totalCount}}</text>
+        <text class="stat-label">家拳馆</text>
+      </view>
+    </view>
+    <text class="title">浏览拳馆</text>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filters">
+    <view class="filter-row">
+      <input
+        class="filter-input"
+        placeholder="城市（选填）"
+        value="{{filters.city}}"
+        bindinput="onCityInput"
+      />
+    </view>
+    <view class="filter-actions">
+      <button class="filter-btn secondary" bindtap="onClearFilters">清空</button>
+      <button class="filter-btn primary" bindtap="onApplyFilters">应用筛选</button>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading && list.length === 0}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && list.length === 0}}">
+    <text class="empty-icon">🏢</text>
+    <text class="empty-text">{{hasFilters ? '没有符合条件的拳馆' : '暂无拳馆数据'}}</text>
+  </view>
+
+  <!-- 拳馆列表 -->
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="card" wx:for="{{list}}" wx:key="gym_id" bindtap="onCardTap" data-id="{{item.gym_id}}">
+      <view class="card-avatar">🏢</view>
+      <view class="card-info">
+        <view class="card-name">{{item.name}}</view>
+        <view class="card-details">
+          <view class="card-detail-item" wx:if="{{item.city}}">
+            <text>{{item.city}}</text>
+          </view>
+          <view class="card-detail-item distance" wx:if="{{item.distance}}">
+            <text>{{item.distance}}</text>
+          </view>
+        </view>
+        <view class="card-boxers" wx:if="{{item.boxer_count > 0}}">
+          <text>{{item.boxer_count}} 位拳手</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{list.length > 0 && has_more && !loading}}">
+    <button class="load-more-btn" bindtap="onLoadMore">加载更多</button>
+  </view>
+  <view class="load-more" wx:if="{{loading && list.length > 0}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

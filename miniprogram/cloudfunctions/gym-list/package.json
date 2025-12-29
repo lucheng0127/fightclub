@@ -1,0 +1,9 @@
+{
+  "name": "gym-list",
+  "version": "1.0.0",
+  "description": "List gyms with filters cloud function for FightClub",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

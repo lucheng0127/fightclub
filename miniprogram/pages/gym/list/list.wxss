@@ -1,0 +1,208 @@
+/* Gym List Page Styles */
+
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 120rpx;
+}
+
+/* Header */
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 32rpx;
+  color: #fff;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: bold;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  opacity: 0.9;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 24rpx;
+}
+
+/* Filters */
+.filters {
+  background-color: #fff;
+  padding: 24rpx 32rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.filter-row {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.filter-row:last-child {
+  margin-bottom: 0;
+}
+
+.filter-input {
+  flex: 1;
+  height: 72rpx;
+  background-color: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 24rpx;
+}
+
+.filter-btn {
+  flex: 1;
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: center;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+.filter-btn.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+
+.filter-btn.secondary {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+/* List */
+.list {
+  padding: 24rpx 32rpx;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+.card-avatar {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 16rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  margin-right: 24rpx;
+}
+
+.card-info {
+  flex: 1;
+}
+
+.card-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1a1a1a;
+  margin-bottom: 12rpx;
+}
+
+.card-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx 32rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.card-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.card-detail-item.distance {
+  color: #667eea;
+  font-weight: 500;
+}
+
+.card-boxers {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* Empty */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 32rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.3;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80rpx;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* Load More */
+.load-more {
+  display: flex;
+  justify-content: center;
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.load-more-btn {
+  padding: 16rpx 48rpx;
+  background-color: #fff;
+  border-radius: 48rpx;
+  border: none;
+  color: #666;
+}

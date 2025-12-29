@@ -161,50 +161,50 @@ description: "Task list for feature implementation"
 
 ### Backend - Discovery APIs
 
-- [ ] T072 [US3] Create cloud function cloudfunctions/boxer/list/index.js for boxer listing with filters
-- [ ] T073 [US3] Implement filter logic (city, age range from birthdate, weight range) in boxer/list
-- [ ] T074 [US3] Implement pagination (page, limit) in boxer/list
-- [ ] T075 [US3] Calculate age from birthdate server-side in boxer/list
-- [ ] T076 [US3] Return total_count for filtered results in boxer/list
-- [ ] T077 [US3] Add package.json for boxer/list cloud function
+- [X] T072 [US3] Create cloud function cloudfunctions/boxer/list/index.js for boxer listing with filters
+- [X] T073 [US3] Implement filter logic (city, age range from birthdate, weight range) in boxer/list
+- [X] T074 [US3] Implement pagination (page, limit) in boxer/list
+- [X] T075 [US3] Calculate age from birthdate server-side in boxer/list
+- [X] T076 [US3] Return total_count for filtered results in boxer/list
+- [X] T077 [US3] Add package.json for boxer/list cloud function
 - [ ] T078 [US3] Deploy boxer/list cloud function to CloudBase
 
-- [ ] T079 [US3] Create cloud function cloudfunctions/gym/list/index.js for gym listing with filters
-- [ ] T080 [US3] Implement city filter in gym/list
-- [ ] T081 [US3] Implement distance sorting (Haversine formula) in gym/list
-- [ ] T082 [US3] Implement pagination (page, limit) in gym/list
-- [ ] T083 [US3] Return total_count and human-readable distance in gym/list
-- [ ] T084 [US3] Add package.json for gym/list cloud function
+- [X] T079 [US3] Create cloud function cloudfunctions/gym/list/index.js for gym listing with filters
+- [X] T080 [US3] Implement city filter in gym/list
+- [X] T081 [US3] Implement distance sorting (Haversine formula) in gym/list
+- [X] T082 [US3] Implement pagination (page, limit) in gym/list
+- [X] T083 [US3] Return total_count and human-readable distance in gym/list
+- [X] T084 [US3] Add package.json for gym/list cloud function
 - [ ] T085 [US3] Deploy gym/list cloud function to CloudBase
 
-- [ ] T086 [US3] Create cloud function cloudfunctions/common/stats/index.js for platform statistics
-- [ ] T087 [US3] Implement boxer_count and gym_count retrieval from counters collection in common/stats
-- [ ] T088 [US3] Add package.json for common/stats cloud function
+- [X] T086 [US3] Create cloud function cloudfunctions/common/stats/index.js for platform statistics
+- [X] T087 [US3] Implement boxer_count and gym_count retrieval from counters collection in common/stats
+- [X] T088 [US3] Add package.json for common/stats cloud function
 - [ ] T089 [US3] Deploy common/stats cloud function to CloudBase
 
 ### Frontend - Boxer List & Filters
 
-- [ ] T090 [P] [US3] Create boxer list page in miniprogram/pages/boxer/list/ (list.wxml, list.wxss, list.js)
-- [ ] T091 [US3] Implement filter-bar component integration (city, age range, weight range inputs) in list
-- [ ] T092 [US3] Call common/stats cloud function to display total boxer count in list
-- [ ] T093 [US3] Call boxer/list cloud function with filters in list
-- [ ] T094 [US3] Display boxer cards with summary info (nickname, age, height, weight, city, record) in list
-- [ ] T095 [US3] Implement "load more" pagination in list
-- [ ] T096 [US3] Implement apply filters button in list
-- [ ] T097 [US3] Implement clear filters button in list
-- [ ] T098 [US3] Handle empty results state in list
+- [X] T090 [P] [US3] Create boxer list page in miniprogram/pages/boxer/list/ (list.wxml, list.wxss, list.js)
+- [X] T091 [US3] Implement filter-bar component integration (city, age range, weight range inputs) in list
+- [X] T092 [US3] Call common/stats cloud function to display total boxer count in list
+- [X] T093 [US3] Call boxer/list cloud function with filters in list
+- [X] T094 [US3] Display boxer cards with summary info (nickname, age, height, weight, city, record) in list
+- [X] T095 [US3] Implement "load more" pagination in list
+- [X] T096 [US3] Implement apply filters button in list
+- [X] T097 [US3] Implement clear filters button in list
+- [X] T098 [US3] Handle empty results state in list
 
 ### Frontend - Gym List & Filters
 
-- [ ] T099 [P] [US3] Create gym list page in miniprogram/pages/gym/list/ (list.wxml, list.wxss, list.js)
-- [ ] T100 [US3] Implement filter-bar component integration (city input) in list
-- [ ] T101 [US3] Call common/stats cloud function to display total gym count in list
-- [ ] T102 [US3] Call gym/list cloud function with city filter in list
-- [ ] T103 [US3] Call gym/list with distance sorting (pass user location) if authorized in list
-- [ ] T104 [US3] Display gym cards with summary info (name, city, distance, boxer_count) in list
-- [ ] T105 [US3] Implement "load more" pagination in list
-- [ ] T106 [US3] Implement apply/clear filters buttons in list
-- [ ] T107 [US3] Handle empty results state in list
+- [X] T099 [P] [US3] Create gym list page in miniprogram/pages/gym/list/ (list.wxml, list.wxss, list.js)
+- [X] T100 [US3] Implement filter-bar component integration (city input) in list
+- [X] T101 [US3] Call common/stats cloud function to display total gym count in list
+- [X] T102 [US3] Call gym/list cloud function with city filter in list
+- [X] T103 [US3] Call gym/list with distance sorting (pass user location) if authorized in list
+- [X] T104 [US3] Display gym cards with summary info (name, city, distance, boxer_count) in list
+- [X] T105 [US3] Implement "load more" pagination in list
+- [X] T106 [US3] Implement apply/clear filters buttons in list
+- [X] T107 [US3] Handle empty results state in list
 
 ### Frontend - Dashboard
 

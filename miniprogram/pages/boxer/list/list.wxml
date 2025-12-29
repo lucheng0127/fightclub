@@ -1,2 +1,123 @@
-<!--pages/boxer/list/list.wxml-->
-<text>pages/boxer/list/list.wxml</text>
+<!-- 拳手列表页 -->
+<view class="container">
+  <!-- 头部 -->
+  <view class="header">
+    <view class="stats">
+      <view class="stat-item">
+        <text class="stat-value">{{totalCount}}</text>
+        <text class="stat-label">位拳手</text>
+      </view>
+    </view>
+    <text class="title">浏览拳手</text>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filters">
+    <view class="filter-row">
+      <input
+        class="filter-input"
+        placeholder="城市（选填）"
+        value="{{filters.city}}"
+        bindinput="onCityInput"
+      />
+    </view>
+    <view class="filter-row">
+      <input
+        class="filter-input"
+        type="number"
+        placeholder="最小年龄"
+        value="{{filters.age_min}}"
+        bindinput="onAgeMinInput"
+      />
+      <input
+        class="filter-input"
+        type="number"
+        placeholder="最大年龄"
+        value="{{filters.age_max}}"
+        bindinput="onAgeMaxInput"
+      />
+    </view>
+    <view class="filter-row">
+      <input
+        class="filter-input"
+        type="number"
+        placeholder="最小体重 (kg)"
+        value="{{filters.weight_min}}"
+        bindinput="onWeightMinInput"
+      />
+      <input
+        class="filter-input"
+        type="number"
+        placeholder="最大体重 (kg)"
+        value="{{filters.weight_max}}"
+        bindinput="onWeightMaxInput"
+      />
+    </view>
+    <view class="filter-actions">
+      <button class="filter-btn secondary" bindtap="onClearFilters">清空</button>
+      <button class="filter-btn primary" bindtap="onApplyFilters">应用筛选</button>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading && list.length === 0}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && list.length === 0}}">
+    <text class="empty-icon">🥊</text>
+    <text class="empty-text">{{hasFilters ? '没有符合条件的拳手' : '暂无拳手数据'}}</text>
+  </view>
+
+  <!-- 拳手列表 -->
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="card" wx:for="{{list}}" wx:key="boxer_id" bindtap="onCardTap" data-id="{{item.boxer_id}}">
+      <view class="card-avatar">🥊</view>
+      <view class="card-info">
+        <view class="card-name">
+          <text>{{item.nickname}}</text>
+          <text class="gender-icon {{item.gender === 'male' ? 'male' : 'female'}}">
+            {{item.gender === 'male' ? '♂' : '♀'}}
+          </text>
+        </view>
+        <view class="card-details">
+          <view class="card-detail-item" wx:if="{{item.age}}">
+            <text>{{item.age}}岁</text>
+          </view>
+          <view class="card-detail-item">
+            <text>{{item.height}}cm</text>
+          </view>
+          <view class="card-detail-item">
+            <text>{{item.weight}}kg</text>
+          </view>
+          <view class="card-detail-item" wx:if="{{item.city}}">
+            <text>{{item.city}}</text>
+          </view>
+        </view>
+        <view class="card-record" wx:if="{{item.record_wins > 0 || item.record_losses > 0 || item.record_draws > 0}}">
+          <view class="record-item wins">
+            <text>{{item.record_wins}}</text>
+            <text>胜</text>
+          </view>
+          <view class="record-item losses">
+            <text>{{item.record_losses}}</text>
+            <text>负</text>
+          </view>
+          <view class="record-item draws" wx:if="{{item.record_draws > 0}}">
+            <text>{{item.record_draws}}</text>
+            <text>平</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载更多 -->
+  <view class="load-more" wx:if="{{list.length > 0 && has_more && !loading}}">
+    <button class="load-more-btn" bindtap="onLoadMore">加载更多</button>
+  </view>
+  <view class="load-more" wx:if="{{loading && list.length > 0}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+</view>

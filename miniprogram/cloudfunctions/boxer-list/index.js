@@ -1,0 +1,161 @@
+/**
+ * Boxer List Cloud Function
+ * 拳手列表云函数
+ * 支持按城市、年龄范围、体重范围筛选，支持分页
+ */
+
+const cloud = require('wx-server-sdk');
+
+cloud.init({
+  env: cloud.DYNAMIC_CURRENT_ENV
+});
+
+const db = cloud.database();
+
+/**
+ * 通用成功响应
+ */
+function successResponse(data) {
+  return {
+    errcode: 0,
+    errmsg: 'success',
+    data
+  };
+}
+
+/**
+ * 通用错误响应
+ */
+function errorResponse(errcode, errmsg) {
+  return {
+    errcode,
+    errmsg
+  };
+}
+
+/**
+ * 计算年龄
+ */
+function calculateAge(birthdate) {
+  if (!birthdate) return null;
+  const today = new Date();
+  const birth = new Date(birthdate);
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  return age;
+}
+
+/**
+ * 根据年龄范围计算出生日期范围
+ */
+function getBirthdateRange(ageMin, ageMax) {
+  const today = new Date();
+  const maxBirthdate = new Date(today.getFullYear() - (ageMin || 0), today.getMonth(), today.getDate());
+  const minBirthdate = new Date(today.getFullYear() - (ageMax || 120), today.getMonth(), today.getDate());
+  return { minBirthdate, maxBirthdate };
+}
+
+exports.main = async (event, context) => {
+  const wxContext = cloud.getWXContext();
+  const openid = wxContext.OPENID || wxContext.openid || '';
+
+  console.log('[BoxerList] openid:', openid.substring(0, 8) + '...');
+  console.log('[BoxerList] filters:', event);
+
+  try {
+    const {
+      city = null,
+      age_min = null,
+      age_max = null,
+      weight_min = null,
+      weight_max = null,
+      page = 1,
+      limit = 20
+    } = event;
+
+    // 构建查询条件
+    const where = {};
+
+    // 城市筛选
+    if (city) {
+      where.city = city;
+    }
+
+    // 年龄筛选（转换为出生日期范围）
+    if (age_min !== null || age_max !== null) {
+      const { minBirthdate, maxBirthdate } = getBirthdateRange(age_min, age_max);
+      if (age_min !== null && age_max !== null) {
+        where.birthdate = db.command.gte(minBirthdate).and(db.command.lte(maxBirthdate));
+      } else if (age_min !== null) {
+        where.birthdate = db.command.lte(maxBirthdate);
+      } else if (age_max !== null) {
+        where.birthdate = db.command.gte(minBirthdate);
+      }
+    }
+
+    // 体重筛选
+    if (weight_min !== null || weight_max !== null) {
+      if (weight_min !== null && weight_max !== null) {
+        where.weight = db.command.gte(weight_min).and(db.command.lte(weight_max));
+      } else if (weight_min !== null) {
+        where.weight = db.command.gte(weight_min);
+      } else if (weight_max !== null) {
+        where.weight = db.command.lte(weight_max);
+      }
+    }
+
+    console.log('[BoxerList] where condition:', JSON.stringify(where));
+
+    // 获取总数
+    const countResult = await db.collection('boxers').where(where).count();
+    const total = countResult.total;
+
+    // 获取拳手列表
+    const skip = (page - 1) * limit;
+    const result = await db.collection('boxers')
+      .where(where)
+      .orderBy('created_at', 'desc')
+      .skip(skip)
+      .limit(limit)
+      .get();
+
+    // 处理返回数据
+    const boxers = result.data.map(boxer => {
+      const age = calculateAge(boxer.birthdate);
+      return {
+        boxer_id: boxer.boxer_id,
+        user_id: boxer.user_id,
+        nickname: boxer.nickname,
+        gender: boxer.gender,
+        age: age,
+        height: boxer.height,
+        weight: boxer.weight,
+        city: boxer.city,
+        phone: boxer.phone,
+        record_wins: boxer.record_wins || 0,
+        record_losses: boxer.record_losses || 0,
+        record_draws: boxer.record_draws || 0,
+        gym_id: boxer.gym_id,
+        created_at: boxer.created_at,
+        updated_at: boxer.updated_at
+      };
+    });
+
+    console.log('[BoxerList] 查询成功, count:', boxers.length, 'total:', total);
+
+    return successResponse({
+      list: boxers,
+      total: total,
+      page: page,
+      limit: limit,
+      has_more: skip + boxers.length < total
+    });
+
+  } catch (e) {
+    console.error('[BoxerList] 查询失败:', e);
+    return errorResponse(2010, '查询拳手列表失败');
+  }
+};
