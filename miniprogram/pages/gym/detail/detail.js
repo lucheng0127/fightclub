@@ -94,5 +94,24 @@ Page({
     wx.redirectTo({
       url: '/pages/gym/profile-create/profile-create'
     });
+  },
+
+  /**
+   * 查看位置
+   */
+  onViewLocation() {
+    if (!this.data.profile || !this.data.profile.location) {
+      return;
+    }
+
+    const { location, address, name } = this.data.profile;
+
+    wx.openLocation({
+      latitude: location.latitude,
+      longitude: location.longitude,
+      scale: 18,
+      name: name || '拳馆位置',
+      address: address || ''
+    });
   }
 });

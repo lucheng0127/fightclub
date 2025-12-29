@@ -101,6 +101,30 @@
   line-height: 1.5;
 }
 
+/* Value with action button */
+.value-with-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.value-with-action .value {
+  flex: 1;
+}
+
+.location-action-btn {
+  padding: 8rpx 24rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 24rpx;
+  border-radius: 8rpx;
+  border: none;
+  white-space: nowrap;
+}
+
 /* Actions */
 .actions {
   position: fixed;

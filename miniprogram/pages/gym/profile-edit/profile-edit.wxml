@@ -31,18 +31,9 @@
           bindinput="onAddressInput"
         />
         <button class="location-btn" type="default" bindtap="onChooseLocation">
-          选择位置
+          定位
         </button>
       </view>
-    </view>
-
-    <!-- 位置信息 (必填, 自动获取) -->
-    <view class="form-item" wx:if="{{formData.location}}">
-      <text class="label">已选择位置</text>
-      <text class="location-info">
-        纬度: {{formData.location.latitude.toFixed(6)}},
-        经度: {{formData.location.longitude.toFixed(6)}}
-      </text>
     </view>
 
     <!-- 城市 (可选) -->
