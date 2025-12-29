@@ -76,10 +76,12 @@ function validateInput(data) {
 }
 
 exports.main = async (event, context) => {
-  const { openid } = cloud.getWXContext();
-  const openidVal = openid.OPENID || openid.openid || '';
+  const wxContext = cloud.getWXContext();
+  // 兼容大小写形式
+  const openidVal = wxContext.OPENID || wxContext.openid || '';
 
   if (!openidVal) {
+    console.error('[GymCreate] 无法获取openid, WXContext:', wxContext);
     return errorResponse(1001, '无法获取用户信息');
   }
 
