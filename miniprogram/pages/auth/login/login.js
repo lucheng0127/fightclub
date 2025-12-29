@@ -146,7 +146,7 @@ Page({
 
     // 新用户：进入角色选择页面
     if (loginResult.is_new_user) {
-      wx.redirectTo({
+      wx.reLaunch({
         url: '/pages/auth/role-select/role-select'
       });
       return;
@@ -169,7 +169,7 @@ Page({
     }
 
     // 没有任何档案，进入角色选择页面
-    wx.redirectTo({
+    wx.reLaunch({
       url: '/pages/auth/role-select/role-select'
     });
   },

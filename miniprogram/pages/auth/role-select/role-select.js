@@ -1,5 +1,6 @@
 // Role Select Page
-const { getRoles, saveAuthData, getUserId } = require('../../../utils/auth');
+const { getRoles, saveAuthData, getUserId, isLoggedIn, getAuthData } = require('../../../utils/auth');
+const { callFunction } = require('../../../utils/request');
 
 Page({
   data: {
@@ -8,22 +9,58 @@ Page({
     hasGymProfile: false
   },
 
-  onLoad() {
-    // 获取用户角色信息
-    const roles = getRoles();
-    const { has_boxer_profile, has_gym_profile, last_role } = roles;
+  async onLoad() {
+    // 检查用户是否已登录
+    const authData = getAuthData();
 
-    this.setData({
-      hasBoxerProfile: has_boxer_profile,
-      hasGymProfile: has_gym_profile,
-      selectedRole: last_role || ''  // 默认选择上次使用的角色
-    });
+    if (!authData || !authData.user_id) {
+      // 未登录，尝试静默登录
+      try {
+        const result = await callFunction('auth/login', {}, { showLoading: false });
+        saveAuthData({
+          user_id: result.user_id,
+          roles: result.roles,
+          last_role: result.last_role
+        });
 
-    // 如果只有一个角色，自动选中
-    if (has_boxer_profile && !has_gym_profile) {
-      this.setData({ selectedRole: 'boxer' });
-    } else if (!has_boxer_profile && has_gym_profile) {
-      this.setData({ selectedRole: 'gym' });
+        const { has_boxer_profile, has_gym_profile, last_role } = result.roles;
+
+        this.setData({
+          hasBoxerProfile: has_boxer_profile,
+          hasGymProfile: has_gym_profile,
+          selectedRole: last_role || ''
+        });
+
+        // 如果只有一个角色，自动选中
+        if (has_boxer_profile && !has_gym_profile) {
+          this.setData({ selectedRole: 'boxer' });
+        } else if (!has_boxer_profile && has_gym_profile) {
+          this.setData({ selectedRole: 'gym' });
+        }
+      } catch (err) {
+        // 登录失败，跳转到登录页面
+        wx.redirectTo({
+          url: '/pages/auth/login/login'
+        });
+        return;
+      }
+    } else {
+      // 已登录，获取本地存储的角色信息
+      const roles = getRoles();
+      const { has_boxer_profile, has_gym_profile, last_role } = roles;
+
+      this.setData({
+        hasBoxerProfile: has_boxer_profile,
+        hasGymProfile: has_gym_profile,
+        selectedRole: last_role || ''
+      });
+
+      // 如果只有一个角色，自动选中
+      if (has_boxer_profile && !has_gym_profile) {
+        this.setData({ selectedRole: 'boxer' });
+      } else if (!has_boxer_profile && has_gym_profile) {
+        this.setData({ selectedRole: 'gym' });
+      }
     }
   },
 

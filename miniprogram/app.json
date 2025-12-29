@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/auth/login/login",
     "pages/auth/role-select/role-select",
+    "pages/auth/login/login",
     "pages/boxer/profile-create/profile-create",
     "pages/boxer/profile-edit/profile-edit",
     "pages/boxer/list/list",
