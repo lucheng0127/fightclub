@@ -12,6 +12,15 @@ Page({
   },
 
   onLoad() {
+    // 检查用户是否已授权 (getUserProfile)
+    const hasAuthorized = wx.getStorageSync('user_nickname');
+    if (!hasAuthorized) {
+      wx.reLaunch({
+        url: '/pages/auth/login/login'
+      });
+      return;
+    }
+
     // 检查用户是否已登录
     const authData = getAuthData();
     if (!authData || !authData.user_id) {
