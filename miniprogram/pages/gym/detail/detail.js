@@ -1,66 +1,98 @@
-// pages/gym/detail/detail.js
+// Gym Detail Page
+const { callFunction } = require('../../../utils/request');
+const { getAuthData } = require('../../../utils/auth');
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    loading: true,
+    profile: null,
+    avatarUrl: '/images/gym-placeholder.png',
+    mode: 'view' // view or edit
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad(options) {
-
+    const mode = options.mode || 'view';
+    this.setData({ mode });
+    this.loadProfile();
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 加载拳馆档案
    */
-  onReady() {
+  async loadProfile() {
+    this.setData({ loading: true });
 
+    try {
+      const authData = getAuthData();
+      if (!authData || !authData.user_id) {
+        wx.showToast({
+          title: '请先登录',
+          icon: 'none'
+        });
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+        return;
+      }
+
+      // 调用云函数获取拳馆档案
+      const profile = await callFunction('gym/get', {}, { showLoading: true });
+
+      // 使用上传的拳馆图标，如果没有则使用默认占位图
+      const avatar = profile.icon_url || '/images/gym-placeholder.png';
+
+      this.setData({
+        profile,
+        avatarUrl: avatar,
+        loading: false
+      });
+    } catch (err) {
+      console.error('加载拳馆档案失败:', err);
+      this.setData({ loading: false });
+
+      if (err.errcode === 3001 || err.errcode === 3008) {
+        // 档案不存在
+        this.setData({ profile: null });
+      } else {
+        wx.showToast({
+          title: err.errmsg || '加载失败',
+          icon: 'none'
+        });
+      }
+    }
   },
 
   /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
+   * 下拉刷新
    */
   onPullDownRefresh() {
-
+    this.loadProfile().finally(() => {
+      wx.stopPullDownRefresh();
+    });
   },
 
   /**
-   * 页面上拉触底事件的处理函数
+   * 编辑档案
    */
-  onReachBottom() {
-
+  onEdit() {
+    wx.navigateTo({
+      url: '/pages/gym/profile-edit/profile-edit'
+    });
   },
 
   /**
-   * 用户点击右上角分享
+   * 返回
    */
-  onShareAppMessage() {
+  onBack() {
+    wx.navigateBack();
+  },
 
+  /**
+   * 创建档案
+   */
+  onCreate() {
+    wx.redirectTo({
+      url: '/pages/gym/profile-create/profile-create'
+    });
   }
-})
+});
