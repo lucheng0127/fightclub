@@ -113,23 +113,27 @@ Page({
 
   /**
    * 跳转到个人档案
+   * 直接根据当前角色跳转，由详情页检查档案是否存在
    */
   goToProfile() {
     const roles = getRoles();
-    const { last_role, has_boxer_profile, has_gym_profile } = roles;
+    const { last_role } = roles;
 
-    if (last_role === 'boxer' && has_boxer_profile) {
+    if (!last_role) {
+      wx.showToast({
+        title: '请先选择角色',
+        icon: 'none'
+      });
+      return;
+    }
+
+    if (last_role === 'boxer') {
       wx.navigateTo({
         url: '/pages/boxer/detail/detail?mode=edit'
       });
-    } else if (last_role === 'gym' && has_gym_profile) {
+    } else if (last_role === 'gym') {
       wx.navigateTo({
         url: '/pages/gym/detail/detail?mode=edit'
-      });
-    } else {
-      wx.showToast({
-        title: '请先创建档案',
-        icon: 'none'
       });
     }
   }
