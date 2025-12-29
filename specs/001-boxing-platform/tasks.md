@@ -101,52 +101,52 @@ description: "Task list for feature implementation"
 
 ### Backend - Boxer Profile Creation
 
-- [ ] T037 [US2] Create cloud function cloudfunctions/boxer/create/index.js for boxer profile creation
-- [ ] T038 [US2] Implement input validation (required fields: nickname, gender, birthdate, height, weight) in boxer/create
-- [ ] T039 [US2] Implement optional field validation (city, gym_id, phone, record_wins/losses/draws) in boxer/create
-- [ ] T040 [US2] Implement database transaction for boxer profile creation (create profile + update user + increment counter)
-- [ ] T041 [US2] Implement gym_id validation (check gym exists) in boxer/create
-- [ ] T042 [US2] Add package.json for boxer/create cloud function
+- [X] T037 [US2] Create cloud function cloudfunctions/boxer/create/index.js for boxer profile creation
+- [X] T038 [US2] Implement input validation (required fields: nickname, gender, birthdate, height, weight) in boxer/create
+- [X] T039 [US2] Implement optional field validation (city, gym_id, phone, record_wins/losses/draws) in boxer/create
+- [X] T040 [US2] Implement database transaction for boxer profile creation (create profile + update user + increment counter)
+- [X] T041 [US2] Implement gym_id validation (check gym exists) in boxer/create
+- [X] T042 [US2] Add package.json for boxer/create cloud function
 - [ ] T043 [US2] Deploy boxer/create cloud function to CloudBase
 
 ### Frontend - Boxer Profile Creation
 
-- [ ] T044 [P] [US2] Create boxer profile-create page in miniprogram/pages/boxer/profile-create/ (profile-create.wxml, profile-create.wxss, profile-create.js)
-- [ ] T045 [US2] Implement form fields for required data (nickname, gender, birthdate, height, weight) in profile-create
-- [ ] T046 [US2] Implement form fields for optional data (city, gym association, phone, record) in profile-create
-- [ ] T047 [US2] Implement gender picker (male/female) in profile-create
-- [ ] T048 [US2] Implement date picker for birthdate in profile-create
-- [ ] T049 [US2] Implement gym selector (dropdown from gyms list) in profile-create
-- [ ] T050 [US2] Implement form validation (disable submit if required fields empty) in profile-create
-- [ ] T051 [US2] Call boxer/create cloud function on form submit in profile-create
-- [ ] T052 [US2] Handle success response (redirect to dashboard) in profile-create
-- [ ] T053 [US2] Handle error response (show validation messages) in profile-create
+- [X] T044 [P] [US2] Create boxer profile-create page in miniprogram/pages/boxer/profile-create/ (profile-create.wxml, profile-create.wxss, profile-create.js)
+- [X] T045 [US2] Implement form fields for required data (nickname, gender, birthdate, height, weight) in profile-create
+- [X] T046 [US2] Implement form fields for optional data (city, gym association, phone, record) in profile-create
+- [X] T047 [US2] Implement gender picker (male/female) in profile-create
+- [X] T048 [US2] Implement date picker for birthdate in profile-create
+- [X] T049 [US2] Implement gym selector (dropdown from gyms list) in profile-create
+- [X] T050 [US2] Implement form validation (disable submit if required fields empty) in profile-create
+- [X] T051 [US2] Call boxer/create cloud function on form submit in profile-create
+- [X] T052 [US2] Handle success response (redirect to dashboard) in profile-create
+- [X] T053 [US2] Handle error response (show validation messages) in profile-create
 
 ### Backend - Gym Profile Creation
 
-- [ ] T054 [US2] Create cloud function cloudfunctions/gym/create/index.js for gym profile creation
-- [ ] T055 [US2] Implement input validation (required fields: name, address, location, phone) in gym/create
-- [ ] T056 [US2] Implement optional field validation (icon_url) in gym/create
-- [ ] T057 [US2] Implement database transaction for gym profile creation (create profile + update user + increment counter)
-- [ ] T058 [US2] Add package.json for gym/create cloud function
+- [X] T054 [US2] Create cloud function cloudfunctions/gym/create/index.js for gym profile creation
+- [X] T055 [US2] Implement input validation (required fields: name, address, location, phone) in gym/create
+- [X] T056 [US2] Implement optional field validation (icon_url) in gym/create
+- [X] T057 [US2] Implement database transaction for gym profile creation (create profile + update user + increment counter)
+- [X] T058 [US2] Add package.json for gym/create cloud function
 - [ ] T059 [US2] Deploy gym/create cloud function to CloudBase
 
 ### Frontend - Gym Profile Creation
 
-- [ ] T060 [P] [US2] Create gym profile-create page in miniprogram/pages/gym/profile-create/ (profile-create.wxml, profile-create.wxss, profile-create.js)
-- [ ] T061 [US2] Implement form fields for required data (name, address, phone) in profile-create
-- [ ] T062 [US2] Implement wx.chooseLocation integration for address/location selection in profile-create
-- [ ] T063 [US2] Implement image upload for gym icon (wx.cloud.uploadFile) in profile-create
-- [ ] T064 [US2] Implement form validation (disable submit if required fields empty) in profile-create
-- [ ] T065 [US2] Call gym/create cloud function on form submit in profile-create
-- [ ] T066 [US2] Handle success response (redirect to dashboard) in profile-create
-- [ ] T067 [US2] Handle error response (show validation messages) in profile-create
+- [X] T060 [P] [US2] Create gym profile-create page in miniprogram/pages/gym/profile-create/ (profile-create.wxml, profile-create.wxss, profile-create.js)
+- [X] T061 [US2] Implement form fields for required data (name, address, phone) in profile-create
+- [X] T062 [US2] Implement wx.chooseLocation integration for address/location selection in profile-create
+- [X] T063 [US2] Implement image upload for gym icon (wx.cloud.uploadFile) in profile-create
+- [X] T064 [US2] Implement form validation (disable submit if required fields empty) in profile-create
+- [X] T065 [US2] Call gym/create cloud function on form submit in profile-create
+- [X] T066 [US2] Handle success response (redirect to dashboard) in profile-create
+- [X] T067 [US2] Handle error response (show validation messages) in profile-create
 
 ### Cloud Storage - Image Upload
 
-- [ ] T068 [US2] Create cloud function cloudfunctions/common/upload/index.js for image upload handling
-- [ ] T069 [US2] Configure Cloud Storage for gym-icons directory in CloudBase console
-- [ ] T070 [US2] Add package.json for common/upload cloud function
+- [X] T068 [US2] Create cloud function cloudfunctions/common/upload/index.js for image upload handling
+- [X] T069 [US2] Configure Cloud Storage for gym-icons directory in CloudBase console
+- [X] T070 [US2] Add package.json for common/upload cloud function
 - [ ] T071 [US2] Deploy common/upload cloud function to CloudBase
 
 **Checkpoint**: Users can create Boxer and Gym profiles. Ready for discovery features.
@@ -208,10 +208,10 @@ description: "Task list for feature implementation"
 
 ### Frontend - Dashboard
 
-- [ ] T108 [US3] Create dashboard page in miniprogram/pages/common/dashboard/ (dashboard.wxml, dashboard.wxss, dashboard.js)
-- [ ] T109 [US3] Call common/stats to display boxer_count and gym_count in dashboard
-- [ ] T110 [US3] Add navigation buttons to boxer list and gym list in dashboard
-- [ ] T111 [US3] Display user's current role in dashboard
+- [X] T108 [US3] Create dashboard page in miniprogram/pages/common/dashboard/ (dashboard.wxml, dashboard.wxss, dashboard.js)
+- [X] T109 [US3] Call common/stats to display boxer_count and gym_count in dashboard
+- [X] T110 [US3] Add navigation buttons to boxer list and gym list in dashboard
+- [X] T111 [US3] Display user's current role in dashboard
 
 **Checkpoint**: Users can browse and filter Boxers and Gyms. MVP feature complete.
 
@@ -225,32 +225,32 @@ description: "Task list for feature implementation"
 
 ### Backend - Detail APIs
 
-- [ ] T112 [US4] Create cloud function cloudfunctions/boxer/get/index.js for single boxer profile
-- [ ] T113 [US4] Implement profile retrieval by boxer_id in boxer/get
-- [ ] T114 [US4] Calculate age from birthdate in boxer/get
-- [ ] T115 [US4] Fetch associated gym name if gym_id exists in boxer/get
-- [ ] T116 [US4] Format record as "X胜Y负Z平" or null in boxer/get
-- [ ] T117 [US4] Add package.json for boxer/get cloud function
+- [X] T112 [US4] Create cloud function cloudfunctions/boxer/get/index.js for single boxer profile
+- [X] T113 [US4] Implement profile retrieval by boxer_id in boxer/get
+- [X] T114 [US4] Calculate age from birthdate in boxer/get
+- [X] T115 [US4] Fetch associated gym name if gym_id exists in boxer/get
+- [X] T116 [US4] Format record as "X胜Y负Z平" or null in boxer/get
+- [X] T117 [US4] Add package.json for boxer/get cloud function
 - [ ] T118 [US4] Deploy boxer/get cloud function to CloudBase
 
-- [ ] T119 [US4] Create cloud function cloudfunctions/gym/get/index.js for single gym profile
-- [ ] T120 [US4] Implement profile retrieval by gym_id in gym/get
-- [ ] T121 [US4] Count associated boxers (aggregate query) in gym/get
-- [ ] T122 [US4] Add package.json for gym/get cloud function
+- [X] T119 [US4] Create cloud function cloudfunctions/gym/get/index.js for single gym profile
+- [X] T120 [US4] Implement profile retrieval by gym_id in gym/get
+- [X] T121 [US4] Count associated boxers (aggregate query) in gym/get
+- [X] T122 [US4] Add package.json for gym/get cloud function
 - [ ] T123 [US4] Deploy gym/get cloud function to CloudBase
 
 ### Frontend - Detail Pages
 
-- [ ] T124 [P] [US4] Create boxer detail page in miniprogram/pages/boxer/detail/ (detail.wxml, detail.wxss, detail.js)
-- [ ] T125 [US4] Call boxer/get cloud function with boxer_id on load in detail
-- [ ] T126 [US4] Display all profile fields (nickname, gender, age, birthdate, height, weight, city, gym, phone, record) in detail
-- [ ] T127 [US4] Implement conditional display for optional fields (show "未提供" if null) in detail
-- [ ] T128 [P] [US4] Create gym detail page in miniprogram/pages/gym/detail/ (detail.wxml, detail.wxss, detail.js)
-- [ ] T129 [US4] Call gym/get cloud function with gym_id on load in detail
-- [ ] T130 [US4] Display all profile fields (name, address, city, location, phone, icon, boxer_count) in detail
-- [ ] T131 [US4] Implement conditional display for icon (show placeholder if null) in detail
-- [ ] T132 [US4] Add navigation from boxer list to boxer detail (tap on card)
-- [ ] T133 [US4] Add navigation from gym list to gym detail (tap on card)
+- [X] T124 [P] [US4] Create boxer detail page in miniprogram/pages/boxer/detail/ (detail.wxml, detail.wxss, detail.js)
+- [X] T125 [US4] Call boxer/get cloud function with boxer_id on load in detail
+- [X] T126 [US4] Display all profile fields (nickname, gender, age, birthdate, height, weight, city, gym, phone, record) in detail
+- [X] T127 [US4] Implement conditional display for optional fields (show "未提供" if null) in detail
+- [X] T128 [P] [US4] Create gym detail page in miniprogram/pages/gym/detail/ (detail.wxml, detail.wxss, detail.js)
+- [X] T129 [US4] Call gym/get cloud function with gym_id on load in detail
+- [X] T130 [US4] Display all profile fields (name, address, city, location, phone, icon, boxer_count) in detail
+- [X] T131 [US4] Implement conditional display for icon (show placeholder if null) in detail
+- [X] T132 [US4] Add navigation from boxer list to boxer detail (tap on card)
+- [X] T133 [US4] Add navigation from gym list to gym detail (tap on card)
 
 **Checkpoint**: Users can view detailed profiles. Core MVP functionality complete.
 
@@ -277,31 +277,31 @@ description: "Task list for feature implementation"
 
 ### Backend - Update APIs
 
-- [ ] T137 [US6] Create cloud function cloudfunctions/boxer/update/index.js for boxer profile updates
-- [ ] T138 [US6] Implement ownership verification (openid match) in boxer/update
-- [ ] T139 [US6] Implement gender/birthdate immutability check (reject if present) in boxer/update
-- [ ] T140 [US6] Implement gym_id validation (check gym exists) in boxer/update
-- [ ] T141 [US6] Add package.json for boxer/update cloud function
+- [X] T137 [US6] Create cloud function cloudfunctions/boxer/update/index.js for boxer profile updates
+- [X] T138 [US6] Implement ownership verification (openid match) in boxer/update
+- [X] T139 [US6] Implement gender/birthdate immutability check (reject if present) in boxer/update
+- [X] T140 [US6] Implement gym_id validation (check gym exists) in boxer/update
+- [X] T141 [US6] Add package.json for boxer/update cloud function
 - [ ] T142 [US6] Deploy boxer/update cloud function to CloudBase
 
-- [ ] T143 [US6] Create cloud function cloudfunctions/gym/update/index.js for gym profile updates
-- [ ] T144 [US6] Implement ownership verification (openid match) in gym/update
-- [ ] T145 [US6] Add package.json for gym/update cloud function
+- [X] T143 [US6] Create cloud function cloudfunctions/gym/update/index.js for gym profile updates
+- [X] T144 [US6] Implement ownership verification (openid match) in gym/update
+- [X] T145 [US6] Add package.json for gym/update cloud function
 - [ ] T146 [US6] Deploy gym/update cloud function to CloudBase
 
 ### Frontend - Edit Pages
 
-- [ ] T147 [P] [US6] Create boxer profile-edit page in miniprogram/pages/boxer/profile-edit/ (profile-edit.wxml, profile-edit.wxss, profile-edit.js)
-- [ ] T148 [US6] Load existing boxer profile data on page load in profile-edit
-- [ ] T149 [US6] Implement form fields for editable data (height, weight, nickname, city, gym, phone, record) in profile-edit
-- [ ] T150 [US6] Implement gender/birthdate as read-only or hidden in profile-edit
-- [ ] T151 [US6] Call boxer/update cloud function on form submit in profile-edit
-- [ ] T152 [US6] Handle success/error responses in profile-edit
-- [ ] T153 [P] [US6] Create gym profile-edit page in miniprogram/pages/gym/profile-edit/ (profile-edit.wxml, profile-edit.wxss, profile-edit.js)
-- [ ] T154 [US6] Load existing gym profile data on page load in profile-edit
-- [ ] T155 [US6] Implement form fields for all editable data (name, address, location, phone, icon_url) in profile-edit
-- [ ] T156 [US6] Call gym/update cloud function on form submit in profile-edit
-- [ ] T157 [US6] Handle success/error responses in profile-edit
+- [X] T147 [P] [US6] Create boxer profile-edit page in miniprogram/pages/boxer/profile-edit/ (profile-edit.wxml, profile-edit.wxss, profile-edit.js)
+- [X] T148 [US6] Load existing boxer profile data on page load in profile-edit
+- [X] T149 [US6] Implement form fields for editable data (height, weight, nickname, city, gym, phone, record) in profile-edit
+- [X] T150 [US6] Implement gender/birthdate as read-only or hidden in profile-edit
+- [X] T151 [US6] Call boxer/update cloud function on form submit in profile-edit
+- [X] T152 [US6] Handle success/error responses in profile-edit
+- [X] T153 [P] [US6] Create gym profile-edit page in miniprogram/pages/gym/profile-edit/ (profile-edit.wxml, profile-edit.wxss, profile-edit.js)
+- [X] T154 [US6] Load existing gym profile data on page load in profile-edit
+- [X] T155 [US6] Implement form fields for all editable data (name, address, location, phone, icon_url) in profile-edit
+- [X] T156 [US6] Call gym/update cloud function on form submit in profile-edit
+- [X] T157 [US6] Handle success/error responses in profile-edit
 
 **Checkpoint**: Users can edit their profiles with proper restrictions.
 
