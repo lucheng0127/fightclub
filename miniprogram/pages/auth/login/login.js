@@ -23,25 +23,14 @@ Page({
     try {
       const authData = getAuthData();
       if (authData && authData.user_id) {
-        // 已登录，直接导航到相应页面
+        // 已有登录信息，导航到角色选择页面
+        // 角色选择页面会从数据库获取最新状态并处理导航
         this.navigateToNext(authData);
         return;
       }
 
-      // 未登录，尝试静默登录（调用云函数）
-      if (wx.cloud) {
-        const result = await callFunction('auth/login', {}, { showLoading: false });
-
-        // 保存登录信息
-        saveAuthData({
-          user_id: result.user_id,
-          roles: result.roles,
-          last_role: result.last_role
-        });
-
-        // 导航到下一页
-        this.navigateToNext(result);
-      }
+      // 没有登录信息，显示授权页面让用户授权
+      console.log('用户未登录，需要授权');
     } catch (err) {
       // 登录失败，显示授权页面
       console.log('用户未登录，需要授权');
@@ -144,31 +133,8 @@ Page({
     const { roles, last_role } = loginResult;
     const { has_boxer_profile, has_gym_profile } = roles;
 
-    // 新用户：进入角色选择页面
-    if (loginResult.is_new_user) {
-      wx.reLaunch({
-        url: '/pages/auth/role-select/role-select'
-      });
-      return;
-    }
-
-    // 已有拳手档案
-    if (has_boxer_profile) {
-      wx.reLaunch({
-        url: '/pages/common/dashboard/dashboard'
-      });
-      return;
-    }
-
-    // 已有拳馆档案
-    if (has_gym_profile) {
-      wx.reLaunch({
-        url: '/pages/common/dashboard/dashboard'
-      });
-      return;
-    }
-
-    // 没有任何档案，进入角色选择页面
+    // 授权成功后，总是进入角色选择页面
+    // 角色选择页面会根据用户档案情况自动导航
     wx.reLaunch({
       url: '/pages/auth/role-select/role-select'
     });
