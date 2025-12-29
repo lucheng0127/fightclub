@@ -24,15 +24,35 @@
 .header {
   display: flex;
   align-items: center;
+  gap: 12rpx;
   padding: 40rpx 0;
   margin-bottom: 32rpx;
   border-bottom: 1rpx solid #333;
 }
 
-.boxer-title {
+.boxer-icon {
+  font-size: 40rpx;
+  line-height: 1;
+}
+
+.boxer-name {
   font-size: 36rpx;
   font-weight: bold;
   color: #fff;
+  flex: 1;
+}
+
+.gender-icon {
+  font-size: 32rpx;
+  line-height: 1;
+}
+
+.gender-icon.male {
+  color: #2196F3;
+}
+
+.gender-icon.female {
+  color: #E91E63;
 }
 
 .avatar {

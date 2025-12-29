@@ -9,7 +9,9 @@
   <view class="profile" wx:if="{{!loading && profile}}">
     <!-- 头部信息 -->
     <view class="header">
-      <text class="boxer-title">拳手：{{profile.nickname}}</text>
+      <text class="boxer-icon">🥊</text>
+      <text class="boxer-name">{{profile.nickname}}</text>
+      <text class="gender-icon {{profile.gender === 'male' ? 'male' : 'female'}}">{{profile.gender === 'male' ? '♂' : '♀'}}</text>
     </view>
 
     <!-- 基本信息 -->
