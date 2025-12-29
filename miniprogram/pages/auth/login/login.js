@@ -154,7 +154,7 @@ Page({
 
     // 已有拳手档案
     if (has_boxer_profile) {
-      wx.switchTab({
+      wx.reLaunch({
         url: '/pages/common/dashboard/dashboard'
       });
       return;
@@ -162,7 +162,7 @@ Page({
 
     // 已有拳馆档案
     if (has_gym_profile) {
-      wx.switchTab({
+      wx.reLaunch({
         url: '/pages/common/dashboard/dashboard'
       });
       return;

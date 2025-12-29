@@ -189,7 +189,7 @@ Page({
 
       // 跳转到首页
       setTimeout(() => {
-        wx.redirectTo({
+        wx.reLaunch({
           url: '/pages/common/dashboard/dashboard'
         });
       }, 1500);

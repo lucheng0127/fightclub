@@ -33,7 +33,7 @@ Page({
 
     if (selectedRole === 'boxer' && hasBoxerProfile) {
       // 已有拳手档案，直接进入首页
-      wx.switchTab({
+      wx.reLaunch({
         url: '/pages/common/dashboard/dashboard'
       });
       return;
@@ -41,7 +41,7 @@ Page({
 
     if (selectedRole === 'gym' && hasGymProfile) {
       // 已有拳馆档案，直接进入首页
-      wx.switchTab({
+      wx.reLaunch({
         url: '/pages/common/dashboard/dashboard'
       });
       return;
@@ -87,7 +87,7 @@ Page({
     if (selectedRole === 'boxer') {
       if (hasBoxerProfile) {
         // 已有拳手档案，进入主页
-        wx.switchTab({
+        wx.reLaunch({
           url: '/pages/common/dashboard/dashboard'
         });
       } else {
@@ -99,7 +99,7 @@ Page({
     } else if (selectedRole === 'gym') {
       if (hasGymProfile) {
         // 已有拳馆档案，进入主页
-        wx.switchTab({
+        wx.reLaunch({
           url: '/pages/common/dashboard/dashboard'
         });
       } else {
