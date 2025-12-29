@@ -144,7 +144,8 @@ Page({
 
       console.log('上传结果:', uploadRes);
 
-      if (uploadRes.statusCode === 200) {
+      // 检查上传是否成功：errMsg 为 'ok' 且 statusCode 为 2xx
+      if (uploadRes.errMsg === 'cloud.uploadFile:ok' && uploadRes.statusCode >= 200 && uploadRes.statusCode < 300) {
         const fileID = uploadRes.fileID;
         this.setData({
           'formData.icon_url': fileID
@@ -156,7 +157,7 @@ Page({
       } else {
         console.error('上传失败，statusCode:', uploadRes.statusCode);
         console.error('上传失败，完整响应:', uploadRes);
-        throw new Error(`上传失败: ${uploadRes.statusCode}`);
+        throw new Error(`上传失败: ${uploadRes.statusCode} - ${uploadRes.errMsg}`);
       }
     } catch (err) {
       console.error('上传图片异常:', err);
