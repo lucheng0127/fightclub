@@ -54,14 +54,18 @@ Page({
    */
   loadUserInfo() {
     const nickname = wx.getStorageSync('user_nickname') || '拳击手';
-    const avatar = wx.getStorageSync('user_avatar') || '/images/boxer-placeholder.png';
     const roles = getRoles();
     const { last_role } = roles;
 
     let roleText = '拳手身份';
+    let placeholderAvatar = '/images/boxer-placeholder.png';
+
     if (last_role === 'gym') {
       roleText = '拳馆身份';
+      placeholderAvatar = '/images/gym-placeholder.png';
     }
+
+    const avatar = wx.getStorageSync('user_avatar') || placeholderAvatar;
 
     this.setData({
       userName: nickname,
@@ -112,11 +116,15 @@ Page({
    */
   goToProfile() {
     const roles = getRoles();
-    const { last_role, has_boxer_profile } = roles;
+    const { last_role, has_boxer_profile, has_gym_profile } = roles;
 
     if (last_role === 'boxer' && has_boxer_profile) {
       wx.navigateTo({
         url: '/pages/boxer/detail/detail?mode=edit'
+      });
+    } else if (last_role === 'gym' && has_gym_profile) {
+      wx.navigateTo({
+        url: '/pages/gym/detail/detail?mode=edit'
       });
     } else {
       wx.showToast({
