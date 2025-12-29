@@ -4,6 +4,7 @@
   min-height: 100vh;
   background: #1a1a1a;
   padding: 32rpx;
+  padding-bottom: 320rpx;
 }
 
 .header {
@@ -25,7 +26,7 @@
 }
 
 .form {
-  padding-bottom: 280rpx;
+  /* 移除 padding-bottom，使用 container 的 padding-bottom */
 }
 
 .form-item {
