@@ -145,6 +145,7 @@ exports.main = async (event, context) => {
         await transaction.collection('users').doc(userRes.data[0]._id).update({
           data: {
             has_boxer_profile: true,
+            last_role: 'boxer',
             updated_at: now
           }
         });

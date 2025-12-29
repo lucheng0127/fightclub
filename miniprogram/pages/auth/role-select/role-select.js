@@ -111,7 +111,3 @@ Page({
     }
   }
 });
-
-function getUserId() {
-  return wx.getStorageSync('user_id') || '';
-}
