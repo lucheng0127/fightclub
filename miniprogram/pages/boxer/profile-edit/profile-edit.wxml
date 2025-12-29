@@ -1,2 +1,160 @@
-<!--pages/boxer/profile-edit/profile-edit.wxml-->
-<text>pages/boxer/profile-edit/profile-edit.wxml</text>
+<!-- 拳手档案编辑页 -->
+<view class="container">
+  <view class="header">
+    <text class="title">编辑拳手档案</text>
+    <text class="subtitle">修改您的基本信息</text>
+  </view>
+
+  <form class="form" bindsubmit="onSubmit">
+    <!-- 昵称 (必填) -->
+    <view class="form-item">
+      <text class="label">昵称 *</text>
+      <input
+        class="input"
+        name="nickname"
+        placeholder="请输入昵称"
+        value="{{formData.nickname}}"
+        bindinput="onNicknameInput"
+        maxlength="20"
+      />
+    </view>
+
+    <!-- 性别 (必填) -->
+    <view class="form-item">
+      <text class="label">性别 *</text>
+      <picker
+        class="picker"
+        mode="selector"
+        range="{{genderOptions}}"
+        range-key="label"
+        value="{{genderIndex}}"
+        bindchange="onGenderChange"
+      >
+        <view class="picker-text">
+          {{genderOptions[genderIndex].label}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 出生日期 (必填) -->
+    <view class="form-item">
+      <text class="label">出生日期 *</text>
+      <picker
+        class="picker"
+        mode="date"
+        value="{{formData.birthdate}}"
+        end="{{today}}"
+        bindchange="onBirthdateChange"
+      >
+        <view class="picker-text">
+          {{formData.birthdate || '请选择出生日期'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 身高 (必填) -->
+    <view class="form-item">
+      <text class="label">身高 (cm) *</text>
+      <input
+        class="input"
+        type="digit"
+        name="height"
+        placeholder="100-250"
+        value="{{formData.height}}"
+        bindinput="onHeightInput"
+      />
+    </view>
+
+    <!-- 体重 (必填) -->
+    <view class="form-item">
+      <text class="label">体重 (kg) *</text>
+      <input
+        class="input"
+        type="digit"
+        name="weight"
+        placeholder="30-200"
+        value="{{formData.weight}}"
+        bindinput="onWeightInput"
+      />
+    </view>
+
+    <!-- 城市 (可选) -->
+    <view class="form-item">
+      <text class="label">城市</text>
+      <input
+        class="input"
+        name="city"
+        placeholder="请输入所在城市"
+        value="{{formData.city}}"
+        bindinput="onCityInput"
+      />
+    </view>
+
+    <!-- 联系电话 (可选) -->
+    <view class="form-item">
+      <text class="label">联系电话</text>
+      <input
+        class="input"
+        type="number"
+        name="phone"
+        placeholder="请输入联系电话"
+        value="{{formData.phone}}"
+        bindinput="onPhoneInput"
+        maxlength="11"
+      />
+    </view>
+
+    <!-- 战绩 (可选) -->
+    <view class="form-item record-section">
+      <text class="label">战绩</text>
+      <view class="record-inputs">
+        <view class="record-item">
+          <text class="record-label">胜</text>
+          <input
+            class="record-input"
+            type="number"
+            name="record_wins"
+            placeholder="0"
+            value="{{formData.record_wins}}"
+            bindinput="onRecordWinsInput"
+          />
+        </view>
+        <view class="record-item">
+          <text class="record-label">负</text>
+          <input
+            class="record-input"
+            type="number"
+            name="record_losses"
+            placeholder="0"
+            value="{{formData.record_losses}}"
+            bindinput="onRecordLossesInput"
+          />
+        </view>
+        <view class="record-item">
+          <text class="record-label">平</text>
+          <input
+            class="record-input"
+            type="number"
+            name="record_draws"
+            placeholder="0"
+            value="{{formData.record_draws}}"
+            bindinput="onRecordDrawsInput"
+          />
+        </view>
+      </view>
+    </view>
+
+    <!-- 提交按钮 -->
+    <view class="submit-section">
+      <button
+        class="submit-btn {{isFormValid ? '' : 'disabled'}}"
+        formType="submit"
+        disabled="{{!isFormValid}}"
+        loading="{{submitting}}"
+      >
+        保存修改
+      </button>
+      <button class="cancel-btn" bindtap="onCancel">取消</button>
+    </view>
+  </form>
+</view>
