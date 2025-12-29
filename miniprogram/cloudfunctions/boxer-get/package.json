@@ -1,0 +1,9 @@
+{
+  "name": "boxer-get",
+  "version": "1.0.0",
+  "description": "Get boxer profile cloud function for FightClub",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

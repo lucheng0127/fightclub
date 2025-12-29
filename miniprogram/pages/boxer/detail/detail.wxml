@@ -1,2 +1,77 @@
-<!--pages/boxer/detail/detail.wxml-->
-<text>pages/boxer/detail/detail.wxml</text>
+<!-- 拳手档案详情页 -->
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 档案内容 -->
+  <view class="profile" wx:if="{{!loading && profile}}">
+    <!-- 头部信息 -->
+    <view class="header">
+      <image class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
+      <view class="info">
+        <text class="name">{{profile.nickname}}</text>
+        <text class="gender">{{profile.gender === 'male' ? '男' : '女'}}</text>
+      </view>
+    </view>
+
+    <!-- 基本信息 -->
+    <view class="section">
+      <text class="section-title">基本信息</text>
+      <view class="info-list">
+        <view class="info-item">
+          <text class="label">出生日期</text>
+          <text class="value">{{profile.birthdate}}</text>
+        </view>
+        <view class="info-item">
+          <text class="label">身高</text>
+          <text class="value">{{profile.height}} cm</text>
+        </view>
+        <view class="info-item">
+          <text class="label">体重</text>
+          <text class="value">{{profile.weight}} kg</text>
+        </view>
+        <view class="info-item" wx:if="{{profile.city}}">
+          <text class="label">城市</text>
+          <text class="value">{{profile.city}}</text>
+        </view>
+        <view class="info-item" wx:if="{{profile.phone}}">
+          <text class="label">联系电话</text>
+          <text class="value">{{profile.phone}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 战绩信息 -->
+    <view class="section">
+      <text class="section-title">战绩</text>
+      <view class="record-card">
+        <view class="record-item wins">
+          <text class="record-value">{{profile.record_wins}}</text>
+          <text class="record-label">胜</text>
+        </view>
+        <view class="record-item losses">
+          <text class="record-value">{{profile.record_losses}}</text>
+          <text class="record-label">负</text>
+        </view>
+        <view class="record-item draws">
+          <text class="record-value">{{profile.record_draws}}</text>
+          <text class="record-label">平</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="actions">
+      <button class="action-btn primary" bindtap="onEdit">编辑档案</button>
+      <button class="action-btn secondary" bindtap="onBack">返回</button>
+    </view>
+  </view>
+
+  <!-- 无档案提示 -->
+  <view class="empty" wx:if="{{!loading && !profile}}">
+    <text class="empty-text">未找到拳手档案</text>
+    <button class="create-btn" bindtap="onCreate">创建档案</button>
+  </view>
+</view>
