@@ -109,17 +109,13 @@ exports.main = async (event, context) => {
       height: event.height,
       weight: event.weight,
       city: event.city || null,
+      gym_id: event.gym_id || null,
       phone: event.phone || null,
       record_wins: event.record_wins || 0,
       record_losses: event.record_losses || 0,
       record_draws: event.record_draws || 0,
       updated_at: now
     };
-
-    // 只在 gym_id 有变化时更新
-    if (event.gym_id !== undefined && event.gym_id !== boxer.gym_id) {
-      updateData.gym_id = event.gym_id || null;
-    }
 
     await db.collection('boxers').doc(boxer._id).update({
       data: updateData

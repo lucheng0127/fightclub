@@ -13,7 +13,8 @@ Page({
     },
     isFormValid: false,
     submitting: false,
-    uploadingImage: false
+    uploadingImage: false,
+    oldIconUrl: '' // 保存旧的图片URL，用于删除
   },
 
   onLoad() {
@@ -35,7 +36,8 @@ Page({
           city: profile.city || '',
           phone: profile.phone,
           icon_url: profile.icon_url || ''
-        }
+        },
+        oldIconUrl: profile.icon_url || '' // 保存旧的图片URL
       });
 
       this.validateForm();
@@ -173,8 +175,24 @@ Page({
 
       if (uploadRes.errMsg === 'cloud.uploadFile:ok' && uploadRes.statusCode >= 200 && uploadRes.statusCode < 300) {
         const fileID = uploadRes.fileID;
+
+        // 如果有旧图片，先删除旧图片
+        const oldIconUrl = this.data.oldIconUrl;
+        if (oldIconUrl && oldIconUrl !== fileID) {
+          try {
+            await wx.cloud.deleteFile({
+              fileList: [oldIconUrl]
+            });
+            console.log('[GymProfileEdit] 旧图片已删除:', oldIconUrl);
+          } catch (deleteErr) {
+            console.error('[GymProfileEdit] 删除旧图片失败:', deleteErr);
+            // 删除失败不影响新图片的上传
+          }
+        }
+
         this.setData({
-          'formData.icon_url': fileID
+          'formData.icon_url': fileID,
+          oldIconUrl: fileID // 更新旧图片URL为新图片
         });
         wx.showToast({
           title: '上传成功',
@@ -207,6 +225,12 @@ Page({
     try {
       await callFunction('gym/update', this.data.formData, { showLoading: true });
 
+      // 保存成功后，如果之前有旧图片且与新图片不同，说明已经在上传时删除了
+      // 这里只需要清空旧图片引用即可
+      if (this.data.formData.icon_url) {
+        this.setData({ oldIconUrl: this.data.formData.icon_url });
+      }
+
       wx.showToast({
         title: '保存成功',
         icon: 'success'
@@ -218,6 +242,24 @@ Page({
 
     } catch (err) {
       console.error('更新拳馆档案失败:', err);
+
+      // 如果保存失败，需要清理已上传的新图片（如果与旧图片不同）
+      const newIconUrl = this.data.formData.icon_url;
+      const oldIconUrl = this.data.oldIconUrl;
+      if (newIconUrl && newIconUrl !== oldIconUrl) {
+        try {
+          await wx.cloud.deleteFile({
+            fileList: [newIconUrl]
+          });
+          console.log('[GymProfileEdit] 保存失败，已回退删除新上传的图片:', newIconUrl);
+          // 恢复旧图片URL
+          this.setData({
+            'formData.icon_url': oldIconUrl
+          });
+        } catch (deleteErr) {
+          console.error('[GymProfileEdit] 回退删除新图片失败:', deleteErr);
+        }
+      }
     } finally {
       this.setData({ submitting: false });
     }
@@ -227,6 +269,16 @@ Page({
    * 取消编辑
    */
   onCancel() {
+    // 如果用户上传了新照片但取消编辑，需要删除新上传的照片
+    const newIconUrl = this.data.formData.icon_url;
+    const oldIconUrl = this.data.oldIconUrl;
+    if (newIconUrl && newIconUrl !== oldIconUrl) {
+      wx.cloud.deleteFile({
+        fileList: [newIconUrl]
+      }).catch(err => {
+        console.error('[GymProfileEdit] 取消时删除新图片失败:', err);
+      });
+    }
     wx.navigateBack();
   }
 });

@@ -107,7 +107,21 @@ exports.main = async (event, context) => {
     const transaction = await db.startTransaction();
 
     try {
-      // 1. 创建拳馆档案
+      // 1. 获取并锁定计数器（先读取当前值）
+      const counterRes = await transaction.collection('counters').where({ _id: 'gym_count' }).get();
+      let newCount = 1;
+      if (counterRes.data.length > 0) {
+        newCount = counterRes.data[0].count + 1;
+        await transaction.collection('counters').doc(counterRes.data[0]._id).update({
+          data: { count: newCount }
+        });
+      } else {
+        await transaction.collection('counters').add({
+          data: { _id: 'gym_count', count: 1 }
+        });
+      }
+
+      // 2. 创建拳馆档案
       const now = new Date();
       const gymData = {
         gym_id,
@@ -129,7 +143,7 @@ exports.main = async (event, context) => {
         data: gymData
       });
 
-      // 2. 更新用户记录
+      // 3. 更新用户记录
       const userRes = await transaction.collection('users').where({ openid: openidVal }).get();
       if (userRes.data.length > 0) {
         await transaction.collection('users').doc(userRes.data[0]._id).update({
@@ -138,20 +152,6 @@ exports.main = async (event, context) => {
             last_role: 'gym',
             updated_at: now
           }
-        });
-      }
-
-      // 3. 增加计数器
-      const counterRes = await transaction.collection('counters').where({ _id: 'gym_count' }).get();
-      if (counterRes.data.length > 0) {
-        await transaction.collection('counters').doc(counterRes.data[0]._id).update({
-          data: {
-            count: db.command.inc(1)
-          }
-        });
-      } else {
-        await transaction.collection('counters').add({
-          data: { _id: 'gym_count', count: 1 }
         });
       }
 

@@ -202,7 +202,17 @@ Page({
 
     } catch (err) {
       console.error('创建拳馆档案失败:', err);
-      // 错误提示已在 callFunction 中处理
+
+      // 如果保存失败，需要清理已上传的图片
+      const iconUrl = this.data.formData.icon_url;
+      if (iconUrl) {
+        wx.cloud.deleteFile({
+          fileList: [iconUrl]
+        }).catch(deleteErr => {
+          console.error('[GymProfileCreate] 删除上传失败的图片失败:', deleteErr);
+        });
+        this.setData({ 'formData.icon_url': '' });
+      }
     } finally {
       this.setData({ submitting: false });
     }
