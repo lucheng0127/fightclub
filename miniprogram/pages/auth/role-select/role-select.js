@@ -1,5 +1,5 @@
 // Role Select Page
-const { getRoles, saveAuthData } = require('../../../utils/auth');
+const { getRoles, saveAuthData, getUserId } = require('../../../utils/auth');
 
 Page({
   data: {
@@ -27,6 +27,27 @@ Page({
     }
   },
 
+  onShow() {
+    // 页面显示时检查：如果已有档案，自动跳转到首页
+    const { hasBoxerProfile, hasGymProfile, selectedRole } = this.data;
+
+    if (selectedRole === 'boxer' && hasBoxerProfile) {
+      // 已有拳手档案，直接进入首页
+      wx.switchTab({
+        url: '/pages/common/dashboard/dashboard'
+      });
+      return;
+    }
+
+    if (selectedRole === 'gym' && hasGymProfile) {
+      // 已有拳馆档案，直接进入首页
+      wx.switchTab({
+        url: '/pages/common/dashboard/dashboard'
+      });
+      return;
+    }
+  },
+
   /**
    * 选择角色
    */
@@ -42,7 +63,7 @@ Page({
    * 确认并进入
    */
   onConfirm() {
-    const { selectedRole } = this.data;
+    const { selectedRole, hasBoxerProfile, hasGymProfile } = this.data;
 
     if (!selectedRole) {
       wx.showToast({
@@ -56,15 +77,15 @@ Page({
     saveAuthData({
       user_id: getUserId(),
       roles: {
-        has_boxer_profile: this.data.hasBoxerProfile,
-        has_gym_profile: this.data.hasGymProfile
+        has_boxer_profile: hasBoxerProfile,
+        has_gym_profile: hasGymProfile
       },
       last_role: selectedRole
     });
 
     // 根据角色导航到对应页面
     if (selectedRole === 'boxer') {
-      if (this.data.hasBoxerProfile) {
+      if (hasBoxerProfile) {
         // 已有拳手档案，进入主页
         wx.switchTab({
           url: '/pages/common/dashboard/dashboard'
@@ -76,7 +97,7 @@ Page({
         });
       }
     } else if (selectedRole === 'gym') {
-      if (this.data.hasGymProfile) {
+      if (hasGymProfile) {
         // 已有拳馆档案，进入主页
         wx.switchTab({
           url: '/pages/common/dashboard/dashboard'
