@@ -124,16 +124,25 @@ Page({
     this.setData({ uploadingImage: true });
 
     try {
+      // 检查云环境是否已初始化
+      if (!wx.cloud) {
+        throw new Error('云环境未初始化');
+      }
+
       // 生成文件名
       const timestamp = Date.now();
       const random = Math.random().toString(36).substring(2, 8);
       const cloudPath = `gym-icons/${timestamp}_${random}.jpg`;
+
+      console.log('开始上传图片:', { cloudPath, filePath });
 
       // 上传到云存储
       const uploadRes = await wx.cloud.uploadFile({
         cloudPath,
         filePath
       });
+
+      console.log('上传结果:', uploadRes);
 
       if (uploadRes.statusCode === 200) {
         const fileID = uploadRes.fileID;
@@ -145,13 +154,20 @@ Page({
           icon: 'success'
         });
       } else {
-        throw new Error('上传失败');
+        console.error('上传失败，statusCode:', uploadRes.statusCode);
+        console.error('上传失败，完整响应:', uploadRes);
+        throw new Error(`上传失败: ${uploadRes.statusCode}`);
       }
     } catch (err) {
-      console.error('上传图片失败:', err);
+      console.error('上传图片异常:', err);
+      console.error('错误详情:', {
+        errMsg: err.errMsg,
+        errCode: err.errCode
+      });
       wx.showToast({
-        title: '上传失败',
-        icon: 'none'
+        title: err.errMsg || '上传失败',
+        icon: 'none',
+        duration: 3000
       });
     } finally {
       this.setData({ uploadingImage: false });
