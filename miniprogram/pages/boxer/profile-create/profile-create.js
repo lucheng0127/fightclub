@@ -1,6 +1,7 @@
 // 拳手档案创建页
 const { callFunction } = require('../../../utils/request');
 const { getUserId, saveAuthData } = require('../../../utils/auth');
+const { getProvinceNames, getCitiesByProvince } = require('../../../utils/city-data');
 
 Page({
   data: {
@@ -11,6 +12,7 @@ Page({
       height: '',
       weight: '',
       city: '',
+      cityDisplay: '',
       phone: '',
       record_wins: 0,
       record_losses: 0,
@@ -23,7 +25,14 @@ Page({
     genderIndex: 0,
     today: '',
     isFormValid: false,
-    submitting: false
+    submitting: false,
+    // City picker
+    showCityPicker: false,
+    provinces: [],
+    cities: [],
+    cityPickerValue: [0, 0],
+    selectedProvince: '',
+    selectedCity: ''
   },
 
   onLoad() {
@@ -31,6 +40,15 @@ Page({
     const today = new Date();
     this.setData({
       today: `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+    });
+
+    // 初始化省市数据
+    const provinces = getProvinceNames();
+    const cities = getCitiesByProvince(provinces[0]);
+
+    this.setData({
+      provinces,
+      cities
     });
   },
 
@@ -50,6 +68,48 @@ Page({
     );
     this.setData({ isFormValid });
     return isFormValid;
+  },
+
+  /**
+   * 城市选择器相关
+   */
+  onShowCityPicker() {
+    this.setData({ showCityPicker: true });
+  },
+
+  onHideCityPicker() {
+    this.setData({ showCityPicker: false });
+  },
+
+  onCityPickerChange(e) {
+    const value = e.detail.value;
+    const provinceIndex = value[0];
+    const cityIndex = value[1];
+
+    const provinces = this.data.provinces;
+    const selectedProvince = provinces[provinceIndex];
+    const cities = getCitiesByProvince(selectedProvince);
+
+    // 如果城市索引超出范围，重置为0
+    const adjustedCityIndex = cityIndex >= cities.length ? 0 : cityIndex;
+
+    this.setData({
+      cityPickerValue: [provinceIndex, adjustedCityIndex],
+      cities,
+      selectedProvince,
+      selectedCity: cities[adjustedCityIndex] || ''
+    });
+  },
+
+  onConfirmCity() {
+    const { selectedProvince, selectedCity } = this.data;
+    const cityDisplay = selectedCity ? `${selectedProvince} ${selectedCity}` : '';
+
+    this.setData({
+      'formData.city': cityDisplay,
+      'formData.cityDisplay': cityDisplay,
+      showCityPicker: false
+    });
   },
 
   /**
@@ -92,12 +152,6 @@ Page({
       'formData.weight': weight
     });
     this.validateForm();
-  },
-
-  onCityInput(e) {
-    this.setData({
-      'formData.city': e.detail.value
-    });
   },
 
   onPhoneInput(e) {
