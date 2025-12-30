@@ -41,8 +41,8 @@
 
     <!-- 操作按钮 -->
     <view class="actions">
-      <button class="action-btn primary" bindtap="onEdit">编辑档案</button>
-      <button class="action-btn secondary" bindtap="onBack">返回</button>
+      <button class="action-btn primary" bindtap="onEdit" wx:if="{{isOwnProfile}}">编辑档案</button>
+      <button class="action-btn secondary" bindtap="onBack">{{isOwnProfile ? '返回' : '返回列表'}}</button>
     </view>
   </view>
 

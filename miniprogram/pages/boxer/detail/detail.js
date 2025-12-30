@@ -7,12 +7,15 @@ Page({
     loading: true,
     profile: null,
     avatarUrl: '/images/boxer-placeholder.png',
-    mode: 'view' // view or edit
+    mode: 'view', // view or edit
+    boxerId: '',
+    isOwnProfile: false
   },
 
   onLoad(options) {
     const mode = options.mode || 'view';
-    this.setData({ mode });
+    const boxerId = options.boxer_id || '';
+    this.setData({ mode, boxerId });
     this.loadProfile();
   },
 
@@ -36,14 +39,18 @@ Page({
       }
 
       // 调用云函数获取拳手档案
-      const profile = await callFunction('boxer/get', {}, { showLoading: true });
+      const params = this.data.boxerId ? { boxer_id: this.data.boxerId } : {};
+      const result = await callFunction('boxer/get', params, { showLoading: true });
 
-      // 获取用户头像
-      const avatar = wx.getStorageSync('user_avatar') || '/images/boxer-placeholder.png';
+      // 获取用户头像（仅查看自己档案时）
+      const avatar = (!this.data.boxerId || result.is_own_profile)
+        ? wx.getStorageSync('user_avatar') || '/images/boxer-placeholder.png'
+        : '/images/boxer-placeholder.png';
 
       this.setData({
-        profile,
+        profile: result,
         avatarUrl: avatar,
+        isOwnProfile: result.is_own_profile || false,
         loading: false
       });
     } catch (err) {
@@ -84,7 +91,12 @@ Page({
    * 返回
    */
   onBack() {
-    wx.navigateBack();
+    // 如果是查看他人档案，返回到列表页
+    if (this.data.boxerId && !this.data.isOwnProfile) {
+      wx.navigateBack();
+    } else {
+      wx.navigateBack();
+    }
   },
 
   /**

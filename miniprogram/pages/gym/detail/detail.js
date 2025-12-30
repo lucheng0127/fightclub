@@ -7,12 +7,15 @@ Page({
     loading: true,
     profile: null,
     avatarUrl: '/images/gym-placeholder.png',
-    mode: 'view' // view or edit
+    mode: 'view', // view or edit
+    gymId: '',
+    isOwnProfile: false
   },
 
   onLoad(options) {
     const mode = options.mode || 'view';
-    this.setData({ mode });
+    const gymId = options.gym_id || '';
+    this.setData({ mode, gymId });
     this.loadProfile();
   },
 
@@ -36,14 +39,16 @@ Page({
       }
 
       // 调用云函数获取拳馆档案
-      const profile = await callFunction('gym/get', {}, { showLoading: true });
+      const params = this.data.gymId ? { gym_id: this.data.gymId } : {};
+      const result = await callFunction('gym/get', params, { showLoading: true });
 
       // 使用上传的拳馆图标，如果没有则使用默认占位图
-      const avatar = profile.icon_url || '/images/gym-placeholder.png';
+      const avatar = result.icon_url || '/images/gym-placeholder.png';
 
       this.setData({
-        profile,
+        profile: result,
         avatarUrl: avatar,
+        isOwnProfile: result.is_own_profile || false,
         loading: false
       });
     } catch (err) {
