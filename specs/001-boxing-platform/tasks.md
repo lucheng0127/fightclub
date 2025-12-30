@@ -73,7 +73,7 @@ description: "Task list for feature implementation"
 - [X] T022 [US1] Implement role detection (has_boxer_profile, has_gym_profile) in auth/login
 - [X] T023 [US1] Implement anonymized user_id generation using hash function in auth/login
 - [X] T024 [US1] Add package.json for auth/login cloud function
-- [ ] T025 [US1] Deploy auth/login cloud function to CloudBase
+- [X] T025 [US1] Deploy auth/login cloud function to CloudBase
 
 ### Frontend - Authorization Pages
 
@@ -107,7 +107,7 @@ description: "Task list for feature implementation"
 - [X] T040 [US2] Implement database transaction for boxer profile creation (create profile + update user + increment counter)
 - [X] T041 [US2] Implement gym_id validation (check gym exists) in boxer/create
 - [X] T042 [US2] Add package.json for boxer/create cloud function
-- [ ] T043 [US2] Deploy boxer/create cloud function to CloudBase
+- [X] T043 [US2] Deploy boxer/create cloud function to CloudBase
 
 ### Frontend - Boxer Profile Creation
 
@@ -129,7 +129,7 @@ description: "Task list for feature implementation"
 - [X] T056 [US2] Implement optional field validation (icon_url) in gym/create
 - [X] T057 [US2] Implement database transaction for gym profile creation (create profile + update user + increment counter)
 - [X] T058 [US2] Add package.json for gym/create cloud function
-- [ ] T059 [US2] Deploy gym/create cloud function to CloudBase
+- [X] T059 [US2] Deploy gym/create cloud function to CloudBase
 
 ### Frontend - Gym Profile Creation
 
@@ -147,7 +147,7 @@ description: "Task list for feature implementation"
 - [X] T068 [US2] Create cloud function cloudfunctions/common/upload/index.js for image upload handling
 - [X] T069 [US2] Configure Cloud Storage for gym-icons directory in CloudBase console
 - [X] T070 [US2] Add package.json for common/upload cloud function
-- [ ] T071 [US2] Deploy common/upload cloud function to CloudBase
+- [X] T071 [US2] Deploy common/upload cloud function to CloudBase
 
 **Checkpoint**: Users can create Boxer and Gym profiles. Ready for discovery features.
 
@@ -167,7 +167,7 @@ description: "Task list for feature implementation"
 - [X] T075 [US3] Calculate age from birthdate server-side in boxer/list
 - [X] T076 [US3] Return total_count for filtered results in boxer/list
 - [X] T077 [US3] Add package.json for boxer/list cloud function
-- [ ] T078 [US3] Deploy boxer/list cloud function to CloudBase
+- [X] T078 [US3] Deploy boxer/list cloud function to CloudBase
 
 - [X] T079 [US3] Create cloud function cloudfunctions/gym/list/index.js for gym listing with filters
 - [X] T080 [US3] Implement city filter in gym/list
@@ -175,12 +175,12 @@ description: "Task list for feature implementation"
 - [X] T082 [US3] Implement pagination (page, limit) in gym/list
 - [X] T083 [US3] Return total_count and human-readable distance in gym/list
 - [X] T084 [US3] Add package.json for gym/list cloud function
-- [ ] T085 [US3] Deploy gym/list cloud function to CloudBase
+- [X] T085 [US3] Deploy gym/list cloud function to CloudBase
 
 - [X] T086 [US3] Create cloud function cloudfunctions/common/stats/index.js for platform statistics
 - [X] T087 [US3] Implement boxer_count and gym_count retrieval from counters collection in common/stats
 - [X] T088 [US3] Add package.json for common/stats cloud function
-- [ ] T089 [US3] Deploy common/stats cloud function to CloudBase
+- [X] T089 [US3] Deploy common/stats cloud function to CloudBase
 
 ### Frontend - Boxer List & Filters
 
@@ -231,13 +231,13 @@ description: "Task list for feature implementation"
 - [X] T115 [US4] Fetch associated gym name if gym_id exists in boxer/get
 - [X] T116 [US4] Format record as "X胜Y负Z平" or null in boxer/get
 - [X] T117 [US4] Add package.json for boxer/get cloud function
-- [ ] T118 [US4] Deploy boxer/get cloud function to CloudBase
+- [X] T118 [US4] Deploy boxer/get cloud function to CloudBase
 
 - [X] T119 [US4] Create cloud function cloudfunctions/gym/get/index.js for single gym profile
 - [X] T120 [US4] Implement profile retrieval by gym_id in gym/get
 - [X] T121 [US4] Count associated boxers (aggregate query) in gym/get
 - [X] T122 [US4] Add package.json for gym/get cloud function
-- [ ] T123 [US4] Deploy gym/get cloud function to CloudBase
+- [X] T123 [US4] Deploy gym/get cloud function to CloudBase
 
 ### Frontend - Detail Pages
 
@@ -282,12 +282,12 @@ description: "Task list for feature implementation"
 - [X] T139 [US6] Implement gender/birthdate immutability check (reject if present) in boxer/update
 - [X] T140 [US6] Implement gym_id validation (check gym exists) in boxer/update
 - [X] T141 [US6] Add package.json for boxer/update cloud function
-- [ ] T142 [US6] Deploy boxer/update cloud function to CloudBase
+- [X] T142 [US6] Deploy boxer/update cloud function to CloudBase
 
 - [X] T143 [US6] Create cloud function cloudfunctions/gym/update/index.js for gym profile updates
 - [X] T144 [US6] Implement ownership verification (openid match) in gym/update
 - [X] T145 [US6] Add package.json for gym/update cloud function
-- [ ] T146 [US6] Deploy gym/update cloud function to CloudBase
+- [X] T146 [US6] Deploy gym/update cloud function to CloudBase
 
 ### Frontend - Edit Pages
 
