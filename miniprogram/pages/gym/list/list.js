@@ -1,24 +1,43 @@
 // Gym List Page
 const { callFunction } = require('../../../utils/request');
+const { getProvinceNames, getCitiesByProvince } = require('../../../utils/city-data');
 
 Page({
   data: {
     list: [],
     totalCount: 0,
+    displayCount: 0,
     page: 1,
     limit: 20,
     has_more: false,
     loading: false,
     filters: {
-      city: ''
+      city: '',
+      cityDisplay: ''
     },
     currentFilters: {},
     hasFilters: false,
     userLocation: null,
-    locationAuthorized: false
+    locationAuthorized: false,
+    // City picker
+    showCityPicker: false,
+    provinces: [],
+    cities: [],
+    cityPickerValue: [0, 0],
+    selectedProvince: '',
+    selectedCity: ''
   },
 
   onLoad() {
+    // 初始化省市数据
+    const provinces = getProvinceNames();
+    const cities = getCitiesByProvince(provinces[0]);
+
+    this.setData({
+      provinces,
+      cities
+    });
+
     this.loadStats();
     this.getUserLocation();
     this.loadGyms();
@@ -90,6 +109,7 @@ Page({
       this.setData({
         list,
         total: result.total,
+        displayCount: result.total,
         has_more: result.has_more,
         loading: false,
         hasFilters: Object.keys(currentFilters).length > 0
@@ -101,11 +121,44 @@ Page({
   },
 
   /**
-   * 筛选输入
+   * 城市选择器相关
    */
-  onCityInput(e) {
+  onShowCityPicker() {
+    this.setData({ showCityPicker: true });
+  },
+
+  onHideCityPicker() {
+    this.setData({ showCityPicker: false });
+  },
+
+  onCityPickerChange(e) {
+    const value = e.detail.value;
+    const provinceIndex = value[0];
+    const cityIndex = value[1];
+
+    const provinces = this.data.provinces;
+    const selectedProvince = provinces[provinceIndex];
+    const cities = getCitiesByProvince(selectedProvince);
+
+    // 如果城市索引超出范围，重置为0
+    const adjustedCityIndex = cityIndex >= cities.length ? 0 : cityIndex;
+
     this.setData({
-      'filters.city': e.detail.value
+      cityPickerValue: [provinceIndex, adjustedCityIndex],
+      cities,
+      selectedProvince,
+      selectedCity: cities[adjustedCityIndex] || ''
+    });
+  },
+
+  onConfirmCity() {
+    const { selectedProvince, selectedCity } = this.data;
+    const cityDisplay = selectedCity ? `${selectedProvince} ${selectedCity}` : '';
+
+    this.setData({
+      'filters.city': cityDisplay,
+      'filters.cityDisplay': cityDisplay,
+      showCityPicker: false
     });
   },
 
@@ -133,11 +186,13 @@ Page({
   onClearFilters() {
     this.setData({
       filters: {
-        city: ''
+        city: '',
+        cityDisplay: ''
       },
       currentFilters: {},
       page: 1,
-      list: []
+      list: [],
+      cityPickerValue: [0, 0]
     });
 
     this.loadGyms();

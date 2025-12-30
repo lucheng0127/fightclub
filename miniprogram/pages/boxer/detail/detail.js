@@ -47,10 +47,14 @@ Page({
         ? wx.getStorageSync('user_avatar') || '/images/boxer-placeholder.png'
         : '/images/boxer-placeholder.png';
 
+      // 如果没有传boxer_id，说明是查看自己的档案，默认为true
+      // 如果有boxer_id，使用云函数返回的is_own_profile
+      const isOwnProfile = !this.data.boxerId || result.is_own_profile;
+
       this.setData({
         profile: result,
         avatarUrl: avatar,
-        isOwnProfile: result.is_own_profile || false,
+        isOwnProfile: isOwnProfile,
         loading: false
       });
     } catch (err) {

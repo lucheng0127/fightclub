@@ -45,10 +45,14 @@ Page({
       // 使用上传的拳馆图标，如果没有则使用默认占位图
       const avatar = result.icon_url || '/images/gym-placeholder.png';
 
+      // 如果没有传gym_id，说明是查看自己的档案，默认为true
+      // 如果有gym_id，使用云函数返回的is_own_profile
+      const isOwnProfile = !this.data.gymId || result.is_own_profile;
+
       this.setData({
         profile: result,
         avatarUrl: avatar,
-        isOwnProfile: result.is_own_profile || false,
+        isOwnProfile: isOwnProfile,
         loading: false
       });
     } catch (err) {
