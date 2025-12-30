@@ -81,13 +81,42 @@
     <!-- 城市 (可选) -->
     <view class="form-item">
       <text class="label">城市</text>
-      <input
-        class="input"
-        name="city"
-        placeholder="请输入所在城市"
-        value="{{formData.city}}"
-        bindinput="onCityInput"
-      />
+      <view class="picker-input" bindtap="onShowCityPicker">
+        <text class="picker-input-text {{formData.cityDisplay ? '' : 'placeholder'}}">
+          {{formData.cityDisplay || '请选择所在城市'}}
+        </text>
+        <text class="picker-input-icon">▼</text>
+      </view>
+    </view>
+
+    <!-- 城市选择弹窗 -->
+    <view class="city-picker-modal" wx:if="{{showCityPicker}}">
+      <view class="city-picker-mask" bindtap="onHideCityPicker"></view>
+      <view class="city-picker-content">
+        <view class="city-picker-header">
+          <text class="city-picker-title">选择城市</text>
+          <text class="city-picker-close" bindtap="onHideCityPicker">✕</text>
+        </view>
+        <view class="city-picker-body">
+          <picker-view
+            class="city-picker-view"
+            indicator-style="height: 50px;"
+            value="{{cityPickerValue}}"
+            bindchange="onCityPickerChange"
+          >
+            <picker-view-column>
+              <view wx:for="{{provinces}}" wx:key="*this">{{item}}</view>
+            </picker-view-column>
+            <picker-view-column>
+              <view wx:for="{{cities}}" wx:key="*this">{{item}}</view>
+            </picker-view-column>
+          </picker-view>
+        </view>
+        <view class="city-picker-footer">
+          <button class="city-picker-btn city-picker-btn-cancel" bindtap="onHideCityPicker">取消</button>
+          <button class="city-picker-btn city-picker-btn-confirm" bindtap="onConfirmCity">确定</button>
+        </view>
+      </view>
     </view>
 
     <!-- 联系电话 (可选) -->
