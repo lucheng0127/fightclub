@@ -8,10 +8,22 @@ Page({
     profileAvatar: '/images/boxer-placeholder.png',
     boxerCount: 0,
     gymCount: 0,
-    currentRole: 'boxer'
+    currentRole: 'boxer',
+    statusBarHeight: 20,
+    navBarHeight: 64
   },
 
   onLoad() {
+    // 获取系统信息计算导航栏高度
+    const systemInfo = wx.getSystemInfoSync();
+    const statusBarHeight = systemInfo.statusBarHeight || 20;
+    const navBarHeight = statusBarHeight + 44; // 系统导航栏标准高度
+
+    this.setData({
+      statusBarHeight,
+      navBarHeight
+    });
+
     // 检查用户是否已授权 (getUserProfile)
     const hasAuthorized = wx.getStorageSync('user_nickname');
     if (!hasAuthorized) {
@@ -157,5 +169,14 @@ Page({
         url: '/pages/gym/detail/detail?mode=edit'
       });
     }
+  },
+
+  /**
+   * 切换角色
+   */
+  onSwitchRole() {
+    wx.reLaunch({
+      url: '/pages/auth/role-select/role-select?manual=true'
+    });
   }
 });

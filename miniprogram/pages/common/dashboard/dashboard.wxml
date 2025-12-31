@@ -1,6 +1,16 @@
 <!-- Dashboard Page -->
 <view class="dashboard-page">
-  <view class="dashboard-container">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav-bar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="nav-content">
+      <!-- 左上角切换角色按钮 -->
+      <view class="nav-left-btn" bindtap="onSwitchRole">
+        <text class="nav-icon">⇋</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="dashboard-container" style="padding-top: calc(32rpx + {{statusBarHeight}}px + 44px);">
     <!-- 档案信息 -->
     <view class="user-section">
       <image class="user-avatar" src="{{profileAvatar}}" mode="aspectFill" />

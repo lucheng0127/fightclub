@@ -4,6 +4,36 @@
   background-color: #f5f5f5;
 }
 
+/* 自定义导航栏 */
+.custom-nav-bar {
+  background-color: #1a1a1a;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 12px;
+}
+
+.nav-left-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-icon {
+  font-size: 20px;
+  color: #ffffff;
+}
+
 .dashboard-container {
   padding: 32rpx;
 }

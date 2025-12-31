@@ -11,7 +11,10 @@ Page({
     loading: true
   },
 
-  async onLoad() {
+  async onLoad(options) {
+    // 检查是否是手动切换角色（通过 options.manual 参数判断）
+    const isManualSwitch = options && options.manual === 'true';
+
     // 检查用户是否已登录
     const authData = getAuthData();
 
@@ -47,11 +50,9 @@ Page({
         loading: false
       });
 
-      // 如果只有一个角色，自动选中
-      if (has_boxer_profile && !has_gym_profile) {
-        this.setData({ selectedRole: 'boxer' });
-      } else if (!has_boxer_profile && has_gym_profile) {
-        this.setData({ selectedRole: 'gym' });
+      // 只有非手动切换时才自动导航
+      if (!isManualSwitch) {
+        this.autoNavigate(has_boxer_profile, has_gym_profile, result.is_admin || false);
       }
     } catch (err) {
       console.error('[RoleSelect] 获取用户状态失败:', err);
@@ -83,18 +84,90 @@ Page({
         loading: false
       });
 
-      if (has_boxer_profile && !has_gym_profile) {
-        this.setData({ selectedRole: 'boxer' });
-      } else if (!has_boxer_profile && has_gym_profile) {
-        this.setData({ selectedRole: 'gym' });
+      // 只有非手动切换时才自动导航
+      if (!isManualSwitch) {
+        this.autoNavigate(has_boxer_profile, has_gym_profile, authData?.is_admin || false);
       }
     }
   },
 
+  /**
+   * 自动导航到合适的角色界面
+   */
+  autoNavigate(hasBoxerProfile, hasGymProfile, isAdmin) {
+    // 计算用户拥有的角色数量
+    const roleCount = (hasBoxerProfile ? 1 : 0) + (hasGymProfile ? 1 : 0) + (isAdmin ? 1 : 0);
+
+    if (roleCount === 0) {
+      // 没有任何角色，停留在角色选择页面
+      return;
+    }
+
+    if (roleCount === 1) {
+      // 只有一个角色，直接进入该角色界面
+      let targetRole;
+      if (hasBoxerProfile) targetRole = 'boxer';
+      else if (hasGymProfile) targetRole = 'gym';
+      else if (isAdmin) targetRole = 'admin';
+      this.navigateToRole(targetRole, hasBoxerProfile, hasGymProfile);
+    } else {
+      // 多个角色，按优先级导航：拳手 > 拳馆 > 管理员
+      if (hasBoxerProfile) {
+        this.navigateToRole('boxer', hasBoxerProfile, hasGymProfile);
+      } else if (hasGymProfile) {
+        this.navigateToRole('gym', hasBoxerProfile, hasGymProfile);
+      } else if (isAdmin) {
+        this.navigateToRole('admin', hasBoxerProfile, hasGymProfile);
+      }
+    }
+  },
+
+  /**
+   * 导航到指定角色界面
+   */
+  navigateToRole(role, hasBoxerProfile, hasGymProfile) {
+    // 保存选择的角色
+    saveAuthData({
+      user_id: getUserId(),
+      roles: {
+        has_boxer_profile: hasBoxerProfile,
+        has_gym_profile: hasGymProfile
+      },
+      last_role: role,
+      is_admin: this.data.isAdmin || false,
+      is_superadmin: getAuthData()?.is_superadmin || false
+    });
+
+    if (role === 'boxer') {
+      if (hasBoxerProfile) {
+        wx.reLaunch({
+          url: '/pages/common/dashboard/dashboard'
+        });
+      } else {
+        wx.redirectTo({
+          url: '/pages/boxer/profile-create/profile-create'
+        });
+      }
+    } else if (role === 'gym') {
+      if (hasGymProfile) {
+        wx.reLaunch({
+          url: '/pages/common/dashboard/dashboard'
+        });
+      } else {
+        wx.redirectTo({
+          url: '/pages/gym/profile-create/profile-create'
+        });
+      }
+    } else if (role === 'admin') {
+      wx.reLaunch({
+        url: '/pages/admin/dashboard/dashboard'
+      });
+    }
+  },
+
   onShow() {
-    // 页面显示时，不需要自动导航
-    // 让用户看到角色选择界面并主动选择
-    // Home 按钮返回时也应该停留在角色选择页面
+    // 页面显示时不需要自动导航
+    // 如果用户点击切换角色按钮返回，停留在角色选择页面
   },
 
   /**
@@ -155,13 +228,10 @@ Page({
       }
     } else if (selectedRole === 'gym') {
       if (hasGymProfile) {
-        // 已有拳馆档案，需要检查审核状态
-        // 跳转到详情页，由详情页检查状态
         wx.reLaunch({
-          url: '/pages/gym/detail/detail?mode=check_status'
+          url: '/pages/common/dashboard/dashboard'
         });
       } else {
-        // 新建拳馆档案
         wx.redirectTo({
           url: '/pages/gym/profile-create/profile-create'
         });
