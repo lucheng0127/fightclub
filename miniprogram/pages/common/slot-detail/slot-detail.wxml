@@ -1,0 +1,109 @@
+<!-- 时间段详情页 -->
+<view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-bar-content">
+      <text class="nav-bar-back" bindtap="onBack">←</text>
+      <text class="nav-bar-title">场地详情</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content" wx:if="{{!loading && slot}}" style="padding-top: {{navBarHeight + 20}}px;">
+    <!-- 拳馆信息 -->
+    <view class="section gym-section">
+      <view class="section-title">拳馆信息</view>
+      <view class="gym-card">
+        <view class="gym-name">{{gym.name}}</view>
+        <view class="gym-info-row">
+          <text class="info-icon">📍</text>
+          <text class="info-text">{{gym.city}} {{gym.address}}</text>
+        </view>
+        <view class="gym-info-row">
+          <text class="info-icon">📞</text>
+          <text class="info-text">{{gym.phone}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 时间段信息 -->
+    <view class="section slot-section">
+      <view class="section-title">时间段</view>
+      <view class="slot-card">
+        <view class="slot-row">
+          <text class="slot-label">日期</text>
+          <text class="slot-value">{{slot.date}}</text>
+        </view>
+        <view class="slot-row">
+          <text class="slot-label">时间</text>
+          <text class="slot-value">{{slot.start_time}} - {{slot.end_time}}</text>
+        </view>
+        <view class="slot-row">
+          <text class="slot-label">人数</text>
+          <text class="slot-value">{{slot.current_bookings}}/{{slot.max_boxers}}</text>
+        </view>
+        <view class="slot-row">
+          <text class="slot-label">状态</text>
+          <view class="status-badge {{slot.available_spots === 0 ? 'full' : 'available'}}">
+            <text>{{slot.available_spots === 0 ? '已满' : slot.available_spots + '个名额'}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 预约拳手列表 -->
+    <view class="section bookings-section" wx:if="{{slot.current_bookings > 0}}">
+      <view class="section-title">
+        <text>已预约拳手</text>
+        <text class="count">({{slot.current_bookings}})</text>
+      </view>
+      <view class="bookings-list">
+        <view class="boxer-card" wx:for="{{bookers}}" wx:key="boxer_id" bindtap="onBoxerTap" data-id="{{item.boxer_id}}">
+          <view class="boxer-avatar">🥊</view>
+          <view class="boxer-info">
+            <view class="boxer-name">{{item.nickname}}</view>
+            <view class="boxer-details">
+              <text>{{item.age}}岁</text>
+              <text>{{item.height}}cm</text>
+              <text>{{item.weight}}kg</text>
+              <text wx:if="{{item.city}}">{{item.city}}</text>
+            </view>
+          </view>
+          <view class="boxer-gender {{item.gender === 'male' ? 'male' : 'female'}}">
+            {{item.gender === 'male' ? '♂' : '♀'}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="actions">
+      <button
+        class="action-btn book-btn"
+        bindtap="onBook"
+        disabled="{{slot.available_spots === 0 || slot.is_booked || booking}}"
+        wx:if="{{!slot.is_booked}}"
+      >
+        {{booking ? '预约中...' : (slot.available_spots === 0 ? '名额已满' : '立即预约')}}
+      </button>
+
+      <button
+        class="action-btn cancel-btn"
+        bindtap="onCancel"
+        disabled="{{cancelling}}"
+        wx:if="{{slot.is_booked}}"
+      >
+        {{cancelling ? '取消中...' : '取消预约'}}
+      </button>
+
+      <button class="action-btn view-btn" bindtap="onViewBookings" wx:if="{{slot.current_bookings > 0}}">
+        查看全部预约
+      </button>
+    </view>
+  </view>
+</view>

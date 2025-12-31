@@ -1,0 +1,112 @@
+<!-- 可预约场地列表页 -->
+<view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-bar-content">
+      <text class="nav-bar-back" bindtap="onBack">←</text>
+      <text class="nav-bar-title">可预约场地</text>
+    </view>
+  </view>
+
+  <!-- 筛选栏 -->
+  <view class="filters">
+    <!-- 城市筛选 -->
+    <view class="filter-chip" bindtap="onShowCityPicker">
+      <text class="filter-chip-text">{{filters.city || '城市'}}</text>
+      <text class="filter-chip-icon">▼</text>
+    </view>
+
+    <!-- 清空筛选 -->
+    <view class="filter-chip filter-chip-action" bindtap="onClearFilters" wx:if="{{hasFilters}}">
+      <text class="filter-chip-text">清空</text>
+    </view>
+  </view>
+
+  <!-- 城市选择弹窗 -->
+  <view class="city-picker-modal" wx:if="{{showCityPicker}}">
+    <view class="city-picker-mask" bindtap="onHideCityPicker"></view>
+    <view class="city-picker-content">
+      <view class="city-picker-header">
+        <text class="city-picker-title">选择城市</text>
+        <text class="city-picker-close" bindtap="onHideCityPicker">✕</text>
+      </view>
+      <view class="city-picker-body">
+        <picker-view
+          class="city-picker-view"
+          indicator-style="height: 50px;"
+          value="{{cityPickerValue}}"
+          bindchange="onCityPickerChange"
+        >
+          <picker-view-column>
+            <view wx:for="{{provinces}}" wx:key="*this">{{item}}</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{cities}}" wx:key="*this">{{item}}</view>
+          </picker-view-column>
+        </picker-view>
+      </view>
+      <view class="city-picker-footer">
+        <button class="city-picker-btn city-picker-btn-cancel" bindtap="onHideCityPicker">取消</button>
+        <button class="city-picker-btn city-picker-btn-confirm" bindtap="onConfirmCity">确定</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading && list.length === 0}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && list.length === 0}}">
+    <text class="empty-icon">🥊</text>
+    <text class="empty-text">{{hasFilters ? '没有符合条件的场地' : '暂无可预约场地'}}</text>
+  </view>
+
+  <!-- 场地列表 -->
+  <view class="list" wx:if="{{list.length > 0}}" style="padding-top: {{navBarHeight + 140}}rpx;">
+    <view
+      class="card slot-card"
+      wx:for="{{list}}"
+      wx:key="slot_id"
+      bindtap="onCardTap"
+      data-id="{{item.slot_id}}"
+    >
+      <!-- 拳馆信息 -->
+      <view class="gym-info">
+        <view class="gym-name">{{item.gym.name}}</view>
+        <view class="gym-address">
+          <text class="address-icon">📍</text>
+          <text>{{item.gym.city}} {{item.gym.address}}</text>
+        </view>
+      </view>
+
+      <!-- 时间段信息 -->
+      <view class="slot-info">
+        <view class="slot-date">
+          <text class="date-icon">📅</text>
+          <text class="date-text">{{item.date}}</text>
+        </view>
+        <view class="slot-time">
+          <text class="time-icon">⏰</text>
+          <text class="time-text">{{item.start_time}} - {{item.end_time}}</text>
+        </view>
+      </view>
+
+      <!-- 预约状态 -->
+      <view class="booking-status">
+        <view class="capacity {{item.available_spots === 0 ? 'full' : ''}}">
+          <text class="capacity-icon">👥</text>
+          <text>{{item.current_bookings}}/{{item.max_boxers}}</text>
+          <text wx:if="{{item.available_spots > 0}}"> (余{{item.available_spots}})</text>
+          <text wx:else> (已满)</text>
+        </view>
+
+        <view class="booked-badge" wx:if="{{item.is_booked}}">
+          <text class="booked-icon">✓</text>
+          <text>已预约</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

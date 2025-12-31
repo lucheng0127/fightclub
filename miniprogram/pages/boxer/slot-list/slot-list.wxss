@@ -1,0 +1,300 @@
+/* 容器 */
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* 导航栏 */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-bottom: 1rpx solid #eee;
+  z-index: 100;
+}
+
+.nav-bar-content {
+  position: relative;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-bar-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.nav-bar-back {
+  position: absolute;
+  left: 16px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* 筛选栏 */
+.filters {
+  position: fixed;
+  top: calc(var(--nav-bar-height) + 44px);
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 16rpx;
+  padding: 24rpx 32rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #eee;
+  z-index: 99;
+}
+
+.filter-chip {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  background-color: #f5f5f5;
+  border-radius: 48rpx;
+  font-size: 26rpx;
+}
+
+.filter-chip-text {
+  color: #333;
+}
+
+.filter-chip-icon {
+  margin-left: 8rpx;
+  font-size: 20rpx;
+  color: #999;
+}
+
+.filter-chip-action {
+  background-color: #1890ff;
+}
+
+.filter-chip-action .filter-chip-text {
+  color: #fff;
+}
+
+/* 城市选择弹窗 */
+.city-picker-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+}
+
+.city-picker-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.city-picker-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-radius: 24rpx 24rpx 0 0;
+  padding: 32rpx;
+}
+
+.city-picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32rpx;
+}
+
+.city-picker-title {
+  font-size: 32rpx;
+  font-weight: 600;
+}
+
+.city-picker-close {
+  font-size: 36rpx;
+  color: #999;
+}
+
+.city-picker-view {
+  height: 400rpx;
+}
+
+.city-picker-body picker-view-column view {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+}
+
+.city-picker-footer {
+  display: flex;
+  gap: 24rpx;
+  margin-top: 32rpx;
+}
+
+.city-picker-btn {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+}
+
+.city-picker-btn-cancel {
+  background-color: #f5f5f5;
+  color: #666;
+}
+
+.city-picker-btn-confirm {
+  background-color: #1890ff;
+  color: #fff;
+}
+
+/* 加载状态 */
+.loading {
+  padding: 200rpx 0;
+  text-align: center;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 空状态 */
+.empty {
+  padding: 200rpx 32rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  display: block;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 列表 */
+.list {
+  padding: 24rpx 32rpx;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 场地卡片 */
+.gym-info {
+  margin-bottom: 24rpx;
+  padding-bottom: 24rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.gym-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.gym-address {
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.address-icon {
+  margin-right: 8rpx;
+  font-size: 28rpx;
+}
+
+.slot-info {
+  margin-bottom: 16rpx;
+}
+
+.slot-date {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.date-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.date-text {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 600;
+}
+
+.slot-time {
+  display: flex;
+  align-items: center;
+}
+
+.time-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.time-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.booking-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #eee;
+}
+
+.capacity {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  color: #52c41a;
+}
+
+.capacity.full {
+  color: #ff4d4f;
+}
+
+.capacity-icon {
+  font-size: 32rpx;
+  margin-right: 8rpx;
+}
+
+.booked-badge {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 16rpx;
+  background-color: #e6f7ff;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  color: #1890ff;
+}
+
+.booked-icon {
+  font-size: 28rpx;
+  margin-right: 4rpx;
+}

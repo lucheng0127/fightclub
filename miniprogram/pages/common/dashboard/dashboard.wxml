@@ -33,13 +33,35 @@
 
     <!-- 功能入口 -->
     <view class="actions-section">
+      <!-- 拳手专属功能 -->
       <view class="action-item" bindtap="goToBoxerList">
         <view class="action-icon">🥊</view>
         <text class="action-text">浏览拳手</text>
       </view>
+      <view class="action-item" bindtap="goToSlotList" wx:if="{{currentRole === 'boxer'}}">
+        <view class="action-icon">📅</view>
+        <text class="action-text">可预约场地</text>
+      </view>
+      <view class="action-item" bindtap="goToMyBookings" wx:if="{{currentRole === 'boxer'}}">
+        <view class="action-icon">📋</view>
+        <text class="action-text">我的预约</text>
+      </view>
+      <!-- 拳馆专属功能 -->
       <view class="action-item" bindtap="goToGymList">
         <view class="action-icon">🏢</view>
         <text class="action-text">浏览拳馆</text>
+      </view>
+      <view class="action-item" bindtap="goToGymSlotManage" wx:if="{{currentRole === 'gym'}}">
+        <view class="action-icon">📋</view>
+        <text class="action-text">场地管理</text>
+      </view>
+      <!-- 通用功能 -->
+      <view class="action-item" bindtap="goToNotifications">
+        <view class="action-icon-wrapper">
+          <view class="action-icon">📬</view>
+          <view class="badge" wx:if="{{unreadCount > 0}}">{{unreadCount}}</view>
+        </view>
+        <text class="action-text">消息中心</text>
       </view>
       <view class="action-item" bindtap="goToProfile">
         <view class="action-icon">👤</view>

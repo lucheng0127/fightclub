@@ -1,0 +1,10 @@
+{
+  "name": "gym-slot-publish",
+  "version": "1.0.0",
+  "description": "拳馆发布场地时间段云函数",
+  "main": "index.js",
+  "scripts": {},
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

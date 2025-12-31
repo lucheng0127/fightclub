@@ -1,0 +1,111 @@
+<!-- 我的预约页面 -->
+<view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-bar-content">
+      <text class="nav-bar-back" bindtap="onBack">←</text>
+      <text class="nav-bar-title">我的预约</text>
+    </view>
+  </view>
+
+  <!-- 状态切换 -->
+  <view class="status-tabs">
+    <view
+      class="status-tab {{currentStatus === 'active' ? 'active' : ''}}"
+      bindtap="onStatusChange"
+      data-status="active"
+    >
+      <text>进行中 ({{activeCount}})</text>
+    </view>
+    <view
+      class="status-tab {{currentStatus === 'all' ? 'active' : ''}}"
+      bindtap="onStatusChange"
+      data-status="all"
+    >
+      <text>全部 ({{totalCount}})</text>
+    </view>
+    <view
+      class="status-tab {{currentStatus === 'cancelled' ? 'active' : ''}}"
+      bindtap="onStatusChange"
+      data-status="cancelled"
+    >
+      <text>已取消 ({{cancelledCount}})</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading && list.length === 0}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && list.length === 0}}">
+    <text class="empty-icon">📅</text>
+    <text class="empty-text">{{currentStatus === 'active' ? '暂无进行中的预约' : '暂无预约记录'}}</text>
+    <button class="empty-btn" bindtap="goToSlotList" wx:if="{{currentStatus === 'active'}}">
+      去预约场地
+    </button>
+  </view>
+
+  <!-- 预约列表 -->
+  <view class="list" wx:if="{{list.length > 0}}" style="padding-top: {{navBarHeight + 100}}rpx;">
+    <view class="card booking-card" wx:for="{{list}}" wx:key="booking_id">
+      <!-- 拳馆信息 -->
+      <view class="gym-info" bindtap="onGymTap" data-id="{{item.gym.gym_id}}">
+        <view class="gym-name">{{item.gym.name}}</view>
+        <view class="gym-address">
+          <text class="address-icon">📍</text>
+          <text>{{item.gym.city}} {{item.gym.address}}</text>
+        </view>
+      </view>
+
+      <!-- 时间段信息 -->
+      <view class="slot-info">
+        <view class="slot-date">
+          <text class="date-icon">📅</text>
+          <text class="date-text">{{item.slot.date}}</text>
+          <view class="status-badge {{item.status === 'active' ? 'active' : 'cancelled'}}">
+            <text>{{item.status === 'active' ? '进行中' : '已取消'}}</text>
+          </view>
+        </view>
+        <view class="slot-time">
+          <text class="time-icon">⏰</text>
+          <text class="time-text">{{item.slot.start_time}} - {{item.slot.end_time}}</text>
+        </view>
+      </view>
+
+      <!-- 取倒计时 -->
+      <view class="deadline" wx:if="{{item.status === 'active' && item.minutes_until_deadline !== null}}">
+        <text class="deadline-icon">⏳</text>
+        <text class="deadline-text" wx:if="{{item.minutes_until_deadline > 0}}">
+          {{item.minutes_until_deadline}}分钟后可取消
+        </text>
+        <text class="deadline-text deadline-expired" wx:else>
+          不可取消（已过截止时间）
+        </text>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="actions">
+        <button
+          class="action-btn detail-btn"
+          bindtap="onViewDetail"
+          data-id="{{item.slot_id}}"
+        >
+          查看详情
+        </button>
+
+        <button
+          class="action-btn cancel-btn"
+          bindtap="onCancelBooking"
+          data-id="{{item.booking_id}}"
+          data-index="{{index}}"
+          disabled="{{item.cancelling || !item.can_cancel}}"
+          wx:if="{{item.status === 'active'}}"
+        >
+          {{item.cancelling ? '取消中...' : (item.can_cancel ? '取消预约' : '不可取消')}}
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

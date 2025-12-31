@@ -132,6 +132,27 @@
   margin-right: 24rpx;
 }
 
+.action-icon-wrapper {
+  position: relative;
+  margin-right: 24rpx;
+}
+
+.badge {
+  position: absolute;
+  top: -8rpx;
+  right: -8rpx;
+  min-width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  text-align: center;
+  background-color: #ff4d4f;
+  color: #fff;
+  font-size: 20rpx;
+  border-radius: 16rpx;
+  padding: 0 8rpx;
+  font-weight: 600;
+}
+
 .action-text {
   flex: 1;
   font-size: 32rpx;

@@ -1,0 +1,10 @@
+{
+  "name": "notification-list",
+  "version": "1.0.0",
+  "description": "查询用户通知消息云函数",
+  "main": "index.js",
+  "scripts": {},
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

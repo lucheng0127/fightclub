@@ -1,0 +1,47 @@
+<!-- 消息中心页 -->
+<view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-bar-content">
+      <text class="nav-bar-back" bindtap="onBack">←</text>
+      <text class="nav-bar-title">消息中心</text>
+      <text class="nav-bar-action" bindtap="onMarkAllRead">全部已读</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading && list.length === 0}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{!loading && list.length === 0}}">
+    <text class="empty-icon">📬</text>
+    <text class="empty-text">暂无消息</text>
+  </view>
+
+  <!-- 消息列表 -->
+  <view class="list" wx:if="{{list.length > 0}}" style="padding-top: {{navBarHeight + 20}}px;">
+    <view
+      class="card {{item.is_read ? 'read' : 'unread'}}"
+      wx:for="{{list}}"
+      wx:key="notification_id"
+      bindtap="onCardTap"
+      data-id="{{item.notification_id}}"
+      data-read="{{item.is_read}}"
+    >
+      <view class="card-header">
+        <view class="card-type {{item.type}}">
+          <text class="type-icon">{{item.type === 'new_booking' ? '📝' : '❌'}}</text>
+          <text class="type-text">{{item.type === 'new_booking' ? '新预约' : '取消预约'}}</text>
+        </view>
+        <view class="card-time">{{item.created_at_text}}</view>
+      </view>
+
+      <view class="card-title">{{item.title}}</view>
+      <view class="card-content">{{item.content}}</view>
+
+      <view class="unread-dot" wx:if="{{!item.is_read}}"></view>
+    </view>
+  </view>
+</view>

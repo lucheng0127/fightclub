@@ -1,0 +1,348 @@
+/* 容器 */
+.container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 100rpx;
+}
+
+/* 导航栏 */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-bottom: 1rpx solid #eee;
+  z-index: 100;
+}
+
+.nav-bar-content {
+  position: relative;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-bar-title {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.nav-bar-back {
+  position: absolute;
+  left: 16px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* 头部 */
+.header {
+  padding: 120rpx 32rpx 32rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+
+.stats {
+  display: flex;
+  gap: 48rpx;
+  margin-bottom: 16rpx;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 状态切换 */
+.status-tabs {
+  display: flex;
+  background-color: #fff;
+  border-bottom: 1rpx solid #eee;
+}
+
+.status-tab {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+}
+
+.status-tab.active {
+  color: #1890ff;
+  font-weight: 600;
+}
+
+.status-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 4rpx;
+  background-color: #1890ff;
+  border-radius: 2rpx;
+}
+
+/* 加载状态 */
+.loading {
+  padding: 80rpx 0;
+  text-align: center;
+}
+
+.loading-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 空状态 */
+.empty {
+  padding: 120rpx 32rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  display: block;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 列表 */
+.list {
+  padding: 24rpx 32rpx;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 时间段卡片 */
+.slot-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.date-text {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.status-badge {
+  padding: 8rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+}
+
+.status-badge.active {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.status-badge.cancelled {
+  background-color: #f5f5f5;
+  color: #999;
+}
+
+.slot-time {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.time-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.time-text {
+  font-size: 32rpx;
+  color: #666;
+}
+
+.slot-capacity {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.capacity-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.capacity-text {
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 操作按钮区域 */
+.slot-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #eee;
+}
+
+.actions-row {
+  display: flex;
+  gap: 16rpx;
+}
+
+.actions-row.locked {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.action-btn {
+  flex: 1;
+  height: 64rpx;
+  line-height: 64rpx;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 0;
+  text-align: center;
+}
+
+.edit-btn {
+  background-color: #1890ff;
+  color: #fff;
+}
+
+.edit-btn[disabled] {
+  background-color: #d9d9d9;
+  color: #999;
+}
+
+.delete-btn {
+  background-color: #fff;
+  color: #ff4d4f;
+  border: 1rpx solid #ff4d4f;
+}
+
+.delete-btn[disabled] {
+  background-color: #f5f5f5;
+  color: #999;
+  border-color: #d9d9d9;
+}
+
+.view-btn {
+  background-color: #f0f9ff;
+  color: #1890ff;
+  border: none;
+}
+
+.locked-badge {
+  display: flex;
+  align-items: center;
+  padding: 12rpx 20rpx;
+  background-color: #f5f5f5;
+  border-radius: 8rpx;
+  flex: 1;
+}
+
+.locked-icon {
+  font-size: 28rpx;
+  margin-right: 8rpx;
+}
+
+.locked-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.slot-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #eee;
+}
+
+.modify-badge {
+  display: flex;
+  align-items: center;
+}
+
+.modify-badge.disabled {
+  opacity: 0.5;
+}
+
+.badge-icon {
+  font-size: 28rpx;
+  margin-right: 8rpx;
+}
+
+.badge-text {
+  font-size: 24rpx;
+  color: #1890ff;
+}
+
+.modify-badge.disabled .badge-text {
+  color: #999;
+}
+
+.bookings-badge {
+  display: flex;
+  align-items: center;
+}
+
+/* 发布按钮 */
+.fab {
+  position: fixed;
+  bottom: 48rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  background-color: #1890ff;
+  color: #fff;
+  padding: 24rpx 48rpx;
+  border-radius: 48rpx;
+  box-shadow: 0 8rpx 24rpx rgba(24, 144, 255, 0.4);
+}
+
+.fab-icon {
+  font-size: 40rpx;
+  margin-right: 12rpx;
+  line-height: 1;
+}
+
+.fab-text {
+  font-size: 28rpx;
+  font-weight: 600;
+}

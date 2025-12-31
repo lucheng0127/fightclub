@@ -1,0 +1,81 @@
+<!-- 预约拳手列表页 -->
+<view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-bar-content">
+      <text class="nav-bar-back" bindtap="onBack">←</text>
+      <text class="nav-bar-title">预约拳手</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content" wx:if="{{!loading && slot && gym}}" style="padding-top: {{navBarHeight + 20}}px;">
+    <!-- 时间段信息 -->
+    <view class="section slot-section">
+      <view class="section-title">时间段</view>
+      <view class="slot-info-card">
+        <view class="slot-gym">{{gym.name}}</view>
+        <view class="slot-date">{{slot.date}}</view>
+        <view class="slot-time">{{slot.start_time}} - {{slot.end_time}}</view>
+        <view class="slot-capacity">
+          <text>预约人数：{{slot.current_bookings}}/{{slot.max_boxers}}</text>
+          <text wx:if="{{slot.available_spots > 0}}"> (余{{slot.available_spots}})</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 拳手列表 -->
+    <view class="section boxers-section">
+      <view class="section-title">
+        <text>预约拳手</text>
+        <text class="count">({{boxers.length}})</text>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="empty" wx:if="{{boxers.length === 0}}">
+        <text class="empty-text">暂无预约</text>
+      </view>
+
+      <!-- 列表 -->
+      <view class="boxers-list" wx:if="{{boxers.length > 0}}">
+        <view
+          class="boxer-card"
+          wx:for="{{boxers}}"
+          wx:key="boxer_id"
+          bindtap="onBoxerTap"
+          data-id="{{item.boxer_id}}"
+        >
+          <view class="boxer-avatar">🥊</view>
+          <view class="boxer-info">
+            <view class="boxer-name-row">
+              <text class="boxer-name">{{item.nickname}}</text>
+              <view class="boxer-gender {{item.gender === 'male' ? 'male' : 'female'}}">
+                {{item.gender === 'male' ? '♂' : '♀'}}
+              </view>
+            </view>
+            <view class="boxer-details">
+              <text class="detail-item">{{item.age}}岁</text>
+              <text class="detail-item">{{item.height}}cm</text>
+              <text class="detail-item">{{item.weight}}kg</text>
+              <text class="detail-item" wx:if="{{item.city}}">{{item.city}}</text>
+            </view>
+            <view class="booking-time" wx:if="{{item.booking_time}}">
+              <text class="time-label">预约时间：</text>
+              <text>{{item.booking_time_text}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 拳馆操作（仅从拳馆侧进入时显示） -->
+    <view class="gym-actions" wx:if="{{from === 'gym'}}">
+      <button class="action-btn" bindtap="onContact">联系拳手</button>
+    </view>
+  </view>
+</view>

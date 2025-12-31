@@ -10,7 +10,8 @@ Page({
     gymCount: 0,
     currentRole: 'boxer',
     statusBarHeight: 20,
-    navBarHeight: 64
+    navBarHeight: 64,
+    unreadCount: 0
   },
 
   onLoad() {
@@ -59,6 +60,7 @@ Page({
   onShow() {
     // 每次显示时刷新统计数据
     this.loadStats();
+    this.loadUnreadCount();
   },
 
   /**
@@ -177,6 +179,56 @@ Page({
   onSwitchRole() {
     wx.reLaunch({
       url: '/pages/auth/role-select/role-select?manual=true'
+    });
+  },
+
+  /**
+   * 加载未读消息数
+   */
+  async loadUnreadCount() {
+    try {
+      const result = await callFunction('notification-list', {}, { showLoading: false });
+      this.setData({
+        unreadCount: result.unread_count || 0
+      });
+    } catch (e) {
+      console.error('加载未读消息数失败:', e);
+    }
+  },
+
+  /**
+   * 跳转到可预约场地列表（拳手）
+   */
+  goToSlotList() {
+    wx.navigateTo({
+      url: '/pages/boxer/slot-list/slot-list'
+    });
+  },
+
+  /**
+   * 跳转到我的预约（拳手）
+   */
+  goToMyBookings() {
+    wx.navigateTo({
+      url: '/pages/boxer/my-bookings/my-bookings'
+    });
+  },
+
+  /**
+   * 跳转到拳馆场地管理（拳馆）
+   */
+  goToGymSlotManage() {
+    wx.navigateTo({
+      url: '/pages/gym/slot-manage/slot-manage'
+    });
+  },
+
+  /**
+   * 跳转到消息中心
+   */
+  goToNotifications() {
+    wx.navigateTo({
+      url: '/pages/common/notifications/notifications'
     });
   }
 });

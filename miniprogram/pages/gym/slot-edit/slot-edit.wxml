@@ -1,0 +1,104 @@
+<!-- 编辑时间段页 -->
+<view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top: {{statusBarHeight}}px; height: {{navBarHeight}}px;">
+    <view class="nav-bar-content">
+      <text class="nav-bar-back" bindtap="onBack">←</text>
+      <text class="nav-bar-title">编辑时间段</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 表单 -->
+  <view class="form" wx:if="{{!loading}}" style="padding-top: {{navBarHeight + 20}}px;">
+    <!-- 日期选择 -->
+    <view class="form-group">
+      <text class="form-label">日期</text>
+      <picker
+        class="form-picker"
+        mode="date"
+        value="{{form.date}}"
+        start="{{minDate}}"
+        end="{{maxDate}}"
+        bindchange="onDateChange"
+      >
+        <view class="picker-value">
+          <text class="{{form.date ? '' : 'placeholder'}}">
+            {{form.date || '请选择日期'}}
+          </text>
+          <text class="picker-icon">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 开始时间 -->
+    <view class="form-group">
+      <text class="form-label">开始时间</text>
+      <picker
+        class="form-picker"
+        mode="time"
+        value="{{form.start_time}}"
+        start="06:00"
+        end="23:00"
+        bindchange="onStartTimeChange"
+      >
+        <view class="picker-value">
+          <text class="{{form.start_time ? '' : 'placeholder'}}">
+            {{form.start_time || '请选择开始时间'}}
+          </text>
+          <text class="picker-icon">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 结束时间 -->
+    <view class="form-group">
+      <text class="form-label">结束时间</text>
+      <picker
+        class="form-picker"
+        mode="time"
+        value="{{form.end_time}}"
+        start="06:00"
+        end="23:00"
+        bindchange="onEndTimeChange"
+      >
+        <view class="picker-value">
+          <text class="{{form.end_time ? '' : 'placeholder'}}">
+            {{form.end_time || '请选择结束时间'}}
+          </text>
+          <text class="picker-icon">▼</text>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 最大人数 -->
+    <view class="form-group">
+      <text class="form-label">最大人数</text>
+      <view class="counter">
+        <button class="counter-btn" bindtap="onDecreaseMaxBoxers" disabled="{{form.max_boxers <= currentBookings || form.max_boxers <= 1}}">-</button>
+        <text class="counter-value">{{form.max_boxers}}</text>
+        <button class="counter-btn" bindtap="onIncreaseMaxBoxers" disabled="{{form.max_boxers >= 50}}">+</button>
+      </view>
+      <text class="form-hint">当前已预约: {{currentBookings}}人</text>
+    </view>
+
+    <!-- 按钮组 -->
+    <view class="button-group">
+      <button class="delete-btn" bindtap="onDelete" disabled="{{deleting}}">
+        {{deleting ? '删除中...' : '撤销时间段'}}
+      </button>
+      <button class="submit-btn" bindtap="onSubmit" disabled="{{submitting}}">
+        {{submitting ? '保存中...' : '保存修改'}}
+      </button>
+    </view>
+
+    <!-- 查看预约按钮 -->
+    <button class="view-bookings-btn" bindtap="onViewBookings" wx:if="{{currentBookings > 0}}">
+      查看预约拳手 ({{currentBookings}})
+    </button>
+  </view>
+</view>
