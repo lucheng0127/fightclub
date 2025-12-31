@@ -13,6 +13,23 @@
 
       <!-- 角色选项 -->
       <view class="role-options">
+      <!-- 管理员选项 -->
+      <view
+        wx:if="{{isAdmin}}"
+        class="role-card {{selectedRole === 'admin' ? 'selected' : ''}}"
+        bindtap="onSelectRole"
+        data-role="admin"
+      >
+        <image class="role-icon" src="/images/admin-placeholder.png" mode="aspectFit" />
+        <view class="role-info">
+          <text class="role-name">我是管理员</text>
+          <text class="role-desc">管理平台，审核拳馆资料</text>
+        </view>
+        <view class="role-check" wx:if="{{selectedRole === 'admin'}}">
+          <text class="check-icon">✓</text>
+        </view>
+      </view>
+
       <view
         class="role-card {{selectedRole === 'boxer' ? 'selected' : ''}}"
         bindtap="onSelectRole"
@@ -57,7 +74,7 @@
         bindtap="onConfirm"
         disabled="{{!selectedRole}}"
       >
-        以{{selectedRole === 'boxer' ? '拳手' : '拳馆'}}身份进入
+        以{{selectedRole === 'boxer' ? '拳手' : selectedRole === 'gym' ? '拳馆' : '管理员'}}身份进入
       </button>
     </view>
   </view>

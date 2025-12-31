@@ -10,7 +10,12 @@
     "pages/gym/profile-edit/profile-edit",
     "pages/gym/list/list",
     "pages/gym/detail/detail",
-    "pages/common/dashboard/dashboard"
+    "pages/common/dashboard/dashboard",
+    "pages/admin/dashboard/dashboard",
+    "pages/admin/admin-manage/admin-manage",
+    "pages/admin/user-select/user-select",
+    "pages/admin/review-list/review-list",
+    "pages/admin/review-detail/review-detail"
   ],
   "window": {
     "navigationBarTitleText": "FightClub",

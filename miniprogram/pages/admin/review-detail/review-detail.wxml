@@ -1,0 +1,87 @@
+<!-- Review Detail Page -->
+<view class="review-detail-page">
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 审核详情 -->
+  <view class="detail-container" wx:if="{{!loading && review}}">
+    <!-- 状态栏 -->
+    <view class="status-bar status-{{review.status}}">
+      <text class="status-text">
+        {{review.status === 'pending' ? '待审核' : review.status === 'approved' ? '已通过' : '已拒绝'}}
+      </text>
+    </view>
+
+    <!-- 拳馆信息 -->
+    <view class="info-section">
+      <view class="section-title">拳馆信息</view>
+      <view class="info-row">
+        <text class="info-label">名称</text>
+        <text class="info-value">{{review.name}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">地址</text>
+        <text class="info-value">{{review.address}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">城市</text>
+        <text class="info-value">{{review.city || '未填写'}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">电话</text>
+        <text class="info-value">{{review.phone}}</text>
+      </view>
+      <view class="info-row" wx:if="{{review.location}}">
+        <text class="info-label">位置</text>
+        <text class="info-value">
+          {{review.location.latitude}}, {{review.location.longitude}}
+        </text>
+      </view>
+    </view>
+
+    <!-- 审核信息 -->
+    <view class="info-section" wx:if="{{review.status !== 'pending'}}">
+      <view class="section-title">审核信息</view>
+      <view class="info-row" wx:if="{{review.reviewed_at}}">
+        <text class="info-label">审核时间</text>
+        <text class="info-value">{{review.reviewed_at}}</text>
+      </view>
+      <view class="info-row" wx:if="{{review.reject_reason}}">
+        <text class="info-label">拒绝原因</text>
+        <text class="info-value reject-reason">{{review.reject_reason}}</text>
+      </view>
+    </view>
+
+    <!-- 拒绝原因输入 -->
+    <view class="reject-section" wx:if="{{review.status === 'pending'}}">
+      <view class="section-title">拒绝原因</view>
+      <textarea
+        class="reject-input"
+        placeholder="请输入拒绝原因..."
+        value="{{rejectReason}}"
+        bindinput="onReasonInput"
+        maxlength="200"
+      />
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons" wx:if="{{review.status === 'pending'}}">
+      <button
+        class="btn-approve"
+        bindtap="onApprove"
+        disabled="{{processing}}"
+      >
+        通过
+      </button>
+      <button
+        class="btn-reject"
+        bindtap="onReject"
+        disabled="{{processing}}"
+      >
+        拒绝
+      </button>
+    </view>
+  </view>
+</view>

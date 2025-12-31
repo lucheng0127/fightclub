@@ -1,0 +1,61 @@
+<!-- User Select Page -->
+<view class="user-select-page">
+  <view class="container">
+    <!-- 加载状态 -->
+    <view class="loading-container" wx:if="{{loading && list.length === 0}}">
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <!-- 用户列表 -->
+    <view wx:if="{{!loading || list.length > 0}}">
+      <view class="header">
+        <text class="title">选择用户</text>
+        <text class="subtitle">共 {{total}} 位用户</text>
+      </view>
+
+      <!-- 搜索框 -->
+      <view class="search-bar">
+        <input
+          class="search-input"
+          placeholder="搜索昵称"
+          value="{{keyword}}"
+          bindinput="onKeywordInput"
+          bindconfirm="onSearch"
+        />
+        <view class="search-actions" wx:if="{{keyword}}">
+          <text class="search-clear" bindtap="onClearSearch">清空</text>
+          <text class="search-button" bindtap="onSearch">搜索</text>
+        </view>
+        <text class="search-hint" wx:else>输入昵称后按搜索</text>
+      </view>
+
+      <!-- 用户列表 -->
+      <view class="user-list">
+        <scroll-view
+          scroll-y
+          class="list-scroll"
+          enable-back-to-top
+        >
+          <view
+            wx:for="{{list}}"
+            wx:key="user_id"
+            class="user-card"
+            bindtap="onSelectUser"
+            data-user="{{item}}"
+          >
+            <view class="user-info">
+              <text class="user-name">{{item.nickname || '未设置昵称'}}</text>
+              <text class="user-id">ID: {{item.user_id}}</text>
+              <text class="user-time">注册于 {{item.created_at_formatted}}</text>
+            </view>
+          </view>
+
+          <!-- 空状态 -->
+          <view wx:if="{{list.length === 0 && !loading}}" class="empty-state">
+            <text class="empty-text">{{keyword ? '未找到匹配的用户' : '暂无可用用户'}}</text>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+</view>

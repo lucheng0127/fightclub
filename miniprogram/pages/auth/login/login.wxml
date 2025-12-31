@@ -6,7 +6,8 @@
     <view class="title">FightClub</view>
     <view class="subtitle">拳击手与拳馆信息平台</view>
 
-    <view class="auth-section">
+    <!-- 授权登录界面 -->
+    <view class="auth-section" wx:if="{{!showNicknameInput}}">
       <button
         class="btn-auth"
         bindtap="onGetUserInfo"
@@ -16,24 +17,34 @@
       </button>
 
       <view class="tips">
-        <text class="tip-text">• 我们需要获取您的昵称和头像</text>
-        <text class="tip-text">• 位置信息用于筛选附近的拳馆</text>
-        <text class="tip-text">• 您可以随时在设置中管理授权</text>
+        <text class="tip-text">• 授权后请设置您的昵称</text>
+        <text class="tip-text">• 请使用真实昵称，不要使用默认昵称</text>
+        <text class="tip-text">• 禁止使用的昵称：微信用户、游客等</text>
       </view>
     </view>
 
-    <view class="location-section" wx:if="{{!locationAuthorized}}">
-      <button
-        class="btn-location"
-        bindtap="onGetLocation"
-        open-type="openSetting"
-        wx:if="{{locationDenied}}"
-      >
-        开启位置权限
-      </button>
-      <view class="location-tip" wx:else>
-        <text>建议开启位置权限以使用附近拳馆功能</text>
+    <!-- 昵称输入界面 -->
+    <view class="nickname-section" wx:if="{{showNicknameInput}}">
+      <view class="nickname-title">请输入您的昵称</view>
+      <view class="nickname-form">
+        <input
+          class="nickname-input"
+          placeholder="请输入昵称（必填）"
+          value="{{nickname}}"
+          bindinput="onNicknameInput"
+          maxlength="20"
+        />
+        <view class="nickname-count">{{nickname.length}}/20</view>
       </view>
+
+      <button
+        class="btn-submit"
+        bindtap="onSubmitNickname"
+        loading="{{loading}}"
+        disabled="{{!nickname || nickname.trim() === ''}}"
+      >
+        完成
+      </button>
     </view>
   </view>
 </view>

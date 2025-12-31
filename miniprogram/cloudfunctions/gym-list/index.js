@@ -79,7 +79,9 @@ exports.main = async (event, context) => {
     } = event;
 
     // 构建查询条件
-    const where = {};
+    const where = {
+      status: 'approved' // 只显示已审核通过的拳馆
+    };
 
     // 城市筛选
     if (city) {

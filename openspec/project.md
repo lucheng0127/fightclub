@@ -54,7 +54,15 @@
 
 **理由**: 确保资源来源可控，避免版权问题，保持项目文件完整性。
 
-### VI. Constitution Compliance
+### VII. 隐私保护
+
+**代码提交规范**
+- 提交代码前需要将miniprogram/app.js中的env替换成your-cloud-env-id
+- 提交代码前需要将miniprogram/project.private.config.json中的appid替换成your-app-id
+
+**理由**: 确保开发者开发环境信息不被提交到git。
+
+### VII. Constitution Compliance
 
 **宪法遵守原则**:
 - 所有代码生成和修改必须遵守本宪法

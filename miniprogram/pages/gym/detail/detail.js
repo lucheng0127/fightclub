@@ -16,6 +16,12 @@ Page({
     const mode = options.mode || 'view';
     const gymId = options.gym_id || '';
     this.setData({ mode, gymId });
+
+    // 如果是从角色选择页面来的检查状态模式
+    if (mode === 'check_status') {
+      this.fromRoleSelect = true;
+    }
+
     this.loadProfile();
   },
 
@@ -48,6 +54,49 @@ Page({
       // 如果没有传gym_id，说明是查看自己的档案，默认为true
       // 如果有gym_id，使用云函数返回的is_own_profile
       const isOwnProfile = !this.data.gymId || result.is_own_profile;
+
+      // 检查审核状态
+      const status = result.status || 'pending';
+      if (isOwnProfile && status !== 'approved') {
+        // 待审核或被拒绝状态，不允许进入
+        this.setData({ loading: false });
+
+        if (status === 'pending') {
+          // 待审核状态
+          wx.showModal({
+            title: '资料审核中',
+            content: '您的拳馆资料正在等待管理员审核，审核通过后即可使用。',
+            showCancel: false,
+            success: () => {
+              // 返回角色选择页面
+              wx.reLaunch({
+                url: '/pages/auth/role-select/role-select'
+              });
+            }
+          });
+        } else if (status === 'rejected') {
+          // 被拒绝状态
+          const rejectReason = result.reject_reason || '资料不符合要求';
+          wx.showModal({
+            title: '资料未通过审核',
+            content: `拒绝原因：${rejectReason}\n\n您可以重新编辑提交资料。`,
+            confirmText: '重新编辑',
+            cancelText: '返回',
+            success: (res) => {
+              if (res.confirm) {
+                wx.redirectTo({
+                  url: '/pages/gym/profile-edit/profile-edit'
+                });
+              } else {
+                wx.reLaunch({
+                  url: '/pages/auth/role-select/role-select'
+                });
+              }
+            }
+          });
+        }
+        return;
+      }
 
       this.setData({
         profile: result,

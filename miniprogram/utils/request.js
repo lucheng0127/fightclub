@@ -19,7 +19,16 @@ const FUNCTION_NAME_MAP = {
   'gym/get': 'gym-get',
   'gym/list': 'gym-list',
   'common/stats': 'stats',
-  'common/upload': 'common-upload'
+  'common/upload': 'common-upload',
+  'admin/check': 'admin-check',
+  'admin/list': 'admin-list',
+  'admin/add': 'admin-add',
+  'admin/remove': 'admin-remove',
+  'user/list': 'user-list',
+  'review/list': 'review-list',
+  'review/detail': 'review-detail',
+  'review/approve': 'review-approve',
+  'review/reject': 'review-reject'
 };
 
 /**
@@ -42,6 +51,8 @@ function callFunction(name, data = {}, options = {}) {
   const { showLoading = false } = options;
   const actualName = getActualFunctionName(name);
 
+  console.log(`[callFunction] 调用云函数: ${name} -> ${actualName}`, data);
+
   if (showLoading) {
     wx.showLoading({
       title: '加载中...',
@@ -53,6 +64,8 @@ function callFunction(name, data = {}, options = {}) {
     name: actualName,
     data
   }).then(res => {
+    console.log(`[callFunction] 云函数响应: ${actualName}`, res);
+
     if (showLoading) {
       wx.hideLoading();
     }
@@ -67,11 +80,12 @@ function callFunction(name, data = {}, options = {}) {
 
     return res.result.data;
   }).catch(err => {
+    console.error(`[callFunction] 云函数调用失败 [${name} -> ${actualName}]:`, err);
+    console.error(`[callFunction] 错误详情:`, JSON.stringify(err));
+
     if (showLoading) {
       wx.hideLoading();
     }
-
-    console.error(`云函数调用失败 [${name} -> ${actualName}]:`, err);
 
     // 显示错误提示
     wx.showToast({

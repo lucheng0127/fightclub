@@ -42,10 +42,11 @@ exports.main = async (event, context) => {
   try {
     // 从计数器集合中获取统计数据
     const boxerCounterResult = await db.collection('counters').doc('boxer_count').get();
-    const gymCounterResult = await db.collection('counters').doc('gym_count').get();
-
     const boxerCount = boxerCounterResult.data ? boxerCounterResult.data.count || 0 : 0;
-    const gymCount = gymCounterResult.data ? gymCounterResult.data.count || 0 : 0;
+
+    // 拳馆数量只统计已审核通过的
+    const gymCountResult = await db.collection('gyms').where({ status: 'approved' }).count();
+    const gymCount = gymCountResult.total || 0;
 
     console.log('[Stats] 查询成功, boxer_count:', boxerCount, 'gym_count:', gymCount);
 

@@ -1,0 +1,38 @@
+<!-- Admin Dashboard Page -->
+<view class="admin-dashboard-page">
+  <view class="dashboard-container">
+    <!-- 加载状态 -->
+    <view class="loading-container" wx:if="{{loading}}">
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <!-- 管理员面板 -->
+    <view wx:if="{{!loading}}">
+      <view class="header">
+        <text class="title">{{isSuperadmin ? '超级管理员' : '管理员'}}面板</text>
+        <text class="subtitle">管理平台内容</text>
+      </view>
+
+      <!-- 待审核入口 -->
+      <view class="menu-card" bindtap="goToReviewList">
+        <view class="menu-icon">📋</view>
+        <view class="menu-info">
+          <text class="menu-title">审核列表</text>
+          <text class="menu-desc">查看待审核的拳馆资料</text>
+        </view>
+        <view class="menu-badge" wx:if="{{pendingCount > 0}}">
+          <text class="badge-text">{{pendingCount > 99 ? '99+' : pendingCount}}</text>
+        </view>
+      </view>
+
+      <!-- 管理员管理入口（仅超级管理员） -->
+      <view class="menu-card" wx:if="{{isSuperadmin}}" bindtap="goToAdminManage">
+        <view class="menu-icon">👥</view>
+        <view class="menu-info">
+          <text class="menu-title">管理员管理</text>
+          <text class="menu-desc">添加或移除管理员</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

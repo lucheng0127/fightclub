@@ -278,7 +278,7 @@ Page({
     this.setData({ submitting: true });
 
     try {
-      await callFunction('gym/update', this.data.formData, { showLoading: true });
+      const result = await callFunction('gym/update', this.data.formData, { showLoading: true });
 
       // 保存成功后，如果之前有旧图片且与新图片不同，说明已经在上传时删除了
       // 这里只需要清空旧图片引用即可
@@ -286,14 +286,29 @@ Page({
         this.setData({ oldIconUrl: this.data.formData.icon_url });
       }
 
-      wx.showToast({
-        title: '保存成功',
-        icon: 'success'
-      });
+      // 如果是重新提交（被拒绝后重新编辑）
+      if (result.is_resubmit) {
+        wx.showToast({
+          title: '资料已提交审批',
+          icon: 'success',
+          duration: 2000
+        });
 
-      setTimeout(() => {
-        wx.navigateBack();
-      }, 1500);
+        setTimeout(() => {
+          wx.reLaunch({
+            url: '/pages/auth/role-select/role-select'
+          });
+        }, 2000);
+      } else {
+        wx.showToast({
+          title: '保存成功',
+          icon: 'success'
+        });
+
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+      }
 
     } catch (err) {
       console.error('更新拳馆档案失败:', err);

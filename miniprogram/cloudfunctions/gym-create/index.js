@@ -2,6 +2,7 @@
  * Gym Create Cloud Function
  * 创建拳馆档案云函数
  * 使用数据库事务确保数据一致性
+ * 创建后拳馆档案进入待审核状态
  */
 
 const cloud = require('wx-server-sdk');
@@ -12,6 +13,17 @@ cloud.init({
 });
 
 const db = cloud.database();
+
+/**
+ * 生成匿名用户ID（基于OpenID的非可逆哈希）
+ */
+function hashOpenID(openid) {
+  const salt = 'fightclub-salt-v1';
+  return crypto.createHash('sha256')
+    .update(openid + salt)
+    .digest('hex')
+    .substring(0, 16);
+}
 
 /**
  * 生成 gym_id
@@ -121,8 +133,9 @@ exports.main = async (event, context) => {
         });
       }
 
-      // 2. 创建拳馆档案
+      // 2. 创建拳馆档案（待审核状态）
       const now = new Date();
+      const userId = hashOpenID(openidVal);
       const gymData = {
         gym_id,
         user_id: openidVal,
@@ -135,12 +148,34 @@ exports.main = async (event, context) => {
         city: event.city || null,
         phone: event.phone.trim(),
         icon_url: event.icon_url || null,
+        status: 'pending', // 待审核状态
         created_at: now,
         updated_at: now
       };
 
       await transaction.collection('gyms').add({
         data: gymData
+      });
+
+      // 2.5 创建审核记录
+      const reviewData = {
+        gym_id,
+        user_id: userId,
+        name: event.name.trim(),
+        address: event.address.trim(),
+        location: {
+          latitude: event.location.latitude,
+          longitude: event.location.longitude
+        },
+        city: event.city || null,
+        phone: event.phone.trim(),
+        icon_url: event.icon_url || null,
+        status: 'pending',
+        submitted_at: now
+      };
+
+      await transaction.collection('gym_reviews').add({
+        data: reviewData
       });
 
       // 3. 更新用户记录
@@ -158,12 +193,13 @@ exports.main = async (event, context) => {
       // 提交事务
       await transaction.commit();
 
-      console.log('[GymCreate] 创建成功, gym_id:', gym_id);
+      console.log('[GymCreate] 创建成功, gym_id:', gym_id, '状态: 待审核');
 
       return successResponse({
         gym_id,
-        user_id: openidVal,
-        profile: gymData
+        user_id: userId,
+        profile: gymData,
+        status: 'pending'
       });
 
     } catch (transError) {

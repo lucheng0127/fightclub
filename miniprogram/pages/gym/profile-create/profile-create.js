@@ -234,27 +234,20 @@ Page({
       const result = await callFunction('gym/create', this.data.formData, { showLoading: true });
 
       // 更新本地存储的用户信息
-      const roles = {
-        has_boxer_profile: false,
-        has_gym_profile: true
-      };
-      saveAuthData({
-        user_id: result.user_id,
-        roles,
-        last_role: 'gym'
-      });
+      const authData = { user_id: result.user_id, roles: { has_boxer_profile: false, has_gym_profile: true }, last_role: 'gym' };
+      saveAuthData(authData);
 
-      wx.showToast({
-        title: '创建成功',
-        icon: 'success'
+      // 显示审核中提示
+      wx.showModal({
+        title: '提交成功',
+        content: '您的拳馆资料已提交，请等待管理员审核。审核通过后即可使用。',
+        showCancel: false,
+        success: () => {
+          wx.reLaunch({
+            url: '/pages/common/dashboard/dashboard'
+          });
+        }
       });
-
-      // 跳转到首页
-      setTimeout(() => {
-        wx.reLaunch({
-          url: '/pages/common/dashboard/dashboard'
-        });
-      }, 1500);
 
     } catch (err) {
       console.error('创建拳馆档案失败:', err);

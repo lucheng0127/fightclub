@@ -1,0 +1,49 @@
+<!-- Review List Page -->
+<view class="review-list-page">
+  <!-- 状态筛选 -->
+  <view class="filter-bar">
+    <picker mode="selector" range="{{statusOptions}}" range-key="label" value="{{statusIndex}}" bindchange="onStatusChange">
+      <view class="filter-picker">
+        <text class="filter-label">状态：</text>
+        <text class="filter-value">{{statusOptions[statusIndex].label}}</text>
+        <text class="filter-arrow">▼</text>
+      </view>
+    </picker>
+    <text class="filter-count">共 {{total}} 条</text>
+  </view>
+
+  <!-- 审核列表 -->
+  <view class="review-list">
+    <view
+      wx:for="{{list}}"
+      wx:key="review_id"
+      class="review-card"
+      bindtap="onReviewTap"
+      data-id="{{item.review_id}}"
+    >
+      <view class="review-header">
+        <text class="gym-name">{{item.name}}</text>
+        <view class="status-badge status-{{item.status}}">
+          <text>{{item.status === 'pending' ? '待审核' : item.status === 'approved' ? '已通过' : '已拒绝'}}</text>
+        </view>
+      </view>
+      <view class="review-info">
+        <text class="info-text">📍 {{item.city || '未填写城市'}}</text>
+        <text class="info-text">📞 {{item.phone}}</text>
+      </view>
+      <view class="review-footer">
+        <text class="submit-time">提交于 {{item.submitted_at_formatted}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{list.length === 0 && !loading}}" class="empty-state">
+      <text class="empty-text">暂无{{statusOptions[statusIndex].label}}记录</text>
+    </view>
+
+    <!-- 加载更多 -->
+    <view wx:if="{{has_more}}" class="load-more" bindtap="onLoadMore">
+      <text class="load-text">{{loading ? '加载中...' : '加载更多'}}</text>
+    </view>
+  </view>
+</view>

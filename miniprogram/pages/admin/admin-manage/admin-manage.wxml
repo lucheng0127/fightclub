@@ -1,0 +1,59 @@
+<!-- Admin Manage Page -->
+<view class="admin-manage-page">
+  <view class="container">
+    <!-- 加载状态 -->
+    <view class="loading-container" wx:if="{{loading}}">
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <!-- 管理员列表 -->
+    <view wx:if="{{!loading}}">
+      <view class="header">
+        <text class="title">管理员管理</text>
+        <text class="subtitle">共 {{admins.length}} 位管理员</text>
+      </view>
+
+      <!-- 添加按钮 -->
+      <view class="add-section">
+        <button class="btn-add" bindtap="onSelectUser" disabled="{{adding}}">
+          {{adding ? '添加中...' : '+ 添加管理员'}}
+        </button>
+      </view>
+
+      <!-- 管理员列表 -->
+      <view class="admin-list">
+        <view
+          wx:for="{{admins}}"
+          wx:key="admin_id"
+          class="admin-card"
+        >
+          <view class="admin-info">
+            <view class="admin-header">
+              <text class="admin-name">{{item.nickname || '管理员'}}</text>
+              <view class="badge {{item.superadmin ? 'badge-super' : 'badge-normal'}}">
+                <text>{{item.superadmin ? '超级管理员' : '管理员'}}</text>
+              </view>
+              <view class="badge badge-current" wx:if="{{item.is_current}}">
+                <text>当前</text>
+              </view>
+            </view>
+            <text class="admin-time">添加于 {{item.created_at_formatted}}</text>
+          </view>
+          <view
+            wx:if="{{!item.is_current && !item.superadmin}}"
+            class="btn-remove"
+            bindtap="onRemoveAdmin"
+            data-id="{{item.admin_id}}"
+          >
+            <text>移除</text>
+          </view>
+        </view>
+
+        <!-- 空状态 -->
+        <view wx:if="{{admins.length === 0}}" class="empty-state">
+          <text class="empty-text">暂无管理员</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

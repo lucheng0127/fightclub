@@ -75,6 +75,9 @@ exports.main = async (event, context) => {
       city: gym.city,
       phone: gym.phone,
       icon_url: gym.icon_url,
+      status: gym.status || 'pending', // 审核状态
+      reviewed_at: gym.reviewed_at,
+      reject_reason: gym.reject_reason,
       created_at: gym.created_at,
       updated_at: gym.updated_at,
       is_own_profile: isOwnProfile

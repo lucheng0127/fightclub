@@ -2,15 +2,28 @@
  * Gym Update Cloud Function
  * 更新拳馆档案云函数
  * 更新现有拳馆档案信息
+ * 如果是被拒绝后重新提交，状态改为待审核并创建新的审核记录
  */
 
 const cloud = require('wx-server-sdk');
+const crypto = require('crypto');
 
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
 });
 
 const db = cloud.database();
+
+/**
+ * 生成匿名用户ID（基于OpenID的非可逆哈希）
+ */
+function hashOpenID(openid) {
+  const salt = 'fightclub-salt-v1';
+  return crypto.createHash('sha256')
+    .update(openid + salt)
+    .digest('hex')
+    .substring(0, 16);
+}
 
 /**
  * 通用成功响应
@@ -91,6 +104,8 @@ exports.main = async (event, context) => {
     }
 
     const gym = existingGym.data[0];
+    const currentStatus = gym.status || 'pending';
+    const isResubmit = currentStatus === 'rejected';
 
     // 更新拳馆档案
     const now = new Date();
@@ -107,14 +122,60 @@ exports.main = async (event, context) => {
       updated_at: now
     };
 
+    // 如果是被拒绝后重新提交，状态改为待审核，并清空审核信息
+    if (isResubmit) {
+      updateData.status = 'pending';
+      updateData.reviewed_at = null;
+      updateData.reviewed_by = null;
+      updateData.reject_reason = null;
+    }
+
     await db.collection('gyms').doc(gym._id).update({
       data: updateData
     });
+
+    // 如果是被拒绝后重新提交，创建新的审核记录
+    if (isResubmit) {
+      const userId = hashOpenID(openid);
+      const reviewData = {
+        gym_id: gym.gym_id,
+        user_id: userId,
+        name: event.name.trim(),
+        address: event.address.trim(),
+        location: {
+          latitude: event.location.latitude,
+          longitude: event.location.longitude
+        },
+        city: event.city || null,
+        phone: event.phone.trim(),
+        icon_url: event.icon_url || null,
+        status: 'pending',
+        submitted_at: now
+      };
+
+      // 先删除旧的审核记录
+      await db.collection('gym_reviews').where({ gym_id: gym.gym_id }).remove();
+
+      // 创建新的审核记录
+      await db.collection('gym_reviews').add({
+        data: reviewData
+      });
+
+      console.log('[GymUpdate] 重新提交成功, gym_id:', gym.gym_id, '状态: 待审核');
+
+      return successResponse({
+        gym_id: gym.gym_id,
+        status: 'pending',
+        profile: { ...gym, ...updateData },
+        is_resubmit: true
+      });
+    }
 
     console.log('[GymUpdate] 更新成功, gym_id:', gym.gym_id);
 
     return successResponse({
       gym_id: gym.gym_id,
+      status: currentStatus,
       profile: { ...gym, ...updateData }
     });
 

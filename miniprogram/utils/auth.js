@@ -5,13 +5,16 @@
 
 /**
  * 保存用户登录信息到本地存储
- * @param {object} userData - 用户数据 {user_id, roles, last_role}
+ * @param {object} userData - 用户数据 {user_id, roles, last_role, is_admin, is_superadmin}
  */
 function saveAuthData(userData) {
   try {
     wx.setStorageSync('user_id', userData.user_id);
     wx.setStorageSync('roles', userData.roles);
     wx.setStorageSync('last_role', userData.last_role);
+    // 保存管理员状态
+    wx.setStorageSync('is_admin', userData.is_admin || false);
+    wx.setStorageSync('is_superadmin', userData.is_superadmin || false);
     // 同时保存独立的标志位
     wx.setStorageSync('has_boxer_profile', userData.roles.has_boxer_profile || false);
     wx.setStorageSync('has_gym_profile', userData.roles.has_gym_profile || false);
@@ -56,7 +59,7 @@ function getRoles() {
 
 /**
  * 获取完整的授权数据
- * @returns {object|null} 授权数据 {user_id, roles, last_role}
+ * @returns {object|null} 授权数据 {user_id, roles, last_role, is_admin, is_superadmin}
  */
 function getAuthData() {
   try {
@@ -67,7 +70,9 @@ function getAuthData() {
     return {
       user_id,
       roles: getRoles(),
-      last_role: wx.getStorageSync('last_role') || null
+      last_role: wx.getStorageSync('last_role') || null,
+      is_admin: wx.getStorageSync('is_admin') || false,
+      is_superadmin: wx.getStorageSync('is_superadmin') || false
     };
   } catch (e) {
     console.error('获取授权数据失败:', e);
@@ -106,11 +111,20 @@ function clearAuthData() {
     wx.removeStorageSync('user_id');
     wx.removeStorageSync('roles');
     wx.removeStorageSync('last_role');
+    wx.removeStorageSync('is_admin');
+    wx.removeStorageSync('is_superadmin');
     wx.removeStorageSync('has_boxer_profile');
     wx.removeStorageSync('has_gym_profile');
   } catch (e) {
     console.error('清除授权数据失败:', e);
   }
+}
+
+/**
+ * 移除本地授权数据（clearAuthData 的别名）
+ */
+function removeAuthData() {
+  clearAuthData();
 }
 
 /**
@@ -145,6 +159,7 @@ module.exports = {
   isLoggedIn,
   checkLocationAuth,
   clearAuthData,
+  removeAuthData,
   saveLocationAuth,
   getLocationAuth
 };
