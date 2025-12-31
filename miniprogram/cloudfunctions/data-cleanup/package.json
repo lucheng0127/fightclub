@@ -1,0 +1,10 @@
+{
+  "name": "data-cleanup",
+  "version": "1.0.0",
+  "description": "数据清理云函数 - 定时清理过期数据",
+  "main": "index.js",
+  "scripts": {},
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
