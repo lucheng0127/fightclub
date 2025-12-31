@@ -147,7 +147,18 @@ exports.main = async (event, context) => {
 
       console.log('[SlotBook] 预约成功, booking_id:', booking_id);
 
-      // 发送消息通知给拳馆
+      // 获取该时间段已预约的其他拳手（在当前预约之前已预约的）
+      const otherBookingsResult = await db.collection('slot_bookings')
+        .where(db.command.and([
+          { slot_id: event.slot_id },
+          { status: 'active' },
+          { boxer_id: db.command.neq(boxer.boxer_id) }
+        ]))
+        .get();
+
+      const otherBoxerUserIds = otherBookingsResult.data.map(b => b.boxer_user_id);
+
+      // 发送消息通知给拳馆和其他已预约的拳手
       try {
         await cloud.callFunction({
           name: 'notification-send',
@@ -155,12 +166,14 @@ exports.main = async (event, context) => {
             action: 'new_booking',
             data: {
               gym_user_id: slot.user_id,
+              other_boxer_user_ids: otherBoxerUserIds,
               boxer_name: boxer.nickname,
               slot: {
                 slot_id: slot.slot_id,
                 date: slot.date,
                 start_time: slot.start_time,
-                end_time: slot.end_time
+                end_time: slot.end_time,
+                remaining_spots: slot.max_boxers - currentSlot.current_bookings - 1
               }
             }
           }

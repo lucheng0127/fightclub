@@ -135,42 +135,70 @@ async function sendWeChatCancelNotification(openid, boxerName, slotInfo) {
 }
 
 /**
- * 发送新预约通知给拳馆
+ * 发送新预约通知给拳馆和其他拳手
  */
-async function notifyNewBooking(gymUserId, boxerName, slotInfo) {
-  const title = '新预约通知';
-  const content = `拳手 ${boxerName} 预约了您在 ${slotInfo.date} ${slotInfo.start_time}-${slotInfo.end_time} 的场地`;
+async function notifyNewBooking(gymUserId, otherBoxerUserIds, boxerName, slotInfo) {
+  // 发送给拳馆
+  const gymTitle = '新预约通知';
+  const gymContent = `拳手 ${boxerName} 预约了您在 ${slotInfo.date} ${slotInfo.start_time}-${slotInfo.end_time} 的场地`;
 
-  // 1. 发送应用内通知
-  const notificationId = await sendInternalNotification(
+  await sendInternalNotification(
     gymUserId,
     'new_booking',
+    gymTitle,
+    gymContent,
+    { slot_id: slotInfo.slot_id }
+  );
+
+  // 尝试发送微信订阅消息给拳馆
+  await sendWeChatNewBookingNotification(gymUserId, boxerName, slotInfo);
+
+  // 发送给其他已预约的拳手
+  if (otherBoxerUserIds && otherBoxerUserIds.length > 0) {
+    const boxerTitle = '新拳手加入预约';
+    const boxerContent = `拳手 ${boxerName} 也预约了 ${slotInfo.date} ${slotInfo.start_time}-${slotInfo.end_time} 的场地，剩余 ${slotInfo.remaining_spots} 个名额`;
+
+    const promises = otherBoxerUserIds.map(userId => {
+      return sendInternalNotification(
+        userId,
+        'new_booking',
+        boxerTitle,
+        boxerContent,
+        { slot_id: slotInfo.slot_id }
+      );
+    });
+
+    await Promise.all(promises);
+  }
+}
+
+/**
+ * 发送取消预约通知给拳馆
+ */
+async function notifyCancelledBookingToGym(gymUserId, boxerName, slotInfo) {
+  const title = '预约取消通知';
+  const content = `拳手 ${boxerName} 取消了在 ${slotInfo.date} ${slotInfo.start_time}-${slotInfo.end_time} 的场地预约`;
+
+  await sendInternalNotification(
+    gymUserId,
+    'cancelled_booking',
     title,
     content,
     { slot_id: slotInfo.slot_id }
   );
 
-  // 2. 尝试发送微信订阅消息
-  await sendWeChatNewBookingNotification(gymUserId, boxerName, slotInfo);
-
-  return notificationId;
+  // 尝试发送微信订阅消息给拳馆
+  await sendWeChatCancelNotification(gymUserId, boxerName, slotInfo);
 }
 
 /**
- * 发送取消预约通知
+ * 发送取消预约通知给其他拳手
  */
-async function notifyCancelledBooking(recipientUserIds, boxerName, slotInfo, isGym) {
+async function notifyCancelledBookingToBoxers(boxerUserIds, boxerName, slotInfo) {
   const title = '预约取消通知';
-  let content;
+  const content = `拳手 ${boxerName} 取消了预约，现在有 ${slotInfo.available_spots} 个剩余名额`;
 
-  if (isGym) {
-    content = `拳手 ${boxerName} 取消了在 ${slotInfo.date} ${slotInfo.start_time}-${slotInfo.end_time} 的场地预约`;
-  } else {
-    content = `拳手 ${boxerName} 取消了预约，现在有 ${slotInfo.available_spots} 个剩余名额`;
-  }
-
-  // 发送应用内通知
-  const promises = recipientUserIds.map(userId => {
+  const promises = boxerUserIds.map(userId => {
     return sendInternalNotification(
       userId,
       'cancelled_booking',
@@ -181,13 +209,6 @@ async function notifyCancelledBooking(recipientUserIds, boxerName, slotInfo, isG
   });
 
   await Promise.all(promises);
-
-  // 尝试发送微信订阅消息给拳馆
-  if (isGym) {
-    for (const userId of recipientUserIds) {
-      await sendWeChatCancelNotification(userId, boxerName, slotInfo);
-    }
-  }
 }
 
 exports.main = async (event, context) => {
@@ -207,38 +228,38 @@ exports.main = async (event, context) => {
 
   try {
     if (action === 'new_booking') {
-      // data: { gym_user_id, boxer_name, slot: { slot_id, date, start_time, end_time } }
-      const notificationId = await notifyNewBooking(
+      // data: { gym_user_id, other_boxer_user_ids, boxer_name, slot: { slot_id, date, start_time, end_time, remaining_spots } }
+      await notifyNewBooking(
         data.gym_user_id,
+        data.other_boxer_user_ids || [],
         data.boxer_name,
         data.slot
       );
 
       return successResponse({
-        notification_id: notificationId,
         action: 'new_booking'
       });
 
     } else if (action === 'cancelled_booking') {
       // data: { gym_user_id, other_boxer_user_ids, boxer_name, slot: { slot_id, date, start_time, end_time, available_spots } }
-      const recipientIds = [data.gym_user_id, ...(data.other_boxer_user_ids || [])];
-      const notificationIds = await notifyCancelledBooking(
-        recipientIds,
+
+      // 发送给拳馆
+      await notifyCancelledBookingToGym(
+        data.gym_user_id,
         data.boxer_name,
-        data.slot,
-        false // 不是发给拳馆，是发给其他拳手
+        data.slot
       );
 
-      // 单独发送给拳馆
-      await notifyCancelledBooking(
-        [data.gym_user_id],
-        data.boxer_name,
-        data.slot,
-        true // 是发给拳馆
-      );
+      // 发送给其他拳手
+      if (data.other_boxer_user_ids && data.other_boxer_user_ids.length > 0) {
+        await notifyCancelledBookingToBoxers(
+          data.other_boxer_user_ids,
+          data.boxer_name,
+          data.slot
+        );
+      }
 
       return successResponse({
-        notification_ids: notificationIds,
         action: 'cancelled_booking'
       });
 

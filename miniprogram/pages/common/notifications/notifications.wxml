@@ -32,8 +32,12 @@
     >
       <view class="card-header">
         <view class="card-type {{item.type}}">
-          <text class="type-icon">{{item.type === 'new_booking' ? '📝' : '❌'}}</text>
-          <text class="type-text">{{item.type === 'new_booking' ? '新预约' : '取消预约'}}</text>
+          <text class="type-icon">
+            {{item.type === 'new_booking' ? '📝' : (item.type === 'cancelled_booking' ? '❌' : '📢')}}
+          </text>
+          <text class="type-text">
+            {{item.type === 'new_booking' ? '新预约' : (item.type === 'cancelled_booking' ? '取消预约' : '通知')}}
+          </text>
         </view>
         <view class="card-time">{{item.created_at_text}}</view>
       </view>
