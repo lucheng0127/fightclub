@@ -158,9 +158,11 @@ exports.main = async (event, context) => {
 
       const otherBoxerUserIds = otherBookingsResult.data.map(b => b.boxer_user_id);
 
+      console.log('[SlotBook] 准备发送通知 - gym_user_id:', slot.user_id.substring(0, 8) + '...', 'other_boxers:', otherBoxerUserIds.length);
+
       // 发送消息通知给拳馆和其他已预约的拳手
       try {
-        await cloud.callFunction({
+        const notifResult = await cloud.callFunction({
           name: 'notification-send',
           data: {
             action: 'new_booking',
@@ -178,6 +180,7 @@ exports.main = async (event, context) => {
             }
           }
         });
+        console.log('[SlotBook] 通知发送结果:', notifResult);
       } catch (notifError) {
         console.error('[SlotBook] 发送通知失败:', notifError);
         // 通知失败不影响预约成功
