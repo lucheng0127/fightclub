@@ -1,5 +1,5 @@
 // User Select Page
-const { getAuthData } = require('../../../utils/auth');
+const { getAuthData, getRoles } = require('../../../utils/auth');
 const { callFunction } = require('../../../utils/request');
 
 Page({
@@ -11,18 +11,23 @@ Page({
     limit: 50,
     has_more: false,
     keyword: '',
-    searching: false
+    searching: false,
+    scene: 'admin' // 调用场景: admin | gym_transfer
   },
 
-  onLoad() {
+  onLoad(options) {
+    // 获取调用场景
+    const scene = options.scene || 'admin';
+    this.setData({ scene });
     this.checkPermission();
   },
 
   /**
-   * 检查超级管理员权限
+   * 检查权限
    */
   async checkPermission() {
     const authData = getAuthData();
+    const { scene } = this.data;
 
     if (!authData) {
       wx.showToast({
@@ -35,15 +40,32 @@ Page({
       return;
     }
 
-    if (!authData.is_superadmin) {
-      wx.showToast({
-        title: '无权限访问',
-        icon: 'none'
-      });
-      setTimeout(() => {
-        wx.navigateBack();
-      }, 1500);
-      return;
+    // 根据场景检查不同权限
+    if (scene === 'admin') {
+      // 管理员场景：需要超级管理员权限
+      if (!authData.is_superadmin) {
+        wx.showToast({
+          title: '无权限访问',
+          icon: 'none'
+        });
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+        return;
+      }
+    } else if (scene === 'gym_transfer') {
+      // 拳馆转移场景：需要是拳馆负责人
+      const roles = getRoles();
+      if (!roles.has_gym_profile) {
+        wx.showToast({
+          title: '您不是拳馆负责人',
+          icon: 'none'
+        });
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+        return;
+      }
     }
 
     try {
@@ -76,12 +98,13 @@ Page({
     this.setData({ loading: true });
 
     try {
-      const { page, limit, keyword } = this.data;
+      const { page, limit, keyword, scene } = this.data;
 
       const result = await callFunction('user/list', {
         keyword,
         page,
-        limit
+        limit,
+        scene  // 传递场景参数给云函数
       }, { showLoading: false });
 
       const list = (append ? this.data.list.concat(result.list || []) : result.list || []).map(item => ({
@@ -151,7 +174,7 @@ Page({
     const pages = getCurrentPages();
     const prevPage = pages[pages.length - 2];
 
-    // 如果上一个页面是 admin-manage，调用其回调
+    // 如果上一个页面有回调，调用它
     if (prevPage && prevPage.onUserSelected) {
       prevPage.onUserSelected(user);
     }

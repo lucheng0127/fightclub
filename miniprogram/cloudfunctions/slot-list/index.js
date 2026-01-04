@@ -45,7 +45,10 @@ exports.main = async (event, context) => {
 
   try {
     // 构建查询条件
-    let conditions = [{ status: 'active' }];
+    let conditions = [
+      { status: 'active' },
+      { archived: db.command.neq(true) }  // 排除归档数据
+    ];
 
     // 日期范围筛选
     if (date_from) {

@@ -43,6 +43,15 @@
             bindtap="onSelectUser"
             data-user="{{item}}"
           >
+            <image
+              wx:if="{{item.avatar_url}}"
+              class="user-avatar"
+              src="{{item.avatar_url}}"
+              mode="aspectFill"
+            />
+            <view wx:else class="user-avatar placeholder">
+              <text class="avatar-text">{{item.nickname && item.nickname.charAt(0) || '用'}}</text>
+            </view>
             <view class="user-info">
               <text class="user-name">{{item.nickname || '未设置昵称'}}</text>
               <text class="user-id">ID: {{item.user_id}}</text>

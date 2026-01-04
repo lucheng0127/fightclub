@@ -76,7 +76,8 @@ exports.main = async (event, context) => {
         .where({
           slot_id,
           boxer_id,
-          status: 'active'
+          status: 'active',
+          archived: db.command.neq(true)  // 排除归档数据
         })
         .get();
 
@@ -95,6 +96,11 @@ exports.main = async (event, context) => {
     // 检查预约状态
     if (booking.status !== 'active') {
       return errorResponse(6074, '该预约已取消');
+    }
+
+    // 检查预约是否已归档
+    if (booking.archived === true) {
+      return errorResponse(6074, '该预约已过期，无法取消');
     }
 
     // 查询时间段信息
@@ -186,13 +192,15 @@ exports.main = async (event, context) => {
 
       const otherBoxerUserIds = otherBookingsResult.data.map(b => b.boxer_user_id);
 
-      // 发送消息通知给拳馆和其他拳手
+      // 发送消息通知给取消者本人、拳馆和其他拳手
       try {
         await cloud.callFunction({
           name: 'notification-send',
           data: {
+            caller_openid: openid,  // 传递调用者的 openid
             action: 'cancelled_booking',
             data: {
+              canceller_user_id: openid,  // 取消者本人的 openid
               gym_user_id: slot.user_id,
               other_boxer_user_ids: otherBoxerUserIds,
               boxer_name: boxerName,

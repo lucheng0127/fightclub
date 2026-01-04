@@ -77,7 +77,8 @@ exports.main = async (event, context) => {
     const { status = 'all' } = event; // all | active | cancelled
 
     let conditions = [
-      { boxer_id }
+      { boxer_id },
+      { archived: db.command.neq(true) }  // 排除归档数据
     ];
 
     if (status === 'active') {

@@ -171,5 +171,14 @@ Page({
       name: name || '拳馆位置',
       address: address || ''
     });
+  },
+
+  /**
+   * 转移拳馆
+   */
+  onTransferGym() {
+    wx.navigateTo({
+      url: '/pages/gym/owner-transfer/owner-transfer'
+    });
   }
 });

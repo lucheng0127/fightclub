@@ -71,7 +71,8 @@ exports.main = async (event, context) => {
     const bookingsResult = await db.collection('slot_bookings')
       .where({
         slot_id: event.slot_id,
-        status: 'active'
+        status: 'active',
+        archived: db.command.neq(true)  // 排除归档数据
       })
       .orderBy('booking_time', 'asc')
       .get();

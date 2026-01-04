@@ -45,7 +45,10 @@ exports.main = async (event, context) => {
 
   try {
     // 构建查询条件
-    let conditions = [{ recipient_user_id: openid }];
+    let conditions = [
+      { recipient_user_id: openid },
+      { archived: db.command.neq(true) }  // 排除归档数据
+    ];
 
     if (is_read !== undefined) {
       conditions.push({ is_read: is_read === true ? true : false });
@@ -71,11 +74,12 @@ exports.main = async (event, context) => {
       };
     });
 
-    // 统计未读数
+    // 统计未读数（排除归档数据）
     const unreadCount = await db.collection('notifications')
       .where(db.command.and([
         { recipient_user_id: openid },
-        { is_read: false }
+        { is_read: false },
+        { archived: db.command.neq(true) }  // 排除归档数据
       ]))
       .count();
 

@@ -53,7 +53,10 @@ exports.main = async (event, context) => {
     const gym_id = gymResult.data[0].gym_id;
 
     // 构建查询条件
-    let conditions = [{ gym_id }];
+    let conditions = [
+      { gym_id },
+      { archived: db.command.neq(true) }  // 排除归档数据
+    ];
 
     if (statusFilter !== 'all') {
       conditions.push({ status: statusFilter });
@@ -68,11 +71,12 @@ exports.main = async (event, context) => {
 
     // 获取每个时间段的预约数
     const slots = await Promise.all(slotsResult.data.map(async (slot) => {
-      // 查询当前预约数（active状态的预约）
+      // 查询当前预约数（active状态且未归档的预约）
       const bookingsCount = await db.collection('slot_bookings')
         .where({
           slot_id: slot.slot_id,
-          status: 'active'
+          status: 'active',
+          archived: db.command.neq(true)  // 排除归档数据
         })
         .count();
 

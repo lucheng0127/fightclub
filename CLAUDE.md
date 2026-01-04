@@ -19,7 +19,7 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 
 # fightclub Development Guidelines
 
-Auto-generated from all feature plans. Last updated: 2025-12-26
+Auto-generated from all feature plans. Last updated: 2025-01-04
 
 ## Active Technologies
 
@@ -34,7 +34,7 @@ tests/
 
 ## Commands
 
-# Add commands for 
+# Add commands for
 
 ## Code Style
 
@@ -43,6 +43,7 @@ tests/
 ## Recent Changes
 
 - 001-boxing-platform: Added
+- 004-gym-owner-transfer: 新增拳馆负责人转移功能,允许拳馆负责人将拳馆转移给其他用户
 
 <!-- MANUAL ADDITIONS START -->
 <!-- MANUAL ADDITIONS END -->

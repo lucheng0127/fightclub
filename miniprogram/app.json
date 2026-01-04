@@ -15,6 +15,7 @@
     "pages/gym/slot-manage/slot-manage",
     "pages/gym/slot-publish/slot-publish",
     "pages/gym/slot-edit/slot-edit",
+    "pages/gym/owner-transfer/owner-transfer",
     "pages/common/dashboard/dashboard",
     "pages/common/slot-detail/slot-detail",
     "pages/common/slot-bookings/slot-bookings",

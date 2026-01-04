@@ -79,12 +79,18 @@ exports.main = async (event, context) => {
       return errorResponse(6063, '时间段不可预约');
     }
 
-    // 检查是否重复预约
+    // 检查时间段是否已归档
+    if (slot.archived === true) {
+      return errorResponse(6063, '该时间段已过期，无法预约');
+    }
+
+    // 检查是否重复预约（排除归档数据）
     const existingBooking = await db.collection('slot_bookings')
       .where({
         slot_id: event.slot_id,
         boxer_id: boxer.boxer_id,
-        status: 'active'
+        status: 'active',
+        archived: db.command.neq(true)  // 排除归档数据
       })
       .get();
 
@@ -147,11 +153,12 @@ exports.main = async (event, context) => {
 
       console.log('[SlotBook] 预约成功, booking_id:', booking_id);
 
-      // 获取该时间段已预约的其他拳手（在当前预约之前已预约的）
+      // 获取该时间段已预约的其他拳手（在当前预约之前已预约的），排除归档数据
       const otherBookingsResult = await db.collection('slot_bookings')
         .where(db.command.and([
           { slot_id: event.slot_id },
           { status: 'active' },
+          { archived: db.command.neq(true) },  // 排除归档数据
           { boxer_id: db.command.neq(boxer.boxer_id) }
         ]))
         .get();
@@ -160,13 +167,15 @@ exports.main = async (event, context) => {
 
       console.log('[SlotBook] 准备发送通知 - gym_user_id:', slot.user_id.substring(0, 8) + '...', 'other_boxers:', otherBoxerUserIds.length);
 
-      // 发送消息通知给拳馆和其他已预约的拳手
+      // 发送消息通知给预约者本人、拳馆和其他已预约的拳手
       try {
         const notifResult = await cloud.callFunction({
           name: 'notification-send',
           data: {
+            caller_openid: openid,  // 传递调用者的 openid
             action: 'new_booking',
             data: {
+              booker_user_id: openid,  // 预约者本人的 openid
               gym_user_id: slot.user_id,
               other_boxer_user_ids: otherBoxerUserIds,
               boxer_name: boxer.nickname,

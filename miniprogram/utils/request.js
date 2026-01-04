@@ -18,6 +18,12 @@ const FUNCTION_NAME_MAP = {
   'gym/update': 'gym-update',
   'gym/get': 'gym-get',
   'gym/list': 'gym-list',
+  'gym/user/list': 'gym-user-list',
+  'gym/transfer': 'gym-transfer',
+  'gym/slot/list': 'gym-slot-list',
+  'gym/slot/publish': 'gym-slot-publish',
+  'gym/slot/update': 'gym-slot-update',
+  'gym/slot/delete': 'gym-slot-delete',
   'common/stats': 'stats',
   'common/upload': 'common-upload',
   'admin/check': 'admin-check',
@@ -28,7 +34,15 @@ const FUNCTION_NAME_MAP = {
   'review/list': 'review-list',
   'review/detail': 'review-detail',
   'review/approve': 'review-approve',
-  'review/reject': 'review-reject'
+  'review/reject': 'review-reject',
+  'slot/book': 'slot-book',
+  'slot/cancel': 'slot-cancel',
+  'slot/list': 'slot-list',
+  'slot/bookings': 'slot-bookings',
+  'notification/list': 'notification-list',
+  'notification/read': 'notification-read',
+  'notification/send': 'notification-send',
+  'my/bookings': 'my-bookings'
 };
 
 /**
